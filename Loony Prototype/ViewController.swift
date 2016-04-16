@@ -10,15 +10,38 @@ import Cocoa
 import AppKit
 
 class ViewController: NSViewController {
+    let model: SQLiteModel
+
+    @IBOutlet weak var accountNameField: NSTextField!
+
+    init?(_ coder: NSCoder? = nil) {
+      // TODO: Handle exception.
+      model = try! SQLiteModel()
+
+      if coder != nil {
+        super.init(coder: coder!)
+      } else {
+        super.init(nibName: nil, bundle: nil)
+      }
+    }
+
+    required convenience init?(coder: NSCoder) {
+      self.init(coder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    @IBAction func addAccountClicked(sender: AnyObject) {
+        print("Account name: \(accountNameField.stringValue)")
 
-        let account = Account.newWithName("foo account")
+        let account = Account.newWithName(accountNameField.stringValue)
 
-        let model = try! SQLiteModel()
         // TODO: handle exception.
         try! model.addAccount(account)
+
+        print("Added account with id = \(account.id)")
     }
     
     override var representedObject: AnyObject? {
