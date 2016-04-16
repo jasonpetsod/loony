@@ -7,21 +7,24 @@
 //
 
 import Cocoa
+import AppKit
 
 class ViewController: NSViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-    }
+        let account = Account(id: NSUUID().UUIDString, name: "foo account")
 
+        let model = try! SQLiteModel()
+        // TODO: handle exception.
+        try! model.addAccount(account)
+    }
+    
     override var representedObject: AnyObject? {
         didSet {
         // Update the view, if already loaded.
         }
     }
 
-
 }
-
