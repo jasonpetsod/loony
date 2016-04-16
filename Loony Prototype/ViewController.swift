@@ -13,7 +13,8 @@ class ViewController: NSViewController {
     let model: SQLiteModel
 
     @IBOutlet weak var accountNameField: NSTextField!
-
+    @IBOutlet weak var categoryNameField: NSTextField!
+    
     init?(_ coder: NSCoder? = nil) {
       // TODO: Handle exception.
       model = try! SQLiteModel()
@@ -42,6 +43,18 @@ class ViewController: NSViewController {
         try! model.addAccount(account)
 
         print("Added account with id = \(account.id)")
+    }
+    
+    @IBAction func addCategoryClicked(sender: AnyObject) {
+        let name = categoryNameField.stringValue
+        let category = Category.new(name,
+                                    parentId: nil,
+                                    notes: nil)
+
+        // TODO: handle exception.
+        try! model.addCategory(category)
+
+        print("Added category \(name) with ID \(category.id)")
     }
     
     override var representedObject: AnyObject? {

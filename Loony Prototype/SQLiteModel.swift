@@ -9,8 +9,12 @@ class SQLiteModel {
   let db: Connection
 
   let accountsTable = Table("accounts")
+  let categoriesTable = Table("categories")
+
   let idCol = Expression<String>("id")
   let nameCol = Expression<String>("name")
+  let notesCol = Expression<String>("notes")
+  let parentIdCol = Expression<String>("parent_id")
 
   init() throws {
     do {
@@ -25,6 +29,18 @@ class SQLiteModel {
         idCol <- account.id, nameCol <- account.name)
     do {
       var rowid = try db.run(insert)
+    } catch {
+      throw SQLiteModelError.InsertFailure
+    }
+  }
+
+  func addCategory(category: Category) throws {
+    let insert = categoriesTable.insert(
+        idCol <- category.id,
+        nameCol <- category.name)
+
+    do {
+      try db.run(insert)
     } catch {
       throw SQLiteModelError.InsertFailure
     }
