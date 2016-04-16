@@ -14,7 +14,7 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let account = Account(id: NSUUID().UUIDString, name: "foo account")
+        let account = Account.newWithName("foo account")
 
         let model = try! SQLiteModel()
         // TODO: handle exception.
