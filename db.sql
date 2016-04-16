@@ -5,12 +5,12 @@ BEGIN;
 
 CREATE TABLE IF NOT EXISTS accounts (
     id TEXT PRIMARY KEY,
-    name TEXT UNIQUE
+    name TEXT NOT NULL UNIQUE
 ) WITHOUT ROWID;
 
 CREATE TABLE IF NOT EXISTS payees (
     id TEXT PRIMARY KEY,
-    name TEXT UNIQUE
+    name TEXT NOT NULL UNIQUE
 ) WITHOUT ROWID;
 
 CREATE TABLE IF NOT EXISTS categories (
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS categories (
     name TEXT NOT NULL,
     parent_id TEXT,
     notes TEXT,
-    hidden INTEGER DEFAULT 0,
+    hidden INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (parent_id) REFERENCES categories (id)
 ) WITHOUT ROWID;
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS transactions (
 
 CREATE TABLE IF NOT EXISTS transaction_categories (
     transaction_id TEXT PRIMARY KEY,
-    category_id TEXT,
+    category_id TEXT NOT NULL,
     income_month TEXT, -- TODO: hmmmmmmmm
     amount_cents INTEGER NOT NULL,
     FOREIGN KEY (transaction_id) REFERENCES transactions (id),
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS transaction_categories (
 CREATE TABLE IF NOT EXISTS category_budgets (
     month TEXT PRIMARY KEY, -- first day of the month, 00:00:00.000
     category_id TEXT NOT NULL,
-    budget_cents INTEGER,
+    budget_cents INTEGER NOT NULL DEFAULT 0,
     carry_over_overspending INTEGER DEFAULT 0, -- YNAB "red arrow"
     notes TEXT,
     FOREIGN KEY (category_id) REFERENCES categories (id)
