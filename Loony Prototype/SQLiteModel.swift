@@ -13,8 +13,8 @@ class SQLiteModel {
 
   let idCol = Expression<String>("id")
   let nameCol = Expression<String>("name")
-  let notesCol = Expression<String>("notes")
-  let parentIdCol = Expression<String>("parent_id")
+  let notesCol = Expression<String?>("notes")
+  let parentIdCol = Expression<String?>("parent_id")
 
   init() throws {
     do {
@@ -37,7 +37,9 @@ class SQLiteModel {
   func addCategory(category: Category) throws {
     let insert = categoriesTable.insert(
         idCol <- category.id,
-        nameCol <- category.name)
+        nameCol <- category.name,
+        parentIdCol <- category.parentId,
+        notesCol <- category.notes)
 
     do {
       try db.run(insert)
