@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS payees (
 
 CREATE TABLE IF NOT EXISTS categories (
     id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
+    name TEXT NOT NULL UNIQUE,
     parent_id TEXT,
     notes TEXT,
     hidden INTEGER NOT NULL DEFAULT 0,

@@ -12,8 +12,9 @@
 		96DEC8E91CC06D920025C611 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 96DEC8DE1CC06D7B0025C611 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		96DEC8ED1CC120460025C611 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DEC8EC1CC120460025C611 /* Account.swift */; };
 		96DEC8EF1CC1F1AF0025C611 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DEC8EE1CC1F1AF0025C611 /* Category.swift */; };
+		96DFABDC1CC4675600036DDC /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DFABDB1CC4675600036DDC /* AccountViewController.swift */; };
+		96DFABE41CC468DE00036DDC /* BudgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DFABE31CC468DE00036DDC /* BudgetViewController.swift */; };
 		96E4B48E1CBDC85500307106 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E4B48D1CBDC85500307106 /* AppDelegate.swift */; };
-		96E4B4901CBDC85500307106 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E4B48F1CBDC85500307106 /* ViewController.swift */; };
 		96E4B4921CBDC85500307106 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96E4B4911CBDC85500307106 /* Assets.xcassets */; };
 		96E4B4951CBDC85500307106 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96E4B4931CBDC85500307106 /* Main.storyboard */; };
 		96E4B4A01CBDC85500307106 /* Loony_PrototypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E4B49F1CBDC85500307106 /* Loony_PrototypeTests.swift */; };
@@ -121,9 +122,10 @@
 		96DEC8CF1CC06D7B0025C611 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = SQLite.swift/SQLite.xcodeproj; sourceTree = "<group>"; };
 		96DEC8EC1CC120460025C611 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		96DEC8EE1CC1F1AF0025C611 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		96DFABDB1CC4675600036DDC /* AccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
+		96DFABE31CC468DE00036DDC /* BudgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BudgetViewController.swift; sourceTree = "<group>"; };
 		96E4B48A1CBDC85500307106 /* Loony Prototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Loony Prototype.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E4B48D1CBDC85500307106 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		96E4B48F1CBDC85500307106 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		96E4B4911CBDC85500307106 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		96E4B4941CBDC85500307106 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		96E4B4961CBDC85500307106 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -201,13 +203,14 @@
 			isa = PBXGroup;
 			children = (
 				96E4B4B81CBDC89B00307106 /* Loony Prototype.entitlements */,
+				96E4B4931CBDC85500307106 /* Main.storyboard */,
 				96DEC8EC1CC120460025C611 /* Account.swift */,
+				96DFABDB1CC4675600036DDC /* AccountViewController.swift */,
 				96E4B48D1CBDC85500307106 /* AppDelegate.swift */,
+				96DFABE31CC468DE00036DDC /* BudgetViewController.swift */,
 				96DEC8EE1CC1F1AF0025C611 /* Category.swift */,
-				96E4B48F1CBDC85500307106 /* ViewController.swift */,
 				96DEC8CA1CC069670025C611 /* SQLiteModel.swift */,
 				96E4B4911CBDC85500307106 /* Assets.xcassets */,
-				96E4B4931CBDC85500307106 /* Main.storyboard */,
 				96E4B4961CBDC85500307106 /* Info.plist */,
 			);
 			path = "Loony Prototype";
@@ -427,8 +430,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96E4B4901CBDC85500307106 /* ViewController.swift in Sources */,
+				96DFABE41CC468DE00036DDC /* BudgetViewController.swift in Sources */,
 				96DEC8EF1CC1F1AF0025C611 /* Category.swift in Sources */,
+				96DFABDC1CC4675600036DDC /* AccountViewController.swift in Sources */,
 				96DEC8ED1CC120460025C611 /* Account.swift in Sources */,
 				96E4B48E1CBDC85500307106 /* AppDelegate.swift in Sources */,
 				96DEC8CB1CC069670025C611 /* SQLiteModel.swift in Sources */,
