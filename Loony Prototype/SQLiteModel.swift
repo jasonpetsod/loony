@@ -2,6 +2,7 @@ import SQLite
 
 enum SQLiteModelError: ErrorType {
   case ConnectionFailure
+  case EnableForeignKeysFailure
   case InsertFailure
 }
 
@@ -21,6 +22,12 @@ class SQLiteModel {
       db = try Connection("/Users/jason/dev/loony/prototype/loony.db")
     } catch {
       throw SQLiteModelError.ConnectionFailure
+    }
+
+    do {
+      try db.execute("PRAGMA foreign_keys = ON;")
+    } catch {
+      throw SQLiteModelError.EnableForeignKeysFailure
     }
   }
 
