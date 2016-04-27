@@ -54,9 +54,23 @@ extension LedgerViewController: NSTableViewDelegate {
       case tableView.tableColumns[2]:
           identifier = "PayeeCell"
           value = transaction.payeeId
-      case tableView.tableColumns[2]:
+      case tableView.tableColumns[3]:
           identifier = "CategoryCell"
-          value = transaction.id
+          value = transaction.categoryName
+      case tableView.tableColumns[4]:
+          identifier = "OutflowCell"
+          if transaction.totalAmount < 0 {
+            value = String(transaction.totalAmount)
+          } else {
+            value = ""
+          }
+      case tableView.tableColumns[5]:
+          identifier = "InflowCell"
+          if transaction.totalAmount > 0 {
+            value = String(transaction.totalAmount)
+          } else {
+            value = ""
+          }
       default:
         identifier = ""
         value = "???"
