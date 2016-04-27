@@ -1,0 +1,714 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9670DCFC1CC7012600DBAE19 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9670DCFB1CC7012600DBAE19 /* Transaction.swift */; };
+		96DEC8CB1CC069670025C611 /* SQLiteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DEC8CA1CC069670025C611 /* SQLiteModel.swift */; };
+		96DEC8E71CC06D8A0025C611 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96DEC8DE1CC06D7B0025C611 /* SQLite.framework */; };
+		96DEC8E91CC06D920025C611 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 96DEC8DE1CC06D7B0025C611 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		96DEC8ED1CC120460025C611 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DEC8EC1CC120460025C611 /* Account.swift */; };
+		96DEC8EF1CC1F1AF0025C611 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DEC8EE1CC1F1AF0025C611 /* Category.swift */; };
+		96DFABDC1CC4675600036DDC /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DFABDB1CC4675600036DDC /* AccountViewController.swift */; };
+		96DFABE41CC468DE00036DDC /* BudgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DFABE31CC468DE00036DDC /* BudgetViewController.swift */; };
+		96DFABE61CC46A7D00036DDC /* LedgerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DFABE51CC46A7D00036DDC /* LedgerViewController.swift */; };
+		96E4B48E1CBDC85500307106 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E4B48D1CBDC85500307106 /* AppDelegate.swift */; };
+		96E4B4921CBDC85500307106 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96E4B4911CBDC85500307106 /* Assets.xcassets */; };
+		96E4B4951CBDC85500307106 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96E4B4931CBDC85500307106 /* Main.storyboard */; };
+		96E4B4A01CBDC85500307106 /* Loony_PrototypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E4B49F1CBDC85500307106 /* Loony_PrototypeTests.swift */; };
+		96E4B4AB1CBDC85500307106 /* Loony_PrototypeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E4B4AA1CBDC85500307106 /* Loony_PrototypeUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		96DEC8D91CC06D7B0025C611 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96DEC8CF1CC06D7B0025C611 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE247AD31C3F04ED00AE3E12;
+			remoteInfo = "SQLite iOS";
+		};
+		96DEC8DB1CC06D7B0025C611 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96DEC8CF1CC06D7B0025C611 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE247ADD1C3F04ED00AE3E12;
+			remoteInfo = "SQLiteTests iOS";
+		};
+		96DEC8DD1CC06D7B0025C611 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96DEC8CF1CC06D7B0025C611 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE247B3C1C3F3ED000AE3E12;
+			remoteInfo = "SQLite Mac";
+		};
+		96DEC8DF1CC06D7B0025C611 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96DEC8CF1CC06D7B0025C611 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE247B451C3F3ED000AE3E12;
+			remoteInfo = "SQLiteTests Mac";
+		};
+		96DEC8E11CC06D7B0025C611 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96DEC8CF1CC06D7B0025C611 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03A65E5A1C6BB0F50062603F;
+			remoteInfo = "SQLite tvOS";
+		};
+		96DEC8E31CC06D7B0025C611 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96DEC8CF1CC06D7B0025C611 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03A65E631C6BB0F60062603F;
+			remoteInfo = "SQLiteTests tvOS";
+		};
+		96DEC8E51CC06D7B0025C611 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96DEC8CF1CC06D7B0025C611 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A121AC451CA35C79005A31D1;
+			remoteInfo = "SQLite watchOS";
+		};
+		96DEC8EA1CC06D930025C611 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96DEC8CF1CC06D7B0025C611 /* SQLite.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = EE247B3B1C3F3ED000AE3E12;
+			remoteInfo = "SQLite Mac";
+		};
+		96E4B49C1CBDC85500307106 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96E4B4821CBDC85500307106 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 96E4B4891CBDC85500307106;
+			remoteInfo = "Loony Prototype";
+		};
+		96E4B4A71CBDC85500307106 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96E4B4821CBDC85500307106 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 96E4B4891CBDC85500307106;
+			remoteInfo = "Loony Prototype";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		96DEC8C91CC069270025C611 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				96DEC8E91CC06D920025C611 /* SQLite.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96DEC8CC1CC06CC50025C611 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		9670DCFB1CC7012600DBAE19 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		96DEC8CA1CC069670025C611 /* SQLiteModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteModel.swift; sourceTree = "<group>"; };
+		96DEC8CF1CC06D7B0025C611 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = SQLite.swift/SQLite.xcodeproj; sourceTree = "<group>"; };
+		96DEC8EC1CC120460025C611 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		96DEC8EE1CC1F1AF0025C611 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		96DFABDB1CC4675600036DDC /* AccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
+		96DFABE31CC468DE00036DDC /* BudgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BudgetViewController.swift; sourceTree = "<group>"; };
+		96DFABE51CC46A7D00036DDC /* LedgerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LedgerViewController.swift; sourceTree = "<group>"; };
+		96E4B48A1CBDC85500307106 /* Loony Prototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Loony Prototype.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		96E4B48D1CBDC85500307106 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		96E4B4911CBDC85500307106 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		96E4B4941CBDC85500307106 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		96E4B4961CBDC85500307106 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		96E4B49B1CBDC85500307106 /* Loony PrototypeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Loony PrototypeTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		96E4B49F1CBDC85500307106 /* Loony_PrototypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loony_PrototypeTests.swift; sourceTree = "<group>"; };
+		96E4B4A11CBDC85500307106 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		96E4B4A61CBDC85500307106 /* Loony PrototypeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Loony PrototypeUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		96E4B4AA1CBDC85500307106 /* Loony_PrototypeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loony_PrototypeUITests.swift; sourceTree = "<group>"; };
+		96E4B4AC1CBDC85500307106 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		96E4B4B81CBDC89B00307106 /* Loony Prototype.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Loony Prototype.entitlements"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		96E4B4871CBDC85500307106 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96DEC8E71CC06D8A0025C611 /* SQLite.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96E4B4981CBDC85500307106 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96E4B4A31CBDC85500307106 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		96DEC8D01CC06D7B0025C611 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				96DEC8DA1CC06D7B0025C611 /* SQLite.framework */,
+				96DEC8DC1CC06D7B0025C611 /* SQLiteTests iOS.xctest */,
+				96DEC8DE1CC06D7B0025C611 /* SQLite.framework */,
+				96DEC8E01CC06D7B0025C611 /* SQLiteTests Mac.xctest */,
+				96DEC8E21CC06D7B0025C611 /* SQLite.framework */,
+				96DEC8E41CC06D7B0025C611 /* SQLiteTests tvOS.xctest */,
+				96DEC8E61CC06D7B0025C611 /* SQLite.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		96E4B4811CBDC85500307106 = {
+			isa = PBXGroup;
+			children = (
+				96E4B48C1CBDC85500307106 /* Loony Prototype */,
+				96E4B49E1CBDC85500307106 /* Loony PrototypeTests */,
+				96E4B4A91CBDC85500307106 /* Loony PrototypeUITests */,
+				96E4B48B1CBDC85500307106 /* Products */,
+				96DEC8CF1CC06D7B0025C611 /* SQLite.xcodeproj */,
+			);
+			sourceTree = "<group>";
+		};
+		96E4B48B1CBDC85500307106 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				96E4B48A1CBDC85500307106 /* Loony Prototype.app */,
+				96E4B49B1CBDC85500307106 /* Loony PrototypeTests.xctest */,
+				96E4B4A61CBDC85500307106 /* Loony PrototypeUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		96E4B48C1CBDC85500307106 /* Loony Prototype */ = {
+			isa = PBXGroup;
+			children = (
+				96E4B4B81CBDC89B00307106 /* Loony Prototype.entitlements */,
+				96E4B4931CBDC85500307106 /* Main.storyboard */,
+				96DEC8EC1CC120460025C611 /* Account.swift */,
+				96DFABDB1CC4675600036DDC /* AccountViewController.swift */,
+				96E4B48D1CBDC85500307106 /* AppDelegate.swift */,
+				96DFABE31CC468DE00036DDC /* BudgetViewController.swift */,
+				96DEC8EE1CC1F1AF0025C611 /* Category.swift */,
+				96DFABE51CC46A7D00036DDC /* LedgerViewController.swift */,
+				96DEC8CA1CC069670025C611 /* SQLiteModel.swift */,
+				9670DCFB1CC7012600DBAE19 /* Transaction.swift */,
+				96E4B4911CBDC85500307106 /* Assets.xcassets */,
+				96E4B4961CBDC85500307106 /* Info.plist */,
+			);
+			path = "Loony Prototype";
+			sourceTree = "<group>";
+		};
+		96E4B49E1CBDC85500307106 /* Loony PrototypeTests */ = {
+			isa = PBXGroup;
+			children = (
+				96E4B49F1CBDC85500307106 /* Loony_PrototypeTests.swift */,
+				96E4B4A11CBDC85500307106 /* Info.plist */,
+			);
+			path = "Loony PrototypeTests";
+			sourceTree = "<group>";
+		};
+		96E4B4A91CBDC85500307106 /* Loony PrototypeUITests */ = {
+			isa = PBXGroup;
+			children = (
+				96E4B4AA1CBDC85500307106 /* Loony_PrototypeUITests.swift */,
+				96E4B4AC1CBDC85500307106 /* Info.plist */,
+			);
+			path = "Loony PrototypeUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		96E4B4891CBDC85500307106 /* Loony Prototype */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 96E4B4AF1CBDC85500307106 /* Build configuration list for PBXNativeTarget "Loony Prototype" */;
+			buildPhases = (
+				96E4B4861CBDC85500307106 /* Sources */,
+				96E4B4871CBDC85500307106 /* Frameworks */,
+				96E4B4881CBDC85500307106 /* Resources */,
+				96DEC8C91CC069270025C611 /* Embed Frameworks */,
+				96DEC8CC1CC06CC50025C611 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				96DEC8EB1CC06D930025C611 /* PBXTargetDependency */,
+			);
+			name = "Loony Prototype";
+			productName = "Loony Prototype";
+			productReference = 96E4B48A1CBDC85500307106 /* Loony Prototype.app */;
+			productType = "com.apple.product-type.application";
+		};
+		96E4B49A1CBDC85500307106 /* Loony PrototypeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 96E4B4B21CBDC85500307106 /* Build configuration list for PBXNativeTarget "Loony PrototypeTests" */;
+			buildPhases = (
+				96E4B4971CBDC85500307106 /* Sources */,
+				96E4B4981CBDC85500307106 /* Frameworks */,
+				96E4B4991CBDC85500307106 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				96E4B49D1CBDC85500307106 /* PBXTargetDependency */,
+			);
+			name = "Loony PrototypeTests";
+			productName = "Loony PrototypeTests";
+			productReference = 96E4B49B1CBDC85500307106 /* Loony PrototypeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		96E4B4A51CBDC85500307106 /* Loony PrototypeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 96E4B4B51CBDC85500307106 /* Build configuration list for PBXNativeTarget "Loony PrototypeUITests" */;
+			buildPhases = (
+				96E4B4A21CBDC85500307106 /* Sources */,
+				96E4B4A31CBDC85500307106 /* Frameworks */,
+				96E4B4A41CBDC85500307106 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				96E4B4A81CBDC85500307106 /* PBXTargetDependency */,
+			);
+			name = "Loony PrototypeUITests";
+			productName = "Loony PrototypeUITests";
+			productReference = 96E4B4A61CBDC85500307106 /* Loony PrototypeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		96E4B4821CBDC85500307106 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Jason Petsod";
+				TargetAttributes = {
+					96E4B4891CBDC85500307106 = {
+						CreatedOnToolsVersion = 7.2.1;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
+					};
+					96E4B49A1CBDC85500307106 = {
+						CreatedOnToolsVersion = 7.2.1;
+						TestTargetID = 96E4B4891CBDC85500307106;
+					};
+					96E4B4A51CBDC85500307106 = {
+						CreatedOnToolsVersion = 7.2.1;
+						TestTargetID = 96E4B4891CBDC85500307106;
+					};
+				};
+			};
+			buildConfigurationList = 96E4B4851CBDC85500307106 /* Build configuration list for PBXProject "Loony Prototype" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 96E4B4811CBDC85500307106;
+			productRefGroup = 96E4B48B1CBDC85500307106 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 96DEC8D01CC06D7B0025C611 /* Products */;
+					ProjectRef = 96DEC8CF1CC06D7B0025C611 /* SQLite.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				96E4B4891CBDC85500307106 /* Loony Prototype */,
+				96E4B49A1CBDC85500307106 /* Loony PrototypeTests */,
+				96E4B4A51CBDC85500307106 /* Loony PrototypeUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		96DEC8DA1CC06D7B0025C611 /* SQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SQLite.framework;
+			remoteRef = 96DEC8D91CC06D7B0025C611 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		96DEC8DC1CC06D7B0025C611 /* SQLiteTests iOS.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SQLiteTests iOS.xctest";
+			remoteRef = 96DEC8DB1CC06D7B0025C611 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		96DEC8DE1CC06D7B0025C611 /* SQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SQLite.framework;
+			remoteRef = 96DEC8DD1CC06D7B0025C611 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		96DEC8E01CC06D7B0025C611 /* SQLiteTests Mac.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SQLiteTests Mac.xctest";
+			remoteRef = 96DEC8DF1CC06D7B0025C611 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		96DEC8E21CC06D7B0025C611 /* SQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SQLite.framework;
+			remoteRef = 96DEC8E11CC06D7B0025C611 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		96DEC8E41CC06D7B0025C611 /* SQLiteTests tvOS.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SQLiteTests tvOS.xctest";
+			remoteRef = 96DEC8E31CC06D7B0025C611 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		96DEC8E61CC06D7B0025C611 /* SQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SQLite.framework;
+			remoteRef = 96DEC8E51CC06D7B0025C611 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		96E4B4881CBDC85500307106 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96E4B4921CBDC85500307106 /* Assets.xcassets in Resources */,
+				96E4B4951CBDC85500307106 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96E4B4991CBDC85500307106 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96E4B4A41CBDC85500307106 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		96E4B4861CBDC85500307106 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96DFABE41CC468DE00036DDC /* BudgetViewController.swift in Sources */,
+				96DEC8EF1CC1F1AF0025C611 /* Category.swift in Sources */,
+				9670DCFC1CC7012600DBAE19 /* Transaction.swift in Sources */,
+				96DFABE61CC46A7D00036DDC /* LedgerViewController.swift in Sources */,
+				96DFABDC1CC4675600036DDC /* AccountViewController.swift in Sources */,
+				96DEC8ED1CC120460025C611 /* Account.swift in Sources */,
+				96E4B48E1CBDC85500307106 /* AppDelegate.swift in Sources */,
+				96DEC8CB1CC069670025C611 /* SQLiteModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96E4B4971CBDC85500307106 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96E4B4A01CBDC85500307106 /* Loony_PrototypeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96E4B4A21CBDC85500307106 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96E4B4AB1CBDC85500307106 /* Loony_PrototypeUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		96DEC8EB1CC06D930025C611 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SQLite Mac";
+			targetProxy = 96DEC8EA1CC06D930025C611 /* PBXContainerItemProxy */;
+		};
+		96E4B49D1CBDC85500307106 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 96E4B4891CBDC85500307106 /* Loony Prototype */;
+			targetProxy = 96E4B49C1CBDC85500307106 /* PBXContainerItemProxy */;
+		};
+		96E4B4A81CBDC85500307106 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 96E4B4891CBDC85500307106 /* Loony Prototype */;
+			targetProxy = 96E4B4A71CBDC85500307106 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		96E4B4931CBDC85500307106 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				96E4B4941CBDC85500307106 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		96E4B4AD1CBDC85500307106 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		96E4B4AE1CBDC85500307106 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		96E4B4B01CBDC85500307106 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = "Loony Prototype/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/sqlite/3.12.1/lib,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.petsod.Loony-Prototype";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		96E4B4B11CBDC85500307106 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = "Loony Prototype/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/sqlite/3.12.1/lib,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.petsod.Loony-Prototype";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		96E4B4B31CBDC85500307106 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Loony PrototypeTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.petsod.Loony-PrototypeTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Loony Prototype.app/Contents/MacOS/Loony Prototype";
+			};
+			name = Debug;
+		};
+		96E4B4B41CBDC85500307106 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Loony PrototypeTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.petsod.Loony-PrototypeTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Loony Prototype.app/Contents/MacOS/Loony Prototype";
+			};
+			name = Release;
+		};
+		96E4B4B61CBDC85500307106 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Loony PrototypeUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.petsod.Loony-PrototypeUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = "Loony Prototype";
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		96E4B4B71CBDC85500307106 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Loony PrototypeUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.petsod.Loony-PrototypeUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = "Loony Prototype";
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		96E4B4851CBDC85500307106 /* Build configuration list for PBXProject "Loony Prototype" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96E4B4AD1CBDC85500307106 /* Debug */,
+				96E4B4AE1CBDC85500307106 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		96E4B4AF1CBDC85500307106 /* Build configuration list for PBXNativeTarget "Loony Prototype" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96E4B4B01CBDC85500307106 /* Debug */,
+				96E4B4B11CBDC85500307106 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		96E4B4B21CBDC85500307106 /* Build configuration list for PBXNativeTarget "Loony PrototypeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96E4B4B31CBDC85500307106 /* Debug */,
+				96E4B4B41CBDC85500307106 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		96E4B4B51CBDC85500307106 /* Build configuration list for PBXNativeTarget "Loony PrototypeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96E4B4B61CBDC85500307106 /* Debug */,
+				96E4B4B71CBDC85500307106 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 96E4B4821CBDC85500307106 /* Project object */;
+}
