@@ -22,6 +22,8 @@ INSERT INTO transactions (id, account_id, date, payee_id)
     VALUES ('t-2', 'a-a', '2016-01-02 00:00:00.000', 'p-a');
 INSERT INTO transaction_categories (transaction_id, category_id, amount_cents)
     VALUES ('t-2', 'c-a', -3000);
+INSERT INTO transaction_categories (transaction_id, category_id, amount_cents)
+    VALUES ('t-2', 'c-b', -5000);
 
 INSERT INTO transactions (id, account_id, date, payee_id)
     VALUES ('t-3', 'a-b', '2016-01-03 00:00:00.000', 'p-b');

@@ -15,6 +15,8 @@ class SQLiteModel {
   let transactionsTable = Table("transactions")
 
   let accountIdCol = Expression<String>("account_id")
+  let amountCentsCol = Expression<Int>("amount_cents")
+  let categoryIdCol = Expression<String>("category_id")
   let dateCol = Expression<String>("date")
   let idCol = Expression<String>("id")
   let nameCol = Expression<String>("name")
@@ -62,28 +64,42 @@ class SQLiteModel {
   }
 
   func getTransactions() throws -> [Transaction] {
-    // SELECT transactions.id, transactions.account_id,
-    //        transactions.date, transactions.payee_id,
-    //        transaction_categories.category_id,
-    //        transaction_categories.amount_cents
-    // FROM transactions, transaction_categories
-    // WHERE transactions.id = transaction_categories.transaction_id;
-
     let query = transactionsTable
-        .select(idCol, accountIdCol, dateCol, payeeIdCol)
+        .select(transactionsTable[idCol], accountIdCol, dateCol, payeeIdCol,
+                transactionCategoriesTable[categoryIdCol],
+                categoriesTable[nameCol],
+                transactionCategoriesTable[amountCentsCol])
         .join(transactionCategoriesTable,
-              on: transactionIdCol == transactionsTable[idCol]);
+              on: transactionIdCol == transactionsTable[idCol])
+        .join(categoriesTable,
+              on: categoryIdCol == categoriesTable[idCol]);
 
-    var result = [Transaction]()
+    var transactions = [String: Transaction]()
+    for row in try! db.prepare(query) {
+      let id = row[idCol]
 
-    print("Transactions:")
-    for transaction in try! db.prepare(query) {
-      result.append(Transaction(id: transaction[idCol],
-                                accountId: transaction[accountIdCol],
-                                date: transaction[dateCol],
-                                payeeId: transaction[payeeIdCol],
-                                memo: nil))
+      let category = TransactionCategory(
+          categoryId: row[transactionCategoriesTable[categoryIdCol]],
+          categoryName: row[categoriesTable[nameCol]],
+          amountCents: row[amountCentsCol])
+
+      if var transaction = transactions[id] {
+        // Add category to the transaction.
+        transaction.categories.append(category)
+        transactions[id] = transaction
+      } else {
+        // Create a new transaction.
+        let transaction = Transaction(id: row[idCol],
+                                      accountId: row[accountIdCol],
+                                      date: row[dateCol],
+                                      payeeId: row[payeeIdCol],
+                                      memo: nil,
+                                      categories: [category])
+        transactions[id] = transaction
+      }
     }
-    return result
+
+    // TODO: Maybe sort result.
+    return Array(transactions.values)
   }
 }
