@@ -47,7 +47,7 @@ extension LedgerViewController: NSTableViewDelegate {
     switch tableColumn! {
       case tableView.tableColumns[0]:
           identifier = "AccountCell"
-          value = transaction.accountId
+          value = transaction.account.name
       case tableView.tableColumns[1]:
           identifier = "DateCell"
           value = transaction.date

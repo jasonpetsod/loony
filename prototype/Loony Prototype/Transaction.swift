@@ -12,7 +12,7 @@ struct TransactionCategory {
 
 struct Transaction {
   let id: String
-  let accountId: String
+  let account: Account
   let date: String
   let payeeId: String
   let memo: String?

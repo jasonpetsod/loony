@@ -1,6 +1,7 @@
 import SQLite
 
 enum SQLiteModelError: ErrorType {
+  case AccountNotFound
   case ConnectionFailure
   case EnableForeignKeysFailure
   case InsertFailure
@@ -49,6 +50,15 @@ class SQLiteModel {
     }
   }
 
+  func getAccount(id: String) throws -> Account {
+    let query = accountsTable.select(idCol, nameCol).filter(idCol == id);
+    if let account = try db.pluck(query) {
+      return Account(id: id, name: account[nameCol])
+    } else {
+      throw SQLiteModelError.AccountNotFound
+    }
+  }
+
   func addCategory(category: Category) throws {
     let insert = categoriesTable.insert(
         idCol <- category.id,
@@ -65,7 +75,10 @@ class SQLiteModel {
 
   func getTransactions() throws -> [Transaction] {
     let query = transactionsTable
-        .select(transactionsTable[idCol], accountIdCol, dateCol, payeeIdCol,
+        .select(transactionsTable[idCol],
+                transactionsTable[accountIdCol],
+                transactionsTable[dateCol],
+                transactionsTable[payeeIdCol],
                 transactionCategoriesTable[categoryIdCol],
                 categoriesTable[nameCol],
                 transactionCategoriesTable[amountCentsCol])
@@ -89,8 +102,9 @@ class SQLiteModel {
         transactions[id] = transaction
       } else {
         // Create a new transaction.
+        let account = try getAccount(row[accountIdCol])
         let transaction = Transaction(id: row[idCol],
-                                      accountId: row[accountIdCol],
+                                      account: account,
                                       date: row[dateCol],
                                       payeeId: row[payeeIdCol],
                                       memo: nil,
