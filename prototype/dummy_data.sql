@@ -1,17 +1,19 @@
+DELETE FROM transaction_categories;
+DELETE FROM transactions;
+DELETE FROM category_budgets;
+DELETE FROM categories;
+DELETE FROM payees;
 DELETE FROM accounts;
+
 INSERT INTO accounts VALUES ('a-a', 'Account A');
 INSERT INTO accounts VALUES ('a-b', 'Account B');
 
-DELETE FROM payees;
 INSERT INTO payees VALUES ('p-a', 'Payee A');
 INSERT INTO payees VALUES ('p-b', 'Payee B');
 
-DELETE FROM categories;
 INSERT INTO categories (id, name) VALUES ('c-a', 'Category A');
 INSERT INTO categories (id, name) VALUES ('c-b', 'Category B');
 
-DELETE FROM transactions;
-DELETE FROM transaction_categories;
 
 INSERT INTO transactions (id, account_id, date, payee_id)
     VALUES ('t-1', 'a-a', '2016-01-01 00:00:00.000', 'p-a');
