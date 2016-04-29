@@ -14,7 +14,7 @@ struct Transaction {
   let id: String
   let account: Account
   let date: String
-  let payeeId: String
+  let payee: Payee
   let memo: String?
   let cleared: Bool = false
   let reconciled: Bool = false

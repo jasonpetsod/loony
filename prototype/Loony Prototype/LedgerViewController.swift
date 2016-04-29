@@ -53,7 +53,7 @@ extension LedgerViewController: NSTableViewDelegate {
           value = transaction.date
       case tableView.tableColumns[2]:
           identifier = "PayeeCell"
-          value = transaction.payeeId
+          value = transaction.payee.name
       case tableView.tableColumns[3]:
           identifier = "CategoryCell"
           value = transaction.categoryName

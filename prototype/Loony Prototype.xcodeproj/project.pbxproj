@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9670DCFC1CC7012600DBAE19 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9670DCFB1CC7012600DBAE19 /* Transaction.swift */; };
 		9670DD1E1CD0436C00DBAE19 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9670DD151CD0435F00DBAE19 /* SQLite.framework */; };
+		9670DD201CD425FA00DBAE19 /* Payee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9670DD1F1CD425F900DBAE19 /* Payee.swift */; };
 		96DEC8CB1CC069670025C611 /* SQLiteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DEC8CA1CC069670025C611 /* SQLiteModel.swift */; };
 		96DEC8ED1CC120460025C611 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DEC8EC1CC120460025C611 /* Account.swift */; };
 		96DEC8EF1CC1F1AF0025C611 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DEC8EE1CC1F1AF0025C611 /* Category.swift */; };
@@ -103,6 +104,7 @@
 /* Begin PBXFileReference section */
 		9670DCFB1CC7012600DBAE19 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		9670DD061CD0435E00DBAE19 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = SQLite.swift/SQLite.xcodeproj; sourceTree = "<group>"; };
+		9670DD1F1CD425F900DBAE19 /* Payee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Payee.swift; sourceTree = "<group>"; };
 		96DEC8CA1CC069670025C611 /* SQLiteModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteModel.swift; sourceTree = "<group>"; };
 		96DEC8EC1CC120460025C611 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		96DEC8EE1CC1F1AF0025C611 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				96DFABE31CC468DE00036DDC /* BudgetViewController.swift */,
 				96DEC8EE1CC1F1AF0025C611 /* Category.swift */,
 				96DFABE51CC46A7D00036DDC /* LedgerViewController.swift */,
+				9670DD1F1CD425F900DBAE19 /* Payee.swift */,
 				96DEC8CA1CC069670025C611 /* SQLiteModel.swift */,
 				9670DCFB1CC7012600DBAE19 /* Transaction.swift */,
 				96E4B4911CBDC85500307106 /* Assets.xcassets */,
@@ -417,6 +420,7 @@
 			files = (
 				96DFABE41CC468DE00036DDC /* BudgetViewController.swift in Sources */,
 				96DEC8EF1CC1F1AF0025C611 /* Category.swift in Sources */,
+				9670DD201CD425FA00DBAE19 /* Payee.swift in Sources */,
 				9670DCFC1CC7012600DBAE19 /* Transaction.swift in Sources */,
 				96DFABE61CC46A7D00036DDC /* LedgerViewController.swift in Sources */,
 				96DFABDC1CC4675600036DDC /* AccountViewController.swift in Sources */,

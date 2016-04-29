@@ -5,6 +5,7 @@ enum SQLiteModelError: ErrorType {
   case ConnectionFailure
   case EnableForeignKeysFailure
   case InsertFailure
+  case PayeeNotFound
 }
 
 class SQLiteModel {
@@ -73,6 +74,19 @@ class SQLiteModel {
     }
   }
 
+  func getPayee(searchId: String) throws -> Payee {
+    let payees = Table("payees")
+    let id = Expression<String>("id")
+    let name = Expression<String>("name")
+
+    let query = payees.select(id, name).filter(id == searchId);
+    if let result = db.pluck(query) {
+      return Payee(id: result[id], name: result[name])
+    } else {
+      throw SQLiteModelError.PayeeNotFound
+    }
+  }
+
   func getTransactions() throws -> [Transaction] {
     let query = transactionsTable
         .select(transactionsTable[idCol],
@@ -103,10 +117,11 @@ class SQLiteModel {
       } else {
         // Create a new transaction.
         let account = try getAccount(row[accountIdCol])
+        let payee = try getPayee(row[payeeIdCol])
         let transaction = Transaction(id: row[idCol],
                                       account: account,
                                       date: row[dateCol],
-                                      payeeId: row[payeeIdCol],
+                                      payee: payee,
                                       memo: nil,
                                       categories: [category])
         transactions[id] = transaction
