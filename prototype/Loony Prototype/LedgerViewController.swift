@@ -37,44 +37,63 @@ extension LedgerViewController: NSTableViewDataSource {
   }
 }
 
+extension Transaction {
+  func valueForColumn(tableView: NSTableView,
+                      tableColumn: NSTableColumn) -> String {
+    switch tableColumn {
+      case tableView.tableColumns[0]:
+          return account.name
+      case tableView.tableColumns[1]:
+          return displayDate
+      case tableView.tableColumns[2]:
+          return payee.name
+      case tableView.tableColumns[3]:
+          return categoryName
+      case tableView.tableColumns[4]:
+          if totalAmount < 0 {
+            return String(totalAmount)
+          } else {
+            return ""
+          }
+      case tableView.tableColumns[5]:
+          if totalAmount > 0 {
+            return String(totalAmount)
+          } else {
+            return ""
+          }
+      default:
+        return "???"
+    }
+  }
+}
+
 extension LedgerViewController: NSTableViewDelegate {
+  func identifierForColumn(tableView: NSTableView,
+                           tableColumn: NSTableColumn) -> String {
+    let tableCellIdentifiers = [
+        "AccountCell",
+        "DateCell",
+        "PayeeCell",
+        "CategoryCell",
+        "OutflowCell",
+        "InflowCell",
+    ]
+
+    if let idx = tableView.tableColumns.indexOf(tableColumn) {
+      return tableCellIdentifiers[idx]
+    } else {
+      return ""
+    }
+  }
+
   func tableView(tableView: NSTableView,
                  viewForTableColumn tableColumn: NSTableColumn?,
                  row: Int) -> NSView? {
-    var identifier = ""
-    var value = ""
+    let identifier = identifierForColumn(
+        tableView, tableColumn: tableColumn!)
     let transaction = transactions[row]
-    switch tableColumn! {
-      case tableView.tableColumns[0]:
-          identifier = "AccountCell"
-          value = transaction.account.name
-      case tableView.tableColumns[1]:
-          identifier = "DateCell"
-          value = transaction.displayDate
-      case tableView.tableColumns[2]:
-          identifier = "PayeeCell"
-          value = transaction.payee.name
-      case tableView.tableColumns[3]:
-          identifier = "CategoryCell"
-          value = transaction.categoryName
-      case tableView.tableColumns[4]:
-          identifier = "OutflowCell"
-          if transaction.totalAmount < 0 {
-            value = String(transaction.totalAmount)
-          } else {
-            value = ""
-          }
-      case tableView.tableColumns[5]:
-          identifier = "InflowCell"
-          if transaction.totalAmount > 0 {
-            value = String(transaction.totalAmount)
-          } else {
-            value = ""
-          }
-      default:
-        identifier = ""
-        value = "???"
-    }
+    let value = transaction.valueForColumn(
+        tableView, tableColumn: tableColumn!)
 
     if let cell = tableView.makeViewWithIdentifier(identifier, owner: nil) as?
         NSTableCellView {
