@@ -4,6 +4,7 @@ class LedgerViewController: NSViewController {
   let model: SQLiteModel
   var transactions = [Transaction]()
   var tableRows = 0
+  let newTransactionDelegate = NewTransactionDelegate()
 
   @IBOutlet weak var tableView: NSTableView!
 
@@ -67,6 +68,27 @@ extension Transaction {
   }
 }
 
+class NewTransactionDelegate: NSObject {
+}
+
+extension NewTransactionDelegate: NSTextFieldDelegate {
+  func control(control: NSControl,
+               textShouldEndEditing fieldEditor: NSText) -> Bool {
+    print("new contents of \(control): \(fieldEditor.string)")
+    guard let cell = control.superview as? NSTableCellView else {
+      return false
+    }
+    guard let row = cell.superview as? NSTableRowView else {
+      return false
+    }
+    guard let table = row.superview as? NSTableView else {
+      return false
+    }
+    print("Hello from NewTransactionDelegate!")
+    return true;
+  }
+}
+
 extension LedgerViewController: NSTableViewDelegate {
   func identifierForColumn(tableView: NSTableView,
                            tableColumn: NSTableColumn) -> String {
@@ -108,7 +130,7 @@ extension LedgerViewController: NSTableViewDelegate {
       } else {
         if let textField = cell.textField {
           textField.editable = true
-          textField.delegate = self
+          textField.delegate = newTransactionDelegate
           textField.stringValue = ""
           textField.placeholderString = "hello"
         }
