@@ -39,7 +39,7 @@ extension LedgerViewController: NSTableViewDataSource {
 
 extension Transaction {
   func valueForColumn(tableView: NSTableView,
-                      tableColumn: NSTableColumn) -> String {
+                      tableColumn: NSTableColumn) -> String? {
     switch tableColumn {
       case tableView.tableColumns[0]:
           return account.name
@@ -50,17 +50,9 @@ extension Transaction {
       case tableView.tableColumns[3]:
           return categoryName
       case tableView.tableColumns[4]:
-          if totalAmount < 0 {
-            return String(totalAmount)
-          } else {
-            return ""
-          }
+          return displayOutflow
       case tableView.tableColumns[5]:
-          if totalAmount > 0 {
-            return String(totalAmount)
-          } else {
-            return ""
-          }
+          return displayInflow
       default:
         return "???"
     }
@@ -89,16 +81,18 @@ extension LedgerViewController: NSTableViewDelegate {
   func tableView(tableView: NSTableView,
                  viewForTableColumn tableColumn: NSTableColumn?,
                  row: Int) -> NSView? {
-    let identifier = identifierForColumn(
-        tableView, tableColumn: tableColumn!)
+    let identifier = identifierForColumn(tableView, tableColumn: tableColumn!)
     let transaction = transactions[row]
-    let value = transaction.valueForColumn(
-        tableView, tableColumn: tableColumn!)
+    let value = transaction.valueForColumn(tableView, tableColumn: tableColumn!)
 
     if let cell = tableView.makeViewWithIdentifier(identifier, owner: nil) as?
         NSTableCellView {
       if let textField = cell.textField {
-        textField.stringValue = value
+        if let stringValue = value {
+          textField.stringValue = stringValue
+        } else {
+          textField.stringValue = ""
+        }
         textField.editable = true
         textField.delegate = self
       }

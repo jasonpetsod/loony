@@ -28,6 +28,26 @@ struct Transaction {
     }
   }
 
+  var displayInflow: String? {
+    get {
+      if totalAmount > 0 {
+        return String(totalAmount)
+      } else {
+        return nil
+      }
+    }
+  }
+
+  var displayOutflow: String? {
+    get {
+      if totalAmount < 0 {
+        return String(totalAmount)
+      } else {
+        return nil
+      }
+    }
+  }
+
   var categoryName: String {
     get {
       if categories.count == 0 {
