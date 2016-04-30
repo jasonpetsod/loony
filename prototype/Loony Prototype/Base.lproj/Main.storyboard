@@ -396,6 +396,7 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="800" height="600"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <value key="minSize" type="size" width="800" height="600"/>
                     </window>
                     <connections>
                         <segue destination="frA-Md-Bup" kind="relationship" relationship="window.shadowedContentViewController" id="vV2-Z2-wI2"/>
@@ -414,7 +415,7 @@
                         <tabViewItem identifier="" id="Ias-Nx-3SH"/>
                         <tabViewItem id="2jI-so-vk2"/>
                     </tabViewItems>
-                    <tabView key="tabView" type="noTabsNoBorder" id="6u7-ae-H9R">
+                    <tabView key="tabView" placeholderIntrinsicWidth="800" placeholderIntrinsicHeight="600" type="noTabsNoBorder" id="6u7-ae-H9R">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <font key="font" metaFont="message"/>
@@ -541,9 +542,9 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                             </button>
-                            <scrollView ambiguous="YES" misplaced="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ofQ-bg-f2a">
+                            <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ofQ-bg-f2a">
                                 <rect key="frame" x="0.0" y="34" width="800" height="600"/>
-                                <clipView key="contentView" ambiguous="YES" id="s6b-s1-g36">
+                                <clipView key="contentView" id="s6b-s1-g36">
                                     <rect key="frame" x="1" y="0.0" width="798" height="599"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -787,6 +788,7 @@
                         </subviews>
                         <constraints>
                             <constraint firstItem="ofQ-bg-f2a" firstAttribute="top" secondItem="e73-xE-wDj" secondAttribute="top" id="7DC-DK-Npi"/>
+                            <constraint firstItem="ofQ-bg-f2a" firstAttribute="leading" secondItem="e73-xE-wDj" secondAttribute="leading" id="iff-eb-abA"/>
                             <constraint firstItem="rHR-Qm-3JR" firstAttribute="top" secondItem="ofQ-bg-f2a" secondAttribute="bottom" constant="3" id="kKh-5b-awf"/>
                             <constraint firstAttribute="bottom" secondItem="rHR-Qm-3JR" secondAttribute="bottom" constant="10" id="nMh-nq-u6C"/>
                             <constraint firstAttribute="trailing" secondItem="ofQ-bg-f2a" secondAttribute="trailing" id="xTE-xm-817"/>
