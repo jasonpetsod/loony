@@ -90,8 +90,16 @@ extension NewTransactionDelegate: NSTextFieldDelegate {
 }
 
 extension LedgerViewController: NSTableViewDelegate {
-  func identifierForColumn(tableView: NSTableView,
-                           tableColumn: NSTableColumn) -> String {
+  func tableView(tableView: NSTableView,
+                 viewForTableColumn maybeTableColumn: NSTableColumn?,
+                 row: Int) -> NSView? {
+    guard let tableColumn = maybeTableColumn else {
+      return nil
+    }
+    guard let columnIdx = tableView.tableColumns.indexOf(tableColumn) else {
+      return nil
+    }
+
     let tableCellIdentifiers = [
         "AccountCell",
         "DateCell",
@@ -100,24 +108,14 @@ extension LedgerViewController: NSTableViewDelegate {
         "OutflowCell",
         "InflowCell",
     ]
+    let identifier = tableCellIdentifiers[columnIdx]
 
-    if let idx = tableView.tableColumns.indexOf(tableColumn) {
-      return tableCellIdentifiers[idx]
-    } else {
-      return ""
-    }
-  }
-
-  func tableView(tableView: NSTableView,
-                 viewForTableColumn tableColumn: NSTableColumn?,
-                 row: Int) -> NSView? {
-    let identifier = identifierForColumn(tableView, tableColumn: tableColumn!)
     if let cell = tableView.makeViewWithIdentifier(identifier, owner: nil) as?
         NSTableCellView {
       if row < transactions.count {
         let transaction = transactions[row]
         let value = transaction.valueForColumn(tableView,
-                                               tableColumn: tableColumn!)
+                                               tableColumn: tableColumn)
         if let textField = cell.textField {
           if let stringValue = value {
             textField.stringValue = stringValue
