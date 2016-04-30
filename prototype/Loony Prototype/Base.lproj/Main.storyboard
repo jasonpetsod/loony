@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -532,12 +531,19 @@
             <objects>
                 <viewController title="Ledger" id="oZl-5M-A6Z" customClass="LedgerViewController" customModule="Loony_Prototype" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="e73-xE-wDj">
-                        <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="800" height="634"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView misplaced="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ofQ-bg-f2a">
-                                <rect key="frame" x="-5" y="0.0" width="800" height="600"/>
-                                <clipView key="contentView" id="s6b-s1-g36">
+                            <button verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rHR-Qm-3JR">
+                                <rect key="frame" x="-6" y="3" width="139" height="32"/>
+                                <buttonCell key="cell" type="push" title="New transaction" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="e0q-5f-KUN">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                            <scrollView ambiguous="YES" misplaced="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ofQ-bg-f2a">
+                                <rect key="frame" x="0.0" y="34" width="800" height="600"/>
+                                <clipView key="contentView" ambiguous="YES" id="s6b-s1-g36">
                                     <rect key="frame" x="1" y="0.0" width="798" height="599"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -765,11 +771,6 @@
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="600" id="BZj-0P-D96"/>
-                                    <constraint firstAttribute="width" secondItem="ofQ-bg-f2a" secondAttribute="height" multiplier="4:3" id="Sei-VJ-x8O"/>
-                                    <constraint firstAttribute="width" constant="800" id="zdT-TJ-uWu"/>
-                                </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="Iv3-yk-gGO">
                                     <rect key="frame" x="1" y="583" width="798" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
@@ -785,14 +786,10 @@
                             </scrollView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="ofQ-bg-f2a" firstAttribute="top" secondItem="e73-xE-wDj" secondAttribute="top" id="3Ku-Pg-gkT"/>
-                            <constraint firstAttribute="bottom" secondItem="ofQ-bg-f2a" secondAttribute="bottom" id="BQk-k6-peP"/>
-                            <constraint firstItem="ofQ-bg-f2a" firstAttribute="leading" secondItem="e73-xE-wDj" secondAttribute="leading" id="GKM-ID-w8w"/>
-                            <constraint firstItem="ofQ-bg-f2a" firstAttribute="top" secondItem="e73-xE-wDj" secondAttribute="top" id="UMh-gC-Tup"/>
-                            <constraint firstAttribute="trailing" secondItem="ofQ-bg-f2a" secondAttribute="trailing" id="Ugz-uE-ajo"/>
-                            <constraint firstAttribute="bottom" secondItem="ofQ-bg-f2a" secondAttribute="bottom" id="UsT-DS-dRh"/>
-                            <constraint firstAttribute="trailing" secondItem="ofQ-bg-f2a" secondAttribute="trailing" id="hnV-D1-DGn"/>
-                            <constraint firstItem="ofQ-bg-f2a" firstAttribute="leading" secondItem="e73-xE-wDj" secondAttribute="leading" id="mJE-Pq-scr"/>
+                            <constraint firstItem="ofQ-bg-f2a" firstAttribute="top" secondItem="e73-xE-wDj" secondAttribute="top" id="7DC-DK-Npi"/>
+                            <constraint firstItem="rHR-Qm-3JR" firstAttribute="top" secondItem="ofQ-bg-f2a" secondAttribute="bottom" constant="3" id="kKh-5b-awf"/>
+                            <constraint firstAttribute="bottom" secondItem="rHR-Qm-3JR" secondAttribute="bottom" constant="10" id="nMh-nq-u6C"/>
+                            <constraint firstAttribute="trailing" secondItem="ofQ-bg-f2a" secondAttribute="trailing" id="xTE-xm-817"/>
                         </constraints>
                     </view>
                     <connections>
@@ -801,7 +798,7 @@
                 </viewController>
                 <customObject id="jYJ-G4-0r6" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1310" y="896"/>
+            <point key="canvasLocation" x="1310" y="913"/>
         </scene>
     </scenes>
 </document>
