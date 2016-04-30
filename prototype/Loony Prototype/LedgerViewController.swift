@@ -3,6 +3,7 @@ import Cocoa
 class LedgerViewController: NSViewController {
   let model: SQLiteModel
   var transactions = [Transaction]()
+  var tableRows = 0
 
   @IBOutlet weak var tableView: NSTableView!
 
@@ -25,15 +26,24 @@ class LedgerViewController: NSViewController {
     super.viewDidLoad()
 
     transactions = try! model.getTransactions()
+    tableRows = transactions.count
 
     tableView.setDelegate(self)
     tableView.setDataSource(self)
+  }
+  
+  @IBAction func newTransactionClicked(sender: AnyObject) {
+    tableRows += 1
+    tableView.reloadData()
+    tableView.editColumn(0, row: tableRows - 1, withEvent: nil, select: true)
+
+    // TODO: Lock tab ordering.
   }
 }
 
 extension LedgerViewController: NSTableViewDataSource {
   func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-    return transactions.count;
+    return tableRows;
   }
 }
 
@@ -80,8 +90,14 @@ extension LedgerViewController: NSTableViewDelegate {
                  viewForTableColumn tableColumn: NSTableColumn?,
                  row: Int) -> NSView? {
     let identifier = identifierForColumn(tableView, tableColumn: tableColumn!)
-    let transaction = transactions[row]
-    let value = transaction.valueForColumn(tableView, tableColumn: tableColumn!)
+
+    var value: String?
+    if row < transactions.count {
+      let transaction = transactions[row]
+      value = transaction.valueForColumn(tableView, tableColumn: tableColumn!)
+    } else {
+      value = ""
+    }
 
     if let cell = tableView.makeViewWithIdentifier(identifier, owner: nil) as?
         NSTableCellView {
