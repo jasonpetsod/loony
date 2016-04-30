@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS categories (
 CREATE TABLE IF NOT EXISTS transactions (
     id TEXT PRIMARY KEY,
     account_id TEXT NOT NULL,
-    date TEXT NOT NULL,
+    date DOUBLE NOT NULL,  -- seconds since the Unix epoch
     payee_id TEXT NOT NULL,
     transfer_src_account_id TEXT,
     transfer_dst_account_id TEXT,

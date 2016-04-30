@@ -19,7 +19,7 @@ class SQLiteModel {
   let accountIdCol = Expression<String>("account_id")
   let amountCentsCol = Expression<Int>("amount_cents")
   let categoryIdCol = Expression<String>("category_id")
-  let dateCol = Expression<String>("date")
+  let dateCol = Expression<NSTimeInterval>("date")
   let idCol = Expression<String>("id")
   let nameCol = Expression<String>("name")
   let notesCol = Expression<String?>("notes")
@@ -118,9 +118,10 @@ class SQLiteModel {
         // Create a new transaction.
         let account = try getAccount(row[accountIdCol])
         let payee = try getPayee(row[payeeIdCol])
+        let date = NSDate(timeIntervalSince1970: row[dateCol])
         let transaction = Transaction(id: row[idCol],
                                       account: account,
-                                      date: row[dateCol],
+                                      date: date,
                                       payee: payee,
                                       memo: nil,
                                       categories: [category])

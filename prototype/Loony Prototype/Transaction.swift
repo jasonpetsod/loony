@@ -1,3 +1,5 @@
+import Foundation
+
 struct TransactionCategory {
   let categoryId: String
   let categoryName: String
@@ -13,7 +15,7 @@ struct TransactionCategory {
 struct Transaction {
   let id: String
   let account: Account
-  let date: String
+  let date: NSDate
   let payee: Payee
   let memo: String?
   let cleared: Bool = false
@@ -35,6 +37,15 @@ struct Transaction {
       } else {
         return "Multiple Categories"
       }
+    }
+  }
+
+  var displayDate: String {
+    get {
+      let formatter = NSDateFormatter()
+      formatter.dateStyle = .MediumStyle
+      formatter.timeStyle = .NoStyle
+      return formatter.stringFromDate(date)
     }
   }
 }

@@ -16,18 +16,18 @@ INSERT INTO categories (id, name) VALUES ('c-b', 'Category B');
 
 
 INSERT INTO transactions (id, account_id, date, payee_id)
-    VALUES ('t-1', 'a-a', '2016-01-01 00:00:00.000', 'p-a');
+    VALUES ('t-1', 'a-a', 1451624400, 'p-a');  -- 2016-01-01
 INSERT INTO transaction_categories (transaction_id, category_id, amount_cents)
     VALUES ('t-1', 'c-a', -1000);
 
 INSERT INTO transactions (id, account_id, date, payee_id)
-    VALUES ('t-2', 'a-a', '2016-01-02 00:00:00.000', 'p-a');
+    VALUES ('t-2', 'a-a', 1451710800, 'p-a');  -- 2016-01-02
 INSERT INTO transaction_categories (transaction_id, category_id, amount_cents)
     VALUES ('t-2', 'c-a', -3000);
 INSERT INTO transaction_categories (transaction_id, category_id, amount_cents)
     VALUES ('t-2', 'c-b', -5000);
 
 INSERT INTO transactions (id, account_id, date, payee_id)
-    VALUES ('t-3', 'a-b', '2016-01-03 00:00:00.000', 'p-b');
+    VALUES ('t-3', 'a-b', 1451797200, 'p-b');  -- 2016-01-03
 INSERT INTO transaction_categories (transaction_id, category_id, amount_cents)
     VALUES ('t-3', 'c-b', 10000);
