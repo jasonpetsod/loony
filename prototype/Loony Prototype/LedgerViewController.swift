@@ -40,21 +40,19 @@ extension LedgerViewController: NSTableViewDataSource {
 extension Transaction {
   func valueForColumn(tableView: NSTableView,
                       tableColumn: NSTableColumn) -> String? {
-    switch tableColumn {
-      case tableView.tableColumns[0]:
-          return account.name
-      case tableView.tableColumns[1]:
-          return displayDate
-      case tableView.tableColumns[2]:
-          return payee.name
-      case tableView.tableColumns[3]:
-          return categoryName
-      case tableView.tableColumns[4]:
-          return displayOutflow
-      case tableView.tableColumns[5]:
-          return displayInflow
-      default:
-        return "???"
+    let values = [
+        account.name,
+        displayDate,
+        payee.name,
+        categoryName,
+        displayOutflow,
+        displayInflow,
+    ]
+
+    if let idx = tableView.tableColumns.indexOf(tableColumn) {
+      return values[idx]
+    } else {
+      return ""
     }
   }
 }
