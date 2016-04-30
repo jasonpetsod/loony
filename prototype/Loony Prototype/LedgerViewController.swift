@@ -78,9 +78,21 @@ extension LedgerViewController: NSTableViewDelegate {
 
     if let cell = tableView.makeViewWithIdentifier(identifier, owner: nil) as?
         NSTableCellView {
-      cell.textField?.stringValue = value
+      if let textField = cell.textField {
+        textField.stringValue = value
+        textField.editable = true
+        textField.delegate = self
+      }
       return cell
     }
     return nil
+  }
+}
+
+extension LedgerViewController: NSTextFieldDelegate {
+  func control(_ control: NSControl,
+               textShouldEndEditing fieldEditor: NSText) -> Bool {
+    print("new contents: \(fieldEditor.string)")
+    return true;
   }
 }
