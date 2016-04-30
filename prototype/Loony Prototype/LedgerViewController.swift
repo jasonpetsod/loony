@@ -49,9 +49,8 @@ extension LedgerViewController: NSTableViewDataSource {
 }
 
 extension Transaction {
-  func valueForColumn(tableView: NSTableView,
-                      tableColumn: NSTableColumn) -> String? {
-    let values = [
+  func columnStringValues() -> [String?] {
+    return [
         account.name,
         displayDate,
         payee.name,
@@ -59,12 +58,6 @@ extension Transaction {
         displayOutflow,
         displayInflow,
     ]
-
-    if let idx = tableView.tableColumns.indexOf(tableColumn) {
-      return values[idx]
-    } else {
-      return ""
-    }
   }
 }
 
@@ -114,8 +107,7 @@ extension LedgerViewController: NSTableViewDelegate {
         NSTableCellView {
       if row < transactions.count {
         let transaction = transactions[row]
-        let value = transaction.valueForColumn(tableView,
-                                               tableColumn: tableColumn)
+        let value = transaction.columnStringValues()[columnIdx]
         if let textField = cell.textField {
           if let stringValue = value {
             textField.stringValue = stringValue
