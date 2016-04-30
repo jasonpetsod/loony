@@ -90,25 +90,28 @@ extension LedgerViewController: NSTableViewDelegate {
                  viewForTableColumn tableColumn: NSTableColumn?,
                  row: Int) -> NSView? {
     let identifier = identifierForColumn(tableView, tableColumn: tableColumn!)
-
-    var value: String?
-    if row < transactions.count {
-      let transaction = transactions[row]
-      value = transaction.valueForColumn(tableView, tableColumn: tableColumn!)
-    } else {
-      value = ""
-    }
-
     if let cell = tableView.makeViewWithIdentifier(identifier, owner: nil) as?
         NSTableCellView {
-      if let textField = cell.textField {
-        if let stringValue = value {
-          textField.stringValue = stringValue
-        } else {
-          textField.stringValue = ""
+      if row < transactions.count {
+        let transaction = transactions[row]
+        let value = transaction.valueForColumn(tableView,
+                                               tableColumn: tableColumn!)
+        if let textField = cell.textField {
+          if let stringValue = value {
+            textField.stringValue = stringValue
+          } else {
+            textField.stringValue = ""
+          }
+          textField.editable = true
+          textField.delegate = self
         }
-        textField.editable = true
-        textField.delegate = self
+      } else {
+        if let textField = cell.textField {
+          textField.editable = true
+          textField.delegate = self
+          textField.stringValue = ""
+          textField.placeholderString = "hello"
+        }
       }
       return cell
     }
