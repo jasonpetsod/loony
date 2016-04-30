@@ -37,8 +37,6 @@ class LedgerViewController: NSViewController {
     tableRows += 1
     tableView.reloadData()
     tableView.editColumn(0, row: tableRows - 1, withEvent: nil, select: true)
-
-    // TODO: Lock tab ordering.
   }
 }
 
@@ -125,6 +123,9 @@ extension LedgerViewController: NSTableViewDelegate {
           textField.placeholderString = "hello"
         }
       }
+
+      // TODO: Wrap tab order of last element to the first using nextKeyView.
+
       return cell
     }
     return nil
