@@ -4,9 +4,12 @@ class LedgerViewController: NSViewController {
   let model: SQLiteModel
   var transactions = [Transaction]()
   var tableRows = 0
-  let newTransactionDelegate = NewTransactionDelegate()
 
   @IBOutlet weak var tableView: NSTableView!
+
+  @IBOutlet weak var newTransactionButton: NSButton!
+  @IBOutlet weak var saveTransactionButton: NSButton!
+  let newTransactionDelegate = NewTransactionDelegate()
 
   init?(_ coder: NSCoder? = nil) {
     // TODO: Handle exception.
@@ -34,9 +37,11 @@ class LedgerViewController: NSViewController {
   }
   
   @IBAction func newTransactionClicked(sender: AnyObject) {
+    newTransactionButton.enabled = false
     tableRows += 1
     tableView.reloadData()
     tableView.editColumn(0, row: tableRows - 1, withEvent: nil, select: true)
+    saveTransactionButton.enabled = true
   }
 }
 

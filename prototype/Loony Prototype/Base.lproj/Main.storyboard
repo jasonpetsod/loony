@@ -535,7 +535,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="800" height="634"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <button verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rHR-Qm-3JR">
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rHR-Qm-3JR">
                                 <rect key="frame" x="-6" y="3" width="139" height="32"/>
                                 <buttonCell key="cell" type="push" title="New transaction" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="e0q-5f-KUN">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -788,9 +788,19 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wS6-Td-pvV">
+                                <rect key="frame" x="124" y="3" width="141" height="32"/>
+                                <buttonCell key="cell" type="push" title="Save transaction" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4na-Mz-Oyl">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="wS6-Td-pvV" firstAttribute="top" secondItem="ofQ-bg-f2a" secondAttribute="bottom" constant="3" id="7BM-hf-x4d"/>
                             <constraint firstItem="ofQ-bg-f2a" firstAttribute="top" secondItem="e73-xE-wDj" secondAttribute="top" id="7DC-DK-Npi"/>
+                            <constraint firstItem="wS6-Td-pvV" firstAttribute="leading" secondItem="rHR-Qm-3JR" secondAttribute="trailing" constant="3" id="DNO-SV-4Sh"/>
+                            <constraint firstItem="rHR-Qm-3JR" firstAttribute="leading" secondItem="e73-xE-wDj" secondAttribute="leading" id="dNK-2X-FSv"/>
                             <constraint firstItem="ofQ-bg-f2a" firstAttribute="leading" secondItem="e73-xE-wDj" secondAttribute="leading" id="iff-eb-abA"/>
                             <constraint firstItem="rHR-Qm-3JR" firstAttribute="top" secondItem="ofQ-bg-f2a" secondAttribute="bottom" constant="3" id="kKh-5b-awf"/>
                             <constraint firstAttribute="bottom" secondItem="rHR-Qm-3JR" secondAttribute="bottom" constant="10" id="nMh-nq-u6C"/>
@@ -798,6 +808,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="newTransactionButton" destination="rHR-Qm-3JR" id="MTf-kq-ezP"/>
+                        <outlet property="saveTransactionButton" destination="wS6-Td-pvV" id="fne-IN-jS2"/>
                         <outlet property="tableView" destination="aoh-LI-cpL" id="c4u-BR-pKR"/>
                     </connections>
                 </viewController>
