@@ -80,12 +80,20 @@ class SQLiteModel {
     }
   }
 
-  func getPayee(searchId: String) throws -> Payee {
+  func getPayee(id searchId: String?,
+                name searchName: String? = nil) throws -> Payee {
     let payees = Table("payees")
     let id = Expression<String>("id")
     let name = Expression<String>("name")
 
-    let query = payees.select(id, name).filter(id == searchId);
+    var query = payees.select(id, name)
+    if searchId != nil {
+      query = query.filter(id == searchId!)
+    }
+    if searchName != nil {
+      query = query.filter(name == searchName!)
+    }
+
     if let result = db.pluck(query) {
       return Payee(id: result[id], name: result[name])
     } else {
