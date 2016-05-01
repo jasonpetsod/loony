@@ -36,6 +36,42 @@ class LedgerViewController: NSViewController {
     tableView.setDelegate(self)
     tableView.setDataSource(self)
   }
+
+  func getTableCellAtRow(row: Int, column: Int) -> NSTableCellView? {
+    let view = tableView.viewAtColumn(
+        0, row: tableView.selectedRow, makeIfNecessary: false)
+    if let cell = view as? NSTableCellView {
+      return cell
+    } else {
+      return nil
+    }
+  }
+
+  func getAccountAtRow(row: Int) -> Account? {
+    guard let accountCell = getTableCellAtRow(row, column: 0) else {
+      print("Could not get account cell")
+      return nil
+    }
+    let accountName = accountCell.textField!.stringValue
+    do {
+      return try model.getAccount(nil, name: accountName)
+    } catch {
+      return Account.newWithName(accountName)
+    }
+  }
+
+  func getPayeeAtRow(row: Int) -> Payee? {
+    guard let payeeCell = getTableCellAtRow(row, column: 3) else {
+      print("Could not get payee cell")
+      return nil
+    }
+    let payeeName = payeeCell.textField!.stringValue
+    do {
+      return try model.getPayee(id: nil, name: payeeName)
+    } catch {
+      return Payee(id: NSUUID().UUIDString, name: payeeName)
+    }
+  }
   
   @IBAction func newTransactionClicked(sender: AnyObject) {
     newTransactionButton.enabled = false
