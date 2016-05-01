@@ -9,6 +9,7 @@ class LedgerViewController: NSViewController {
 
   @IBOutlet weak var newTransactionButton: NSButton!
   @IBOutlet weak var saveTransactionButton: NSButton!
+  var transactionBeingEdited = false
   let newTransactionDelegate = NewTransactionDelegate()
 
   init?(_ coder: NSCoder? = nil) {
@@ -38,6 +39,7 @@ class LedgerViewController: NSViewController {
   
   @IBAction func newTransactionClicked(sender: AnyObject) {
     newTransactionButton.enabled = false
+    transactionBeingEdited = true
     tableRows += 1
     let newRow = tableRows - 1
     tableView.reloadData()
@@ -138,6 +140,10 @@ extension LedgerViewController: NSTableViewDelegate {
       return cell
     }
     return nil
+  }
+
+  func selectionShouldChangeInTableView(tableView: NSTableView) -> Bool {
+    return !transactionBeingEdited
   }
 }
 
