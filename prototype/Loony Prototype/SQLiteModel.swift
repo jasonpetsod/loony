@@ -51,10 +51,16 @@ class SQLiteModel {
     }
   }
 
-  func getAccount(id: String) throws -> Account {
-    let query = accountsTable.select(idCol, nameCol).filter(idCol == id);
+  func getAccount(id: String?, name: String? = nil) throws -> Account {
+    var query = accountsTable.select(idCol, nameCol)
+    if id != nil {
+      query = query.filter(idCol == id!)
+    }
+    if name != nil {
+      query = query.filter(nameCol == name!)
+    }
     if let account = try db.pluck(query) {
-      return Account(id: id, name: account[nameCol])
+      return Account(id: account[idCol], name: account[nameCol])
     } else {
       throw SQLiteModelError.AccountNotFound
     }
