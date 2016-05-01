@@ -44,15 +44,6 @@ extension LedgerViewController: NSTableViewDataSource {
   func numberOfRowsInTableView(tableView: NSTableView) -> Int {
     return tableRows;
   }
-
-  func tableView(tableView: NSTableView,
-                 objectValueForTableColumn tableColumn: NSTableColumn?,
-                 row: Int) -> AnyObject? {
-    if row < transactions.count {
-      return transactions[row] as? AnyObject
-    }
-    return nil
-  }
 }
 
 extension Transaction {
@@ -110,9 +101,9 @@ extension LedgerViewController: NSTableViewDelegate {
     if let cell = tableView.makeViewWithIdentifier(identifier, owner: self) as?
         NSTableCellView {
       if row < transactions.count {
-        guard let transaction = cell.objectValue as? Transaction else {
-          return nil
-        }
+        let transaction = transactions[row]
+        cell.objectValue = transaction as? AnyObject
+
         // TODO: Use NSKeyValueCoding.valueForKey to dynamically get the
         // correct property based on column index.
         let value = transaction.columnStringValues()[columnIdx]
