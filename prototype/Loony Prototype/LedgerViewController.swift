@@ -39,8 +39,11 @@ class LedgerViewController: NSViewController {
   @IBAction func newTransactionClicked(sender: AnyObject) {
     newTransactionButton.enabled = false
     tableRows += 1
+    let newRow = tableRows - 1
     tableView.reloadData()
-    tableView.editColumn(0, row: tableRows - 1, withEvent: nil, select: true)
+    tableView.editColumn(0, row: newRow, withEvent: nil, select: true)
+    tableView.selectRowIndexes(NSIndexSet(index: newRow),
+                               byExtendingSelection: false)
     saveTransactionButton.enabled = true
   }
 }
