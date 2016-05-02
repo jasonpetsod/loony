@@ -41,6 +41,16 @@ class SQLiteModel {
     }
   }
 
+  func transaction(block: () throws -> Void) {
+    do {
+      try db.transaction {
+        try block()
+      }
+    } catch {
+      print("Failed to execute transaction: \(error)")
+    }
+  }
+
   func addAccount(account: Account) throws {
     let insert = accountsTable.insert(
         idCol <- account.id, nameCol <- account.name)
