@@ -126,7 +126,7 @@ class SQLiteModel {
     }
 
     if let result = db.pluck(query) {
-      return Payee(id: result[id], name: result[name])
+      return Payee(id: result[id], name: result[name], isNew: false)
     } else {
       throw SQLiteModelError.PayeeNotFound
     }

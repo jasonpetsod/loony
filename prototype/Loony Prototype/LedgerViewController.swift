@@ -69,7 +69,7 @@ class LedgerViewController: NSViewController {
     do {
       return try model.getPayee(id: nil, name: payeeName)
     } catch {
-      return Payee(id: NSUUID().UUIDString, name: payeeName)
+      return Payee(id: NSUUID().UUIDString, name: payeeName, isNew: true)
     }
   }
   
