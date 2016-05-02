@@ -70,7 +70,7 @@ class SQLiteModel {
     if name != nil {
       query = query.filter(nameCol == name!)
     }
-    if let account = try db.pluck(query) {
+    if let account = db.pluck(query) {
       return Account(id: account[idCol], name: account[nameCol])
     } else {
       throw SQLiteModelError.AccountNotFound
@@ -88,6 +88,25 @@ class SQLiteModel {
       try db.run(insert)
     } catch {
       print("Failed to insert category: \(error)")
+      throw SQLiteModelError.InsertFailure
+    }
+  }
+
+  // MARK: Payees
+
+  func addPayee(payee: Payee) throws {
+    let payees = Table("payees")
+    let id = Expression<String>("id")
+    let name = Expression<String>("name")
+
+    let insert = payees.insert(
+        id <- payee.id,
+        name <- payee.name)
+
+    do {
+      try db.run(insert)
+    } catch {
+      print("Failed to insert payee: \(error)")
       throw SQLiteModelError.InsertFailure
     }
   }
@@ -112,6 +131,8 @@ class SQLiteModel {
       throw SQLiteModelError.PayeeNotFound
     }
   }
+
+  // MARK: Transactions
 
   func getTransactions() throws -> [Transaction] {
     let query = transactionsTable
