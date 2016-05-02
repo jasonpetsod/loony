@@ -184,7 +184,7 @@ extension LedgerViewController: NSTableViewDelegate {
 }
 
 extension LedgerViewController: NSTextFieldDelegate {
-  func control(_ control: NSControl,
+  func control(control: NSControl,
                textShouldEndEditing fieldEditor: NSText) -> Bool {
     print("new contents: \(fieldEditor.string)")
     return true;
