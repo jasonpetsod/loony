@@ -179,4 +179,30 @@ class SQLiteModel {
     // TODO: Maybe sort result.
     return Array(transactions.values)
   }
+
+  func addTransaction(transaction: Transaction) throws {
+    let transactions = Table("transactions")
+
+    let id = Expression<String>("id")
+    let accountId = Expression<String>("account_id")
+    let date = Expression<Double>("date")
+    let payeeId = Expression<String>("payee_id")
+    let memo = Expression<String?>("memo")
+
+    let insert = transactions.insert(
+        id <- transaction.id,
+        accountId <- transaction.account.id,
+        date <- transaction.date.timeIntervalSince1970,
+        payeeId <- transaction.payee.id,
+        memo <- transaction.memo)
+
+    // TODO: Insert transaction categories.
+
+    do {
+      try db.run(insert)
+    } catch {
+      print("Failed to insert transaction: \(error)")
+      throw SQLiteModelError.InsertFailure
+    }
+  }
 }
