@@ -39,7 +39,7 @@ class LedgerViewController: NSViewController {
 
   func getTableCellAtRow(row: Int, column: Int) -> NSTableCellView? {
     let view = tableView.viewAtColumn(
-        0, row: tableView.selectedRow, makeIfNecessary: false)
+        column, row: tableView.selectedRow, makeIfNecessary: false)
     if let cell = view as? NSTableCellView {
       return cell
     } else {
@@ -61,7 +61,7 @@ class LedgerViewController: NSViewController {
   }
 
   func getPayeeAtRow(row: Int) -> Payee? {
-    guard let payeeCell = getTableCellAtRow(row, column: 3) else {
+    guard let payeeCell = getTableCellAtRow(row, column: 2) else {
       print("Could not get payee cell")
       return nil
     }
