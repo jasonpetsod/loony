@@ -45,8 +45,9 @@ class SQLiteModel {
     let insert = accountsTable.insert(
         idCol <- account.id, nameCol <- account.name)
     do {
-      var rowid = try db.run(insert)
+      try db.run(insert)
     } catch {
+      print("Failed to insert account: \(error)")
       throw SQLiteModelError.InsertFailure
     }
   }
@@ -76,6 +77,7 @@ class SQLiteModel {
     do {
       try db.run(insert)
     } catch {
+      print("Failed to insert category: \(error)")
       throw SQLiteModelError.InsertFailure
     }
   }
@@ -131,7 +133,7 @@ class SQLiteModel {
       } else {
         // Create a new transaction.
         let account = try getAccount(row[accountIdCol])
-        let payee = try getPayee(row[payeeIdCol])
+        let payee = try getPayee(id: row[payeeIdCol])
         let date = NSDate(timeIntervalSince1970: row[dateCol])
         let transaction = Transaction(id: row[idCol],
                                       account: account,
