@@ -84,6 +84,78 @@ class LedgerViewController: NSViewController {
                                byExtendingSelection: false)
     saveTransactionButton.enabled = true
   }
+
+  func createTransactionFromRow(row: Int) -> Transaction? {
+    // TODO: Validate cells.
+
+    guard let account = getAccountAtRow(row) else {
+      print("Could not get account from row")
+      return nil
+    }
+    print("Found account with ID = \(account.id)")
+
+    guard let payee = getPayeeAtRow(row) else {
+      print("Could not get payee from row")
+      return nil
+    }
+    print("Found payee with ID = \(payee.id); isNew = \(payee.isNew)")
+
+    // XXX NEXT:
+    // 1) parse date correctly
+    // 2) parse categories correctly
+    // 3) store categories in backend
+
+    var transaction = Transaction(
+        id: NSUUID().UUIDString,
+        account: account,
+        date: NSDate(timeIntervalSince1970: 0),  // TODO
+        payee: payee,
+        memo: nil,
+        categories: [])  // TODO
+
+    model.transaction {
+      if account.isNew {
+        print("Adding new account with ID = \(account.id)")
+        try self.model.addAccount(account)
+      }
+      if payee.isNew {
+        print("Adding new payee with ID = \(payee.id)")
+        try self.model.addPayee(payee)
+      }
+      try self.model.addTransaction(transaction)
+    }
+    transaction.account.isNew = false
+    // TODO: Make Payee a class so that SQLiteModel.addPayee can set this.
+    transaction.payee.isNew = false
+
+    return transaction
+  }
+
+  @IBAction func saveTransactionClicked(sender: AnyObject) {
+    saveTransactionButton.enabled = false
+
+    let row = tableView.selectedRow
+    // TODO: Stop edits on any text fields open for edit.
+    // TODO: Deselect row.
+    // TODO: Set text fields to not be editable.
+
+    guard let cell = getTableCellAtRow(row, column: 0) else {
+      print("Could not get cell")
+      return
+    }
+
+    if let transaction = cell.objectValue as? Transaction {
+      // TODO: Edit existing transaction.
+      print("Edit transation: \(transaction)")
+    } else {
+      if let transaction = createTransactionFromRow(row) {
+        cell.objectValue = transaction as? AnyObject
+      }
+    }
+
+    transactionBeingEdited = false
+    newTransactionButton.enabled = true
+  }
 }
 
 extension LedgerViewController: NSTableViewDataSource {

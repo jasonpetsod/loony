@@ -794,6 +794,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="saveTransactionClicked:" target="oZl-5M-A6Z" id="yaQ-rW-W0B"/>
+                                </connections>
                             </button>
                         </subviews>
                         <constraints>
@@ -809,7 +812,7 @@
                     </view>
                     <connections>
                         <outlet property="newTransactionButton" destination="rHR-Qm-3JR" id="MTf-kq-ezP"/>
-                        <outlet property="saveTransactionButton" destination="wS6-Td-pvV" id="fne-IN-jS2"/>
+                        <outlet property="saveTransactionButton" destination="wS6-Td-pvV" id="hzB-XJ-zdq"/>
                         <outlet property="tableView" destination="aoh-LI-cpL" id="c4u-BR-pKR"/>
                     </connections>
                 </viewController>
