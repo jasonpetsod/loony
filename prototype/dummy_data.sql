@@ -5,14 +5,15 @@ DELETE FROM categories;
 DELETE FROM payees;
 DELETE FROM accounts;
 
-INSERT INTO accounts VALUES ('a-a', 'Account A');
-INSERT INTO accounts VALUES ('a-b', 'Account B');
+INSERT INTO accounts VALUES ('a-a', 'Chase Sapphire');
+INSERT INTO accounts VALUES ('a-b', 'Ally Checking');
 
-INSERT INTO payees VALUES ('p-a', 'Payee A');
-INSERT INTO payees VALUES ('p-b', 'Payee B');
+INSERT INTO payees VALUES ('p-a', 'Mu Ramen');
+INSERT INTO payees VALUES ('p-b', 'Google Inc.');
 
-INSERT INTO categories (id, name) VALUES ('c-a', 'Category A');
-INSERT INTO categories (id, name) VALUES ('c-b', 'Category B');
+INSERT INTO categories (id, name) VALUES ('c-a', 'Restaurants');
+INSERT INTO categories (id, name) VALUES ('c-b', 'Reimbursements');
+INSERT INTO categories (id, name) VALUES ('c-c', 'Income');
 
 
 INSERT INTO transactions (id, account_id, date, payee_id)
@@ -30,4 +31,4 @@ INSERT INTO transaction_categories (transaction_id, category_id, amount_cents)
 INSERT INTO transactions (id, account_id, date, payee_id)
     VALUES ('t-3', 'a-b', 1451797200, 'p-b');  -- 2016-01-03
 INSERT INTO transaction_categories (transaction_id, category_id, amount_cents)
-    VALUES ('t-3', 'c-b', 10000);
+    VALUES ('t-3', 'c-c', 10000);
