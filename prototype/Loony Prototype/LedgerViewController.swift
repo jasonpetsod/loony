@@ -12,9 +12,16 @@ class LedgerViewController: NSViewController {
   var transactionBeingEdited = false
   let newTransactionDelegate = NewTransactionDelegate()
 
+  let dateFormatter: NSDateFormatter
+
   init?(_ coder: NSCoder? = nil) {
     // TODO: Handle exception.
     model = try! SQLiteModel()
+
+    dateFormatter = NSDateFormatter()
+    dateFormatter.dateStyle = .MediumStyle
+    dateFormatter.timeStyle = .NoStyle
+    dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
 
     if coder != nil {
       super.init(coder: coder!)
@@ -100,6 +107,16 @@ class LedgerViewController: NSViewController {
     }
     print("Found payee with ID = \(payee.id); isNew = \(payee.isNew)")
 
+    guard let dateCell = getTableCellAtRow(row, column: 1) else {
+      print("Could not get date cell")
+      return nil
+    }
+    let dateString = dateCell.textField!.stringValue
+    guard let date = dateFormatter.dateFromString(dateString) else {
+      print("Could not parse date: \(dateString)")
+      return nil
+    }
+
     // XXX NEXT:
     // 1) parse date correctly
     // 2) parse categories correctly
@@ -108,7 +125,7 @@ class LedgerViewController: NSViewController {
     var transaction = Transaction(
         id: NSUUID().UUIDString,
         account: account,
-        date: NSDate(timeIntervalSince1970: 0),  // TODO
+        date: date,
         payee: payee,
         memo: nil,
         categories: [])  // TODO
@@ -151,6 +168,7 @@ class LedgerViewController: NSViewController {
       if let transaction = createTransactionFromRow(row) {
         cell.objectValue = transaction as? AnyObject
       }
+      // TODO: Handle failure: keep editing new transaction.
     }
 
     transactionBeingEdited = false
