@@ -139,6 +139,7 @@ class LedgerViewController: NSViewController {
     if let inflowCents = parseStringAsCents(
         getStringValueAtRow(row, column: 5)) {
       // TODO: Don't allow both outflowCents and inflowCents to be specified.
+      // TODO: Only allow positive outflowCents and inflowCents.
       amountCents = inflowCents
     }
     let txCategory = TransactionCategory(category: category,
@@ -194,7 +195,7 @@ class LedgerViewController: NSViewController {
         transactions.append(transaction)
         tableView.reloadData()
       }
-
+      // TODO: Clear fields' placeholder text.
       // TODO: Handle failure: keep editing new transaction.
     }
 
