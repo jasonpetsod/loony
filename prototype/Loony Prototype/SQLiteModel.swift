@@ -41,13 +41,14 @@ class SQLiteModel {
     }
   }
 
-  func transaction(block: () throws -> Void) {
+  func transaction(block: () throws -> Void) throws {
     do {
       try db.savepoint {
         try block()
       }
     } catch {
       print("Failed to execute transaction: \(error)")
+      throw error
     }
   }
 

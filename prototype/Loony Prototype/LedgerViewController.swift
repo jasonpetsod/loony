@@ -122,16 +122,21 @@ class LedgerViewController: NSViewController {
         memo: nil,
         categories: [])  // TODO
 
-    model.transaction {
-      if account.isNew {
-        print("Adding new account with ID = \(account.id)")
-        try self.model.addAccount(account)
+    do {
+      try model.transaction {
+        if account.isNew {
+          print("Adding new account with ID = \(account.id)")
+          try self.model.addAccount(account)
+        }
+        if payee.isNew {
+          print("Adding new payee with ID = \(payee.id)")
+          try self.model.addPayee(payee)
+        }
+        try self.model.addTransaction(transaction)
       }
-      if payee.isNew {
-        print("Adding new payee with ID = \(payee.id)")
-        try self.model.addPayee(payee)
-      }
-      try self.model.addTransaction(transaction)
+    } catch {
+      print("Could not add transaction: \(error)")
+      return nil
     }
     transaction.account.isNew = false
     // TODO: Make Payee a class so that SQLiteModel.addPayee can set this.
