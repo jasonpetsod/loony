@@ -109,7 +109,7 @@ class SQLiteModel {
       query = query.filter(name == searchName)
     }
     if let row = db.pluck(query) {
-      return Category.new(row[name], parentId: nil, notes: nil)
+      return Category(id: row[id], name: row[name], parentId: nil, notes: nil)
     } else {
       return nil
     }
