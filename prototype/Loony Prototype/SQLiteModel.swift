@@ -43,7 +43,7 @@ class SQLiteModel {
 
   func transaction(block: () throws -> Void) {
     do {
-      try db.transaction {
+      try db.savepoint {
         try block()
       }
     } catch {
