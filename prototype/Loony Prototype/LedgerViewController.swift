@@ -191,7 +191,10 @@ class LedgerViewController: NSViewController {
     } else {
       if let transaction = createTransactionFromRow(row) {
         cell.objectValue = transaction as? AnyObject
+        transactions.append(transaction)
+        tableView.reloadData()
       }
+
       // TODO: Handle failure: keep editing new transaction.
     }
 
