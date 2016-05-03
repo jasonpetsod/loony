@@ -229,18 +229,16 @@ class NewTransactionDelegate: NSObject {
 extension NewTransactionDelegate: NSTextFieldDelegate {
   func control(control: NSControl,
                textShouldEndEditing fieldEditor: NSText) -> Bool {
-    print("new contents of \(control): \(fieldEditor.string)")
     guard let cell = control.superview as? NSTableCellView else {
       return false
     }
     guard let row = cell.superview as? NSTableRowView else {
       return false
     }
-    guard let table = row.superview as? NSTableView else {
+    guard let _ = row.superview as? NSTableView else {
       return false
     }
-    print("Hello from NewTransactionDelegate!")
-    return true;
+    return true
   }
 }
 
