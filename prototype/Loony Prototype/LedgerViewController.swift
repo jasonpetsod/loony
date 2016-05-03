@@ -44,21 +44,16 @@ class LedgerViewController: NSViewController {
     tableView.setDataSource(self)
   }
 
-  func getTableCellAtRow(row: Int, column: Int) -> NSTableCellView? {
+  // MARK: Table accessors
+
+  func getTableCellAtRow(row: Int, column: Int) -> NSTableCellView {
     let view = tableView.viewAtColumn(
         column, row: tableView.selectedRow, makeIfNecessary: false)
-    if let cell = view as? NSTableCellView {
-      return cell
-    } else {
-      return nil
-    }
+    return view as! NSTableCellView
   }
 
   func getAccountAtRow(row: Int) -> Account? {
-    guard let accountCell = getTableCellAtRow(row, column: 0) else {
-      print("Could not get account cell")
-      return nil
-    }
+    let accountCell = getTableCellAtRow(row, column: 0)
     let accountName = accountCell.textField!.stringValue
     do {
       return try model.getAccount(nil, name: accountName)
@@ -68,10 +63,7 @@ class LedgerViewController: NSViewController {
   }
 
   func getPayeeAtRow(row: Int) -> Payee? {
-    guard let payeeCell = getTableCellAtRow(row, column: 2) else {
-      print("Could not get payee cell")
-      return nil
-    }
+    let payeeCell = getTableCellAtRow(row, column: 2)
     let payeeName = payeeCell.textField!.stringValue
     do {
       return try model.getPayee(id: nil, name: payeeName)
@@ -79,6 +71,8 @@ class LedgerViewController: NSViewController {
       return Payee(id: NSUUID().UUIDString, name: payeeName, isNew: true)
     }
   }
+
+  // MARK: Create transaction
   
   @IBAction func newTransactionClicked(sender: AnyObject) {
     newTransactionButton.enabled = false
@@ -107,10 +101,7 @@ class LedgerViewController: NSViewController {
     }
     print("Found payee with ID = \(payee.id); isNew = \(payee.isNew)")
 
-    guard let dateCell = getTableCellAtRow(row, column: 1) else {
-      print("Could not get date cell")
-      return nil
-    }
+    let dateCell = getTableCellAtRow(row, column: 1)
     let dateString = dateCell.textField!.stringValue
     guard let date = dateFormatter.dateFromString(dateString) else {
       print("Could not parse date: \(dateString)")
@@ -156,10 +147,7 @@ class LedgerViewController: NSViewController {
     // TODO: Deselect row.
     // TODO: Set text fields to not be editable.
 
-    guard let cell = getTableCellAtRow(row, column: 0) else {
-      print("Could not get cell")
-      return
-    }
+    let cell = getTableCellAtRow(row, column: 0)
 
     if let transaction = cell.objectValue as? Transaction {
       // TODO: Edit existing transaction.
