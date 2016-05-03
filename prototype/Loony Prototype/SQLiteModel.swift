@@ -77,6 +77,8 @@ class SQLiteModel {
     }
   }
 
+  // MARK: Categories
+
   func addCategory(category: Category) throws {
     let insert = categoriesTable.insert(
         idCol <- category.id,
@@ -89,6 +91,26 @@ class SQLiteModel {
     } catch {
       print("Failed to insert category: \(error)")
       throw SQLiteModelError.InsertFailure
+    }
+  }
+
+  func getCategory(id searchId: String? = nil,
+                   name searchName: String? = nil) -> Category? {
+    let categories = Table("categories")
+    let id = Expression<String>("id")
+    let name = Expression<String>("name")
+
+    var query = categories.select(id, name)
+    if let searchId = searchId {
+      query = query.filter(id == searchId)
+    }
+    if let searchName = searchName {
+      query = query.filter(name == searchName)
+    }
+    if let row = db.pluck(query) {
+      return Category.new(row[name], parentId: nil, notes: nil)
+    } else {
+      return nil
     }
   }
 
