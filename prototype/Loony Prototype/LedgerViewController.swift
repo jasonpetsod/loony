@@ -66,6 +66,16 @@ class LedgerViewController: NSViewController {
     }
   }
 
+  func getCategoryAtRow(row: Int) -> Category {
+    let name = getStringValueAtRow(row, column: 3)
+    if let category = model.getCategory(name: name) {
+      print("Found category = \(category); id = \(category.id)")
+      return category
+    } else {
+      return Category.new(name, parentId: nil, notes: nil)
+    }
+  }
+
   func getPayeeAtRow(row: Int) -> Payee? {
     let payeeName = getStringValueAtRow(row, column: 2)
     do {
@@ -73,6 +83,16 @@ class LedgerViewController: NSViewController {
     } catch {
       return Payee(id: NSUUID().UUIDString, name: payeeName, isNew: true)
     }
+  }
+
+  func parseStringAsCents(s: String) -> Int? {
+    // TODO: Do something less stupid.
+    let centsString = s.stringByReplacingOccurrencesOfString(
+        ".", withString: "")
+    guard let cents = Int(centsString) else {
+      return nil
+    }
+    return cents
   }
 
   // MARK: Create transaction
@@ -110,9 +130,19 @@ class LedgerViewController: NSViewController {
       return nil
     }
 
-    // XXX NEXT:
-    // 2) parse categories correctly
-    // 3) store categories in backend
+    let category = getCategoryAtRow(row)
+    var amountCents = 0
+    if let outflowCents = parseStringAsCents(
+        getStringValueAtRow(row, column: 4)) {
+      amountCents = -1 * outflowCents
+    }
+    if let inflowCents = parseStringAsCents(
+        getStringValueAtRow(row, column: 5)) {
+      // TODO: Don't allow both outflowCents and inflowCents to be specified.
+      amountCents = inflowCents
+    }
+    let txCategory = TransactionCategory(category: category,
+                                         amountCents: amountCents)
 
     var transaction = Transaction(
         id: NSUUID().UUIDString,
@@ -120,7 +150,7 @@ class LedgerViewController: NSViewController {
         date: date,
         payee: payee,
         memo: nil,
-        categories: [])  // TODO
+        categories: [txCategory])
 
     do {
       try model.transaction {
