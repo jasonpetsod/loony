@@ -217,17 +217,31 @@ class SQLiteModel {
     let payeeId = Expression<String>("payee_id")
     let memo = Expression<String?>("memo")
 
-    let insert = transactions.insert(
+    let transactionInsert = transactions.insert(
         id <- transaction.id,
         accountId <- transaction.account.id,
         date <- transaction.date.timeIntervalSince1970,
         payeeId <- transaction.payee.id,
         memo <- transaction.memo)
 
-    // TODO: Insert transaction categories.
+    let transactionCategories = Table("transaction_categories")
+    let transactionId = Expression<String>("transaction_id")
+    let categoryId = Expression<String>("category_id")
+    let amountCents = Expression<Int>("amount_cents")
+
+    // TODO: Support multiple transaction categories.
+    let txCategoryInsert = transactionCategories.insert(
+        transactionId <- transaction.id,
+        categoryId <- transaction.categories[0].category.id,
+        amountCents <- transaction.categories[0].amountCents)
 
     do {
-      try db.run(insert)
+      try db.savepoint {
+        print("transactionInsert = \(transactionInsert)")
+        try self.db.run(transactionInsert)
+        print("txCategoryInsert = \(txCategoryInsert)")
+        try self.db.run(txCategoryInsert)
+      }
     } catch {
       print("Failed to insert transaction: \(error)")
       throw SQLiteModelError.InsertFailure
