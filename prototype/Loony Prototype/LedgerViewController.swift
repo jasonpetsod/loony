@@ -52,9 +52,13 @@ class LedgerViewController: NSViewController {
     return view as! NSTableCellView
   }
 
+  func getStringValueAtRow(row: Int, column: Int) -> String {
+    let cell = getTableCellAtRow(row, column: column)
+    return cell.textField!.stringValue
+  }
+
   func getAccountAtRow(row: Int) -> Account? {
-    let accountCell = getTableCellAtRow(row, column: 0)
-    let accountName = accountCell.textField!.stringValue
+    let accountName = getStringValueAtRow(row, column: 0)
     do {
       return try model.getAccount(nil, name: accountName)
     } catch {
@@ -63,8 +67,7 @@ class LedgerViewController: NSViewController {
   }
 
   func getPayeeAtRow(row: Int) -> Payee? {
-    let payeeCell = getTableCellAtRow(row, column: 2)
-    let payeeName = payeeCell.textField!.stringValue
+    let payeeName = getStringValueAtRow(row, column: 2)
     do {
       return try model.getPayee(id: nil, name: payeeName)
     } catch {
@@ -101,15 +104,13 @@ class LedgerViewController: NSViewController {
     }
     print("Found payee with ID = \(payee.id); isNew = \(payee.isNew)")
 
-    let dateCell = getTableCellAtRow(row, column: 1)
-    let dateString = dateCell.textField!.stringValue
+    let dateString = getStringValueAtRow(row, column: 1)
     guard let date = dateFormatter.dateFromString(dateString) else {
       print("Could not parse date: \(dateString)")
       return nil
     }
 
     // XXX NEXT:
-    // 1) parse date correctly
     // 2) parse categories correctly
     // 3) store categories in backend
 
