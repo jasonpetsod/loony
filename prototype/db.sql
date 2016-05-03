@@ -43,7 +43,8 @@ CREATE TABLE IF NOT EXISTS transaction_categories (
     category_id TEXT NOT NULL,
     income_month TEXT, -- TODO: hmmmmmmmm
     amount_cents INTEGER NOT NULL,
-    FOREIGN KEY (transaction_id) REFERENCES transactions (id),
+    FOREIGN KEY (transaction_id) REFERENCES transactions (id)
+        DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (category_id) REFERENCES categories (id)
 );
 
