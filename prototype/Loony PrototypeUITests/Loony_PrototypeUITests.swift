@@ -8,6 +8,7 @@
 
 import XCTest
 
+@available(OSX 10.11, *)
 class Loony_PrototypeUITests: XCTestCase {
         
     override func setUp() {

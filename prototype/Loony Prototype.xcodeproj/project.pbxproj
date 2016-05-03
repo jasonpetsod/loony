@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		961C317A1CD8D2B400DF7EA9 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9670DD151CD0435F00DBAE19 /* SQLite.framework */; };
+		961C317B1CD8D2B400DF7EA9 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9670DD151CD0435F00DBAE19 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9670DCFC1CC7012600DBAE19 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9670DCFB1CC7012600DBAE19 /* Transaction.swift */; };
-		9670DD1E1CD0436C00DBAE19 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9670DD151CD0435F00DBAE19 /* SQLite.framework */; };
 		9670DD201CD425FA00DBAE19 /* Payee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9670DD1F1CD425F900DBAE19 /* Payee.swift */; };
 		96DEC8CB1CC069670025C611 /* SQLiteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DEC8CA1CC069670025C611 /* SQLiteModel.swift */; };
 		96DEC8ED1CC120460025C611 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DEC8EC1CC120460025C611 /* Account.swift */; };
@@ -24,6 +25,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		961C317C1CD8D2B400DF7EA9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9670DD061CD0435E00DBAE19 /* SQLite.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = EE247B3B1C3F3ED000AE3E12;
+			remoteInfo = "SQLite Mac";
+		};
 		9670DD101CD0435F00DBAE19 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9670DD061CD0435E00DBAE19 /* SQLite.xcodeproj */;
@@ -90,6 +98,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		961C317E1CD8D2B400DF7EA9 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				961C317B1CD8D2B400DF7EA9 /* SQLite.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		96DEC8CC1CC06CC50025C611 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -130,7 +149,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9670DD1E1CD0436C00DBAE19 /* SQLite.framework in Frameworks */,
+				961C317A1CD8D2B400DF7EA9 /* SQLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,10 +254,12 @@
 				96E4B4871CBDC85500307106 /* Frameworks */,
 				96E4B4881CBDC85500307106 /* Resources */,
 				96DEC8CC1CC06CC50025C611 /* CopyFiles */,
+				961C317E1CD8D2B400DF7EA9 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				961C317D1CD8D2B400DF7EA9 /* PBXTargetDependency */,
 			);
 			name = "Loony Prototype";
 			productName = "Loony Prototype";
@@ -449,6 +470,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		961C317D1CD8D2B400DF7EA9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SQLite Mac";
+			targetProxy = 961C317C1CD8D2B400DF7EA9 /* PBXContainerItemProxy */;
+		};
 		96E4B49D1CBDC85500307106 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 96E4B4891CBDC85500307106 /* Loony Prototype */;
@@ -558,6 +584,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Loony Prototype/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -575,6 +602,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Loony Prototype/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
