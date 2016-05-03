@@ -1,8 +1,7 @@
 import Foundation
 
 struct TransactionCategory {
-  let categoryId: String
-  let categoryName: String
+  let category: Category
   let amountCents: Int
 
   var amount: Double {
@@ -53,7 +52,7 @@ struct Transaction {
       if categories.count == 0 {
         return "???"
       } else if categories.count == 1 {
-        return categories[0].categoryName
+        return categories[0].category.name
       } else {
         return "Multiple Categories"
       }

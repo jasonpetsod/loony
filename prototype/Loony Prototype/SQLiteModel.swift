@@ -174,14 +174,19 @@ class SQLiteModel {
     for row in try! db.prepare(query) {
       let id = row[idCol]
 
-      let category = TransactionCategory(
-          categoryId: row[transactionCategoriesTable[categoryIdCol]],
-          categoryName: row[categoriesTable[nameCol]],
+      let category = Category(
+          id: row[transactionCategoriesTable[categoryIdCol]],
+          name: row[categoriesTable[nameCol]],
+          parentId: nil,
+          notes: nil)
+
+      let transactionCategory = TransactionCategory(
+          category: category,
           amountCents: row[amountCentsCol])
 
       if var transaction = transactions[id] {
         // Add category to the transaction.
-        transaction.categories.append(category)
+        transaction.categories.append(transactionCategory)
         transactions[id] = transaction
       } else {
         // Create a new transaction.
@@ -193,7 +198,7 @@ class SQLiteModel {
                                       date: date,
                                       payee: payee,
                                       memo: nil,
-                                      categories: [category])
+                                      categories: [transactionCategory])
         transactions[id] = transaction
       }
     }
