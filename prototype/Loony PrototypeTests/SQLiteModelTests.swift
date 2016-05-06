@@ -40,6 +40,8 @@ class SQLiteModelTests: XCTestCase {
     // TODO: Delete tempDir.
   }
 
+  // MARK: Account tests
+
   func testAddAccount() throws {
     let account = Account(id: "x", name: "Account", isNew: false)
     try model.addAccount(account)
@@ -52,5 +54,73 @@ class SQLiteModelTests: XCTestCase {
     XCTAssertEqual(1, results.count)
     XCTAssertEqual("x", results[0][id])
     XCTAssertEqual("Account", results[0][name])
+  }
+
+  func insertAccountRecord(id: String, name: String) throws {
+    let stmt = try model.db.prepare(
+        "INSERT INTO accounts (id, name) VALUES (?, ?);")
+    try stmt.run(id, name)
+  }
+
+  func testGetAccount_ByID() throws {
+    try insertAccountRecord("a", name: "Foo")
+
+    let account = model.getAccount(id: "a")
+    XCTAssertNotNil(account)
+    XCTAssertEqual("a", account!.id)
+    XCTAssertEqual("Foo", account!.name)
+  }
+
+  func testGetAccount_ByID_Missing() throws {
+    try insertAccountRecord("a", name: "Foo")
+
+    let account = model.getAccount(id: "b")
+    XCTAssertNil(account)
+  }
+
+  func testGetAccount_ByName() throws {
+    try insertAccountRecord("a", name: "Foo")
+
+    let account = model.getAccount(id: nil, name: "Foo")
+    XCTAssertNotNil(account)
+    XCTAssertEqual("a", account!.id)
+    XCTAssertEqual("Foo", account!.name)
+  }
+
+  func testGetAccount_ByName_Missing() throws {
+    try insertAccountRecord("a", name: "Foo")
+
+    let account = model.getAccount(id: nil, name: "Bar")
+    XCTAssertNil(account)
+  }
+
+  func testGetAccount_ByIDAndName() throws {
+    try insertAccountRecord("a", name: "Foo")
+
+    let account = model.getAccount(id: "a", name: "Foo")
+    XCTAssertNotNil(account)
+    XCTAssertEqual("a", account!.id)
+    XCTAssertEqual("Foo", account!.name)
+  }
+  
+  func testGetAccount_ByIDAndName_NeitherMatches() throws {
+    try insertAccountRecord("a", name: "Foo")
+
+    let account = model.getAccount(id: "x", name: "Bar")
+    XCTAssertNil(account)
+  }
+
+  func testGetAccount_ByIDAndName_IDDoesNotMatch() throws {
+    try insertAccountRecord("a", name: "Foo")
+
+    let account = model.getAccount(id: "x", name: "Foo")
+    XCTAssertNil(account)
+  }
+
+  func testGetAccount_ByIDAndName_NameDoesNotMatch() throws {
+    try insertAccountRecord("a", name: "Foo")
+
+    let account = model.getAccount(id: "a", name: "Bar")
+    XCTAssertNil(account)
   }
 }
