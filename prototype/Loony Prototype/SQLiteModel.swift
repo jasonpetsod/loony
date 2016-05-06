@@ -5,8 +5,7 @@ let defaultDatabasePath = "/Users/jason/dev/loony/prototype/loony.db"
 
 enum SQLiteModelError: ErrorType {
   case AccountNotFound
-  case ConnectionFailure
-  case EnableForeignKeysFailure
+  case ConnectionFailure(message: String)
   case InsertFailure
   case PayeeNotFound
 }
@@ -33,14 +32,10 @@ class SQLiteModel {
   init(databasePath: String = defaultDatabasePath) throws {
     do {
       db = try Connection(databasePath)
-    } catch {
-      throw SQLiteModelError.ConnectionFailure
-    }
-
-    do {
       try db.execute("PRAGMA foreign_keys = ON;")
-    } catch {
-      throw SQLiteModelError.EnableForeignKeysFailure
+    } catch Result.Error(let error) {
+      print("Could not connect to \(databasePath): \(error.message)")
+      throw SQLiteModelError.ConnectionFailure(message: error.message)
     }
   }
 

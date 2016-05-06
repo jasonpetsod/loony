@@ -14,24 +14,19 @@ class LedgerViewController: NSViewController {
 
   let dateFormatter: NSDateFormatter
 
-  init?(_ coder: NSCoder? = nil) {
-    // TODO: Handle exception.
-    model = try! SQLiteModel()
+  required init?(coder: NSCoder) {
+    do {
+      model = try SQLiteModel()
+    } catch {
+      return nil
+    }
 
     dateFormatter = NSDateFormatter()
     dateFormatter.dateStyle = .MediumStyle
     dateFormatter.timeStyle = .NoStyle
     dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
 
-    if coder != nil {
-      super.init(coder: coder!)
-    } else {
-      super.init(nibName: nil, bundle: nil)
-    }
-  }
-
-  required convenience init?(coder: NSCoder) {
-    self.init(coder)
+    super.init(coder: coder)
   }
 
   override func viewDidLoad() {

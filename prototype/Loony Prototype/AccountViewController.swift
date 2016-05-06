@@ -5,19 +5,14 @@ class AccountViewController: NSViewController {
 
   @IBOutlet weak var nameField: NSTextField!
 
-  init?(_ coder: NSCoder? = nil) {
-    // TODO: Handle exception.
-    model = try! SQLiteModel()
-
-    if coder != nil {
-      super.init(coder: coder!)
-    } else {
-      super.init(nibName: nil, bundle: nil)
+  required init?(coder: NSCoder) {
+    do {
+      model = try SQLiteModel()
+    } catch {
+      return nil
     }
-  }
 
-  required convenience init?(coder: NSCoder) {
-    self.init(coder)
+    super.init(coder: coder)
   }
 
   @IBAction func addAccountClicked(sender: AnyObject) {
