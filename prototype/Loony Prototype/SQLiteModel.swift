@@ -7,7 +7,7 @@ enum SQLiteModelError: ErrorType {
   case AccountNotFound(accountId: String)
   case ConnectionFailure(message: String)
   case InsertFailure
-  case PayeeNotFound
+  case PayeeNotFound(payeeId: String)
 }
 
 class SQLiteModel {
@@ -135,7 +135,7 @@ class SQLiteModel {
   }
 
   func getPayee(id searchId: String?,
-                name searchName: String? = nil) throws -> Payee {
+                name searchName: String? = nil) -> Payee? {
     let payees = Table("payees")
     let id = Expression<String>("id")
     let name = Expression<String>("name")
@@ -151,7 +151,7 @@ class SQLiteModel {
     if let result = db.pluck(query) {
       return Payee(id: result[id], name: result[name], isNew: false)
     } else {
-      throw SQLiteModelError.PayeeNotFound
+      return nil
     }
   }
 
@@ -191,10 +191,19 @@ class SQLiteModel {
         transactions[id] = transaction
       } else {
         // Create a new transaction.
+
+        // These should never happen unless foreign key constraints aren't met.
+        // TODO: Consider moving these queries into the join query above.
         guard let account = getAccount(row[accountIdCol]) else {
           throw SQLiteModelError.AccountNotFound(accountId: row[accountIdCol])
         }
-        let payee = try getPayee(id: row[payeeIdCol])
+        guard let payee = getPayee(id: row[payeeIdCol]) else {
+          throw SQLiteModelError.PayeeNotFound(payeeId: row[payeeIdCol])
+        }
+
+        // TODO: Don't recreate Account and Payee instances if they've already
+        // been seen.
+
         let date = NSDate(timeIntervalSince1970: row[dateCol])
         let transaction = Transaction(id: row[idCol],
                                       account: account,

@@ -71,11 +71,11 @@ class LedgerViewController: NSViewController {
     }
   }
 
-  func getPayeeAtRow(row: Int) -> Payee? {
+  func getPayeeAtRow(row: Int) -> Payee {
     let payeeName = getStringValueAtRow(row, column: 2)
-    do {
-      return try model.getPayee(id: nil, name: payeeName)
-    } catch {
+    if let payee = model.getPayee(id: nil, name: payeeName) {
+      return payee
+    } else {
       return Payee(id: NSUUID().UUIDString, name: payeeName, isNew: true)
     }
   }
@@ -110,10 +110,7 @@ class LedgerViewController: NSViewController {
     let account = getAccountAtRow(row)
     print("Found account with ID = \(account.id)")
 
-    guard let payee = getPayeeAtRow(row) else {
-      print("Could not get payee from row")
-      return nil
-    }
+    let payee = getPayeeAtRow(row)
     print("Found payee with ID = \(payee.id); isNew = \(payee.isNew)")
 
     let dateString = getStringValueAtRow(row, column: 1)
