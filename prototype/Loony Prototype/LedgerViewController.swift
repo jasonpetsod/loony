@@ -54,7 +54,7 @@ class LedgerViewController: NSViewController {
 
   func getAccountAtRow(row: Int) -> Account {
     let accountName = getStringValueAtRow(row, column: 0)
-    if let account = model.getAccount(nil, name: accountName) {
+    if let account = model.getAccount(id: nil, name: accountName) {
       return account
     } else {
       return Account.newWithName(accountName)
