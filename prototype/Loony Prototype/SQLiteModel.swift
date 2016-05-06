@@ -13,22 +13,6 @@ enum SQLiteModelError: ErrorType {
 class SQLiteModel {
   let db: Connection
 
-  let accountsTable = Table("accounts")
-  let categoriesTable = Table("categories")
-  let transactionCategoriesTable = Table("transaction_categories")
-  let transactionsTable = Table("transactions")
-
-  let accountIdCol = Expression<String>("account_id")
-  let amountCentsCol = Expression<Int>("amount_cents")
-  let categoryIdCol = Expression<String>("category_id")
-  let dateCol = Expression<NSTimeInterval>("date")
-  let idCol = Expression<String>("id")
-  let nameCol = Expression<String>("name")
-  let notesCol = Expression<String?>("notes")
-  let parentIdCol = Expression<String?>("parent_id")
-  let payeeIdCol = Expression<String>("payee_id")
-  let transactionIdCol = Expression<String>("transaction_id")
-
   init(databasePath: String = defaultDatabasePath) throws {
     do {
       db = try Connection(databasePath)
@@ -53,8 +37,11 @@ class SQLiteModel {
   // MARK: Accounts
 
   func addAccount(account: Account) throws {
-    let insert = accountsTable.insert(
-        idCol <- account.id, nameCol <- account.name)
+    let accounts = Table("accounts")
+    let id = Expression<String>("id")
+    let name = Expression<String>("name")
+
+    let insert = accounts.insert(id <- account.id, name <- account.name)
     do {
       try db.run(insert)
     } catch {
@@ -63,16 +50,21 @@ class SQLiteModel {
     }
   }
 
-  func getAccount(id: String?, name: String? = nil) -> Account? {
-    var query = accountsTable.select(idCol, nameCol)
-    if id != nil {
-      query = query.filter(idCol == id!)
+  func getAccount(id searchId: String?,
+                  name searchName: String? = nil) -> Account? {
+    let accounts = Table("accounts")
+    let id = Expression<String>("id")
+    let name = Expression<String>("name")
+
+    var query = accounts.select(id, name)
+    if let searchId = searchId {
+      query = query.filter(id == searchId)
     }
-    if name != nil {
-      query = query.filter(nameCol == name!)
+    if let searchName = searchName {
+      query = query.filter(name == searchName)
     }
     if let account = db.pluck(query) {
-      return Account(id: account[idCol], name: account[nameCol])
+      return Account(id: account[id], name: account[name])
     } else {
       return nil
     }
@@ -81,11 +73,17 @@ class SQLiteModel {
   // MARK: Categories
 
   func addCategory(category: Category) throws {
-    let insert = categoriesTable.insert(
-        idCol <- category.id,
-        nameCol <- category.name,
-        parentIdCol <- category.parentId,
-        notesCol <- category.notes)
+    let categories = Table("categories")
+    let id = Expression<String>("id")
+    let name = Expression<String>("name")
+    let parentId = Expression<String?>("parent_id")
+    let notes = Expression<String?>("notes")
+
+    let insert = categories.insert(
+        id <- category.id,
+        name <- category.name,
+        parentId <- category.parentId,
+        notes <- category.notes)
 
     do {
       try db.run(insert)
@@ -158,65 +156,79 @@ class SQLiteModel {
   // MARK: Transactions
 
   func getTransactions() throws -> [Transaction] {
-    let query = transactionsTable
-        .select(transactionsTable[idCol],
-                transactionsTable[accountIdCol],
-                transactionsTable[dateCol],
-                transactionsTable[payeeIdCol],
-                transactionCategoriesTable[categoryIdCol],
-                categoriesTable[nameCol],
-                transactionCategoriesTable[amountCentsCol])
-        .join(transactionCategoriesTable,
-              on: transactionIdCol == transactionsTable[idCol])
-        .join(categoriesTable,
-              on: categoryIdCol == categoriesTable[idCol]);
+    let transactions = Table("transactions")
 
-    var transactions = [String: Transaction]()
+    let id = Expression<String>("id")
+    let date = Expression<NSTimeInterval>("date")
+    let payeeId = Expression<String>("payee_id")
+    let categoryId = Expression<String>("category_id")
+    let accountId = Expression<String>("account_id")
+    let name = Expression<String>("name")
+    let amountCents = Expression<Int>("amount_cents")
+    let transactionId = Expression<String>("transaction_id")
+
+    let transactionCategories = Table("transaction_categories")
+    let categories = Table("categories")
+
+    let query = transactions
+        .select(transactions[id],
+                transactions[accountId],
+                transactions[date],
+                transactions[payeeId],
+                transactionCategories[categoryId],
+                categories[name],
+                transactionCategories[amountCents])
+        .join(transactionCategories,
+              on: transactionId == transactions[id])
+        .join(categories,
+              on: categoryId == categories[id]);
+
+    var result = [String: Transaction]()
     for row in try! db.prepare(query) {
-      let id = row[idCol]
+      let txId = row[id]
 
       let category = Category(
-          id: row[transactionCategoriesTable[categoryIdCol]],
-          name: row[categoriesTable[nameCol]],
+          id: row[transactionCategories[categoryId]],
+          name: row[categories[name]],
           parentId: nil,
           notes: nil)
 
       let transactionCategory = TransactionCategory(
           category: category,
-          amountCents: row[amountCentsCol])
+          amountCents: row[amountCents])
 
-      if var transaction = transactions[id] {
+      if var transaction = result[txId] {
         // Add category to the transaction.
         transaction.categories.append(transactionCategory)
-        transactions[id] = transaction
+        result[txId] = transaction
       } else {
         // Create a new transaction.
 
         // These should never happen unless foreign key constraints aren't met.
         // TODO: Consider moving these queries into the join query above.
-        guard let account = getAccount(row[accountIdCol]) else {
-          throw SQLiteModelError.AccountNotFound(accountId: row[accountIdCol])
+        guard let account = getAccount(id: row[accountId]) else {
+          throw SQLiteModelError.AccountNotFound(accountId: row[accountId])
         }
-        guard let payee = getPayee(id: row[payeeIdCol]) else {
-          throw SQLiteModelError.PayeeNotFound(payeeId: row[payeeIdCol])
+        guard let payee = getPayee(id: row[payeeId]) else {
+          throw SQLiteModelError.PayeeNotFound(payeeId: row[payeeId])
         }
 
         // TODO: Don't recreate Account and Payee instances if they've already
         // been seen.
 
-        let date = NSDate(timeIntervalSince1970: row[dateCol])
-        let transaction = Transaction(id: row[idCol],
+        let date = NSDate(timeIntervalSince1970: row[date])
+        let transaction = Transaction(id: txId,
                                       account: account,
                                       date: date,
                                       payee: payee,
                                       memo: nil,
                                       categories: [transactionCategory])
-        transactions[id] = transaction
+        result[txId] = transaction
       }
     }
 
     // TODO: Maybe sort result.
-    return Array(transactions.values)
+    return Array(result.values)
   }
 
   func addTransaction(transaction: Transaction) throws {
