@@ -19,6 +19,7 @@
 		96DFABE41CC468DE00036DDC /* BudgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DFABE31CC468DE00036DDC /* BudgetViewController.swift */; };
 		96DFABE61CC46A7D00036DDC /* LedgerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DFABE51CC46A7D00036DDC /* LedgerViewController.swift */; };
 		96E3ECCA1CDC4128001D67EA /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9670DD151CD0435F00DBAE19 /* SQLite.framework */; };
+		96E3ECCC1CDD623A001D67EA /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3ECCB1CDD623A001D67EA /* AccountTests.swift */; };
 		96E4B48E1CBDC85500307106 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E4B48D1CBDC85500307106 /* AppDelegate.swift */; };
 		96E4B4921CBDC85500307106 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96E4B4911CBDC85500307106 /* Assets.xcassets */; };
 		96E4B4951CBDC85500307106 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96E4B4931CBDC85500307106 /* Main.storyboard */; };
@@ -139,6 +140,7 @@
 		96DFABDB1CC4675600036DDC /* AccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		96DFABE31CC468DE00036DDC /* BudgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BudgetViewController.swift; sourceTree = "<group>"; };
 		96DFABE51CC46A7D00036DDC /* LedgerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LedgerViewController.swift; sourceTree = "<group>"; };
+		96E3ECCB1CDD623A001D67EA /* AccountTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
 		96E4B48A1CBDC85500307106 /* Loony Prototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Loony Prototype.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E4B48D1CBDC85500307106 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		96E4B4911CBDC85500307106 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 		96E4B49E1CBDC85500307106 /* Loony PrototypeTests */ = {
 			isa = PBXGroup;
 			children = (
+				96E3ECCB1CDD623A001D67EA /* AccountTests.swift */,
 				961C317F1CDC34BB00DF7EA9 /* SQLiteModelTests.swift */,
 				96E4B4A11CBDC85500307106 /* Info.plist */,
 			);
@@ -466,6 +469,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				961C31801CDC34BB00DF7EA9 /* SQLiteModelTests.swift in Sources */,
+				96E3ECCC1CDD623A001D67EA /* AccountTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

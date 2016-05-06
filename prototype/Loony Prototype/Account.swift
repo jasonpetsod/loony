@@ -17,3 +17,10 @@ class Account {
     return Account(id: NSUUID().UUIDString, name: name, isNew: true)
   }
 }
+
+extension Account: Equatable {
+}
+
+func ==(lhs: Account, rhs: Account) -> Bool {
+  return lhs.id == rhs.id && lhs.name == rhs.name
+}
