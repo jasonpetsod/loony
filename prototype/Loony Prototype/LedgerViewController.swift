@@ -52,11 +52,11 @@ class LedgerViewController: NSViewController {
     return cell.textField!.stringValue
   }
 
-  func getAccountAtRow(row: Int) -> Account? {
+  func getAccountAtRow(row: Int) -> Account {
     let accountName = getStringValueAtRow(row, column: 0)
-    do {
-      return try model.getAccount(nil, name: accountName)
-    } catch {
+    if let account = model.getAccount(nil, name: accountName) {
+      return account
+    } else {
       return Account.newWithName(accountName)
     }
   }
@@ -107,10 +107,7 @@ class LedgerViewController: NSViewController {
   func createTransactionFromRow(row: Int) -> Transaction? {
     // TODO: Validate cells.
 
-    guard let account = getAccountAtRow(row) else {
-      print("Could not get account from row")
-      return nil
-    }
+    let account = getAccountAtRow(row)
     print("Found account with ID = \(account.id)")
 
     guard let payee = getPayeeAtRow(row) else {

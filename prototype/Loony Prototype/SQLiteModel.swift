@@ -4,7 +4,7 @@ import SQLite
 let defaultDatabasePath = "/Users/jason/dev/loony/prototype/loony.db"
 
 enum SQLiteModelError: ErrorType {
-  case AccountNotFound
+  case AccountNotFound(accountId: String)
   case ConnectionFailure(message: String)
   case InsertFailure
   case PayeeNotFound
@@ -50,6 +50,8 @@ class SQLiteModel {
     }
   }
 
+  // MARK: Accounts
+
   func addAccount(account: Account) throws {
     let insert = accountsTable.insert(
         idCol <- account.id, nameCol <- account.name)
@@ -61,7 +63,7 @@ class SQLiteModel {
     }
   }
 
-  func getAccount(id: String?, name: String? = nil) throws -> Account {
+  func getAccount(id: String?, name: String? = nil) -> Account? {
     var query = accountsTable.select(idCol, nameCol)
     if id != nil {
       query = query.filter(idCol == id!)
@@ -72,7 +74,7 @@ class SQLiteModel {
     if let account = db.pluck(query) {
       return Account(id: account[idCol], name: account[nameCol])
     } else {
-      throw SQLiteModelError.AccountNotFound
+      return nil
     }
   }
 
@@ -189,7 +191,9 @@ class SQLiteModel {
         transactions[id] = transaction
       } else {
         // Create a new transaction.
-        let account = try getAccount(row[accountIdCol])
+        guard let account = getAccount(row[accountIdCol]) else {
+          throw SQLiteModelError.AccountNotFound(accountId: row[accountIdCol])
+        }
         let payee = try getPayee(id: row[payeeIdCol])
         let date = NSDate(timeIntervalSince1970: row[dateCol])
         let transaction = Transaction(id: row[idCol],
