@@ -1,3 +1,4 @@
+import SQLite
 import XCTest
 @testable import Loony_Prototype
 
@@ -37,5 +38,19 @@ class SQLiteModelTests: XCTestCase {
     super.tearDown()
 
     // TODO: Delete tempDir.
+  }
+
+  func testAddAccount() throws {
+    let account = Account(id: "x", name: "Account", isNew: false)
+    try model.addAccount(account)
+
+    let accounts = Table("Accounts")
+    let id = Expression<String>("id")
+    let name = Expression<String>("name")
+
+    let results = Array(try model.db.prepare(accounts))
+    XCTAssertEqual(1, results.count)
+    XCTAssertEqual("x", results[0][id])
+    XCTAssertEqual("Account", results[0][name])
   }
 }
