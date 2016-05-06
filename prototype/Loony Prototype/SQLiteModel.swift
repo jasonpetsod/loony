@@ -1,5 +1,8 @@
 import SQLite
 
+// TODO: Move this to the Application Support directory.
+let defaultDatabasePath = "/Users/jason/dev/loony/prototype/loony.db"
+
 enum SQLiteModelError: ErrorType {
   case AccountNotFound
   case ConnectionFailure
@@ -27,9 +30,9 @@ class SQLiteModel {
   let payeeIdCol = Expression<String>("payee_id")
   let transactionIdCol = Expression<String>("transaction_id")
 
-  init() throws {
+  init(databasePath: String = defaultDatabasePath) throws {
     do {
-      db = try Connection("/Users/jason/dev/loony/prototype/loony.db")
+      db = try Connection(databasePath)
     } catch {
       throw SQLiteModelError.ConnectionFailure
     }
