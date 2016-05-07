@@ -14,7 +14,6 @@ class SQLiteModelTests: XCTestCase {
         tempDir as String, withIntermediateDirectories: true, attributes: nil)
 
     let dbPath = tempDir.stringByAppendingPathComponent("test.sqlite3")
-    print("database path = \(dbPath)")
     model = try SQLiteModel(databasePath: dbPath)
 
     // TODO: Include db.sql as a test dependency.
@@ -40,6 +39,43 @@ class SQLiteModelTests: XCTestCase {
     // TODO: Delete tempDir.
   }
 
+  // MARK: Fake database record helpers
+
+  func insertAccountRecord(id: String, name: String) throws {
+    let stmt = try model.db.prepare(
+        "INSERT INTO accounts (id, name) VALUES (?, ?);")
+    try stmt.run(id, name)
+  }
+ 
+  func insertPayeeWithID(id: String, name: String) throws {
+    let stmt = try model.db.prepare(
+        "INSERT INTO payees (id, name) VALUES (?, ?);")
+    try stmt.run(id, name)
+  }
+
+  func insertCategoryWithID(id: String, name: String) throws {
+    let stmt = try model.db.prepare(
+        "INSERT INTO categories (id, name) VALUES (?, ?);")
+    try stmt.run(id, name)
+  }
+
+  func insertTransactionWithID(id: String, accountID: String, date: Int,
+                               payeeID: String) throws {
+    let stmt = try model.db.prepare(
+        "INSERT INTO transactions (id, account_id, date, payee_id) " +
+        "VALUES (?, ?, ?, ?);")
+    try stmt.run(id, accountID, date, payeeID)
+  }
+
+  func insertTransactionCategoryWithTransactionID(
+      txID: String, categoryID: String, amountCents: Int) throws {
+    let stmt = try model.db.prepare(
+        "INSERT INTO transaction_categories " +
+        "(transaction_id, category_id, amount_cents) " +
+        "VALUES (?, ?, ?);")
+    try stmt.run(txID, categoryID, amountCents)
+  }
+
   // MARK: Account tests
 
   func testAddAccount() throws {
@@ -54,12 +90,6 @@ class SQLiteModelTests: XCTestCase {
     XCTAssertEqual(1, results.count)
     XCTAssertEqual("x", results[0][id])
     XCTAssertEqual("Account", results[0][name])
-  }
-
-  func insertAccountRecord(id: String, name: String) throws {
-    let stmt = try model.db.prepare(
-        "INSERT INTO accounts (id, name) VALUES (?, ?);")
-    try stmt.run(id, name)
   }
 
   func testGetAccount_ByID() throws {
