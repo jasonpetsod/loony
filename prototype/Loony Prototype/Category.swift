@@ -23,3 +23,14 @@ class Category {
                     notes: notes)
   }
 }
+
+extension Category: Equatable {
+}
+
+func ==(lhs: Category, rhs: Category) -> Bool {
+  return (lhs.id == rhs.id &&
+          lhs.name == rhs.name &&
+          lhs.parentId == rhs.parentId &&
+          lhs.notes == rhs.notes &&
+          lhs.hidden == rhs.hidden)
+}

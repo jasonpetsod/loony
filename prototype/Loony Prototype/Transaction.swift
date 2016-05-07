@@ -11,6 +11,13 @@ struct TransactionCategory {
   }
 }
 
+extension TransactionCategory: Equatable {
+}
+
+func ==(lhs: TransactionCategory, rhs: TransactionCategory) -> Bool {
+  return lhs.category == rhs.category && lhs.amountCents == rhs.amountCents
+}
+
 struct Transaction {
   let id: String
   let account: Account
@@ -67,4 +74,18 @@ struct Transaction {
       return formatter.stringFromDate(date)
     }
   }
+}
+
+extension Transaction: Equatable {
+}
+
+func ==(lhs: Transaction, rhs: Transaction) -> Bool {
+  return (lhs.id == rhs.id &&
+          lhs.account == rhs.account &&
+          lhs.date == rhs.date &&
+          lhs.payee == rhs.payee &&
+          lhs.memo == rhs.memo &&
+          lhs.cleared == rhs.cleared &&
+          lhs.reconciled == rhs.reconciled &&
+          lhs.categories == rhs.categories)
 }
