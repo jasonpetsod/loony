@@ -13,6 +13,8 @@ enum SQLiteModelError: ErrorType {
 class SQLiteModel {
   let db: Connection
 
+  // MARK: Initializers
+
   init(databasePath: String = defaultDatabasePath) throws {
     do {
       db = try Connection(databasePath)
@@ -22,6 +24,8 @@ class SQLiteModel {
       throw SQLiteModelError.ConnectionFailure(message: error.message)
     }
   }
+
+  // MARK: Database functions
 
   func transaction(block: () throws -> Void) throws {
     do {
