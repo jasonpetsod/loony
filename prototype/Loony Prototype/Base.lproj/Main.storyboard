@@ -485,13 +485,13 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vnU-6R-YS6">
-                                <rect key="frame" x="0.0" y="0.0" width="800" height="634"/>
+                                <rect key="frame" x="0.0" y="31" width="800" height="603"/>
                                 <clipView key="contentView" id="m3u-NK-fFn">
-                                    <rect key="frame" x="1" y="23" width="798" height="610"/>
+                                    <rect key="frame" x="1" y="23" width="798" height="579"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="aIk-By-fDb" viewBased="YES" id="kcP-3p-rrR">
-                                            <rect key="frame" x="0.0" y="0.0" width="798" height="610"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="798" height="579"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -639,12 +639,21 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="I4Y-pD-wY3">
+                                <rect key="frame" x="-6" y="-2" width="125" height="32"/>
+                                <buttonCell key="cell" type="push" title="New category" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="vLF-JS-qNG">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="I4Y-pD-wY3" firstAttribute="top" secondItem="vnU-6R-YS6" secondAttribute="bottom" constant="5" id="8r9-B5-tDR"/>
+                            <constraint firstItem="I4Y-pD-wY3" firstAttribute="leading" secondItem="uJh-X7-mH9" secondAttribute="leading" id="Ksj-dI-Ggk"/>
                             <constraint firstItem="vnU-6R-YS6" firstAttribute="top" secondItem="uJh-X7-mH9" secondAttribute="top" id="VAB-dc-ute"/>
                             <constraint firstAttribute="trailing" secondItem="vnU-6R-YS6" secondAttribute="trailing" id="Wxp-OI-qfY"/>
                             <constraint firstItem="vnU-6R-YS6" firstAttribute="leading" secondItem="uJh-X7-mH9" secondAttribute="leading" id="g2M-bj-uFb"/>
-                            <constraint firstAttribute="bottom" secondItem="vnU-6R-YS6" secondAttribute="bottom" id="iJb-uC-TLz"/>
+                            <constraint firstAttribute="bottom" secondItem="I4Y-pD-wY3" secondAttribute="bottom" constant="5" id="hsG-qp-zze"/>
                         </constraints>
                     </view>
                 </viewController>
