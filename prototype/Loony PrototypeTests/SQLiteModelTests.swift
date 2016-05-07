@@ -153,4 +153,34 @@ class SQLiteModelTests: XCTestCase {
     let account = model.getAccount(id: "a", name: "Bar")
     XCTAssertNil(account)
   }
+
+  // MARK: Transaction tests
+
+  func testGetTransactions_SingleTransaction() throws {
+    try self.insertAccountWithID("acct", name: "Account A")
+    try self.insertPayeeWithID("mu", name: "Mu Ramen")
+    try self.insertCategoryWithID("rst", name: "Restaurants")
+
+    try model.db.transaction {
+      try self.insertTransactionWithID(
+          "tx", accountID: "acct", date: 1462578767, payeeID: "mu")
+      try self.insertTransactionCategoryWithTransactionID(
+          "tx", categoryID: "rst", amountCents: 5000)
+    }
+
+    let expectedAccount = Account(id: "acct", name: "Account A")
+    let expectedDate = NSDate(timeIntervalSince1970: 1462578767)
+    let expectedPayee = Payee(id: "mu", name: "Mu Ramen", isNew: false)
+    let expectedCategory = Category(
+        id: "rst", name: "Restaurants", parentId: nil, notes: nil)
+    let expectedTxCategory = TransactionCategory(
+        category: expectedCategory, amountCents: 5000)
+    let expectedTransaction = Transaction(
+        id: "tx", account: expectedAccount, date: expectedDate,
+        payee: expectedPayee, memo: nil, categories: [expectedTxCategory])
+
+    let results = try model.getTransactions()
+    XCTAssertEqual(1, results.count)
+    XCTAssertEqual(expectedTransaction, results[0])
+  }
 }
