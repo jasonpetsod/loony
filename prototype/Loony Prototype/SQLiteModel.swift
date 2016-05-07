@@ -111,7 +111,8 @@ class SQLiteModel {
       query = query.filter(name == searchName)
     }
     if let row = db.pluck(query) {
-      return Category(id: row[id], name: row[name], parentId: nil, notes: nil)
+      return Category(id: row[id], name: row[name], parentId: nil,
+                      budgets: nil, notes: nil)
     } else {
       return nil
     }
@@ -195,6 +196,7 @@ class SQLiteModel {
           id: row[transactionCategories[categoryId]],
           name: row[categories[name]],
           parentId: nil,
+          budgets: nil,
           notes: nil)
 
       let transactionCategory = TransactionCategory(

@@ -1,17 +1,20 @@
 import Foundation
 
 class Category {
-  var id: String
+  let id: String
   var name: String
   var parentId: String?
+  // nil means the budgets haven't been populated from the backend.
+  var budgets: [CategoryBudget]?
   var notes: String?
   var hidden: Bool
 
-  init(id: String, name: String, parentId: String?, notes: String?,
-       hidden: Bool = false) {
+  init(id: String, name: String, parentId: String?, budgets: [CategoryBudget]?,
+       notes: String?, hidden: Bool = false) {
     self.id = id
     self.name = name
     self.parentId = parentId
+    self.budgets = budgets
     self.notes = notes
     self.hidden = hidden
   }
@@ -20,6 +23,7 @@ class Category {
     self.init(id: NSUUID().UUIDString,
               name: name,
               parentId: parent?.id,
+              budgets: nil,
               notes: nil)
   }
 }
