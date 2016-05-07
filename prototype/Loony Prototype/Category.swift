@@ -16,11 +16,11 @@ class Category {
     self.hidden = hidden
   }
 
-  class func new(name: String, parentId: String?, notes: String?) -> Category {
-    return Category(id: NSUUID().UUIDString,
-                    name: name,
-                    parentId: parentId,
-                    notes: notes)
+  convenience init(name: String, parent: Category?) {
+    self.init(id: NSUUID().UUIDString,
+              name: name,
+              parentId: parent?.id,
+              notes: nil)
   }
 }
 

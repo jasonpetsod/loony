@@ -67,7 +67,7 @@ class LedgerViewController: NSViewController {
       print("Found category = \(category); id = \(category.id)")
       return category
     } else {
-      return Category.new(name, parentId: nil, notes: nil)
+      return Category(name: name, parent: nil)
     }
   }
 
