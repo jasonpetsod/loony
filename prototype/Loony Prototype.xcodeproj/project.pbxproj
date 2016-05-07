@@ -22,6 +22,7 @@
 		96E3ECCC1CDD623A001D67EA /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3ECCB1CDD623A001D67EA /* AccountTests.swift */; };
 		96E3ECD01CDE390A001D67EA /* Month.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3ECCF1CDE390A001D67EA /* Month.swift */; };
 		96E3ECD21CDE39CA001D67EA /* MonthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3ECD11CDE39CA001D67EA /* MonthTests.swift */; };
+		96E3ECD41CDE3D63001D67EA /* CategoryBudget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3ECD31CDE3D63001D67EA /* CategoryBudget.swift */; };
 		96E4B48E1CBDC85500307106 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E4B48D1CBDC85500307106 /* AppDelegate.swift */; };
 		96E4B4921CBDC85500307106 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96E4B4911CBDC85500307106 /* Assets.xcassets */; };
 		96E4B4951CBDC85500307106 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96E4B4931CBDC85500307106 /* Main.storyboard */; };
@@ -145,6 +146,7 @@
 		96E3ECCB1CDD623A001D67EA /* AccountTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
 		96E3ECCF1CDE390A001D67EA /* Month.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Month.swift; sourceTree = "<group>"; };
 		96E3ECD11CDE39CA001D67EA /* MonthTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonthTests.swift; sourceTree = "<group>"; };
+		96E3ECD31CDE3D63001D67EA /* CategoryBudget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryBudget.swift; sourceTree = "<group>"; };
 		96E4B48A1CBDC85500307106 /* Loony Prototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Loony Prototype.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E4B48D1CBDC85500307106 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		96E4B4911CBDC85500307106 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 				96E4B48D1CBDC85500307106 /* AppDelegate.swift */,
 				96DFABE31CC468DE00036DDC /* BudgetViewController.swift */,
 				96DEC8EE1CC1F1AF0025C611 /* Category.swift */,
+				96E3ECD31CDE3D63001D67EA /* CategoryBudget.swift */,
 				96DFABE51CC46A7D00036DDC /* LedgerViewController.swift */,
 				96E3ECCF1CDE390A001D67EA /* Month.swift */,
 				9670DD1F1CD425F900DBAE19 /* Payee.swift */,
@@ -463,6 +466,7 @@
 				96E3ECD01CDE390A001D67EA /* Month.swift in Sources */,
 				9670DD201CD425FA00DBAE19 /* Payee.swift in Sources */,
 				9670DCFC1CC7012600DBAE19 /* Transaction.swift in Sources */,
+				96E3ECD41CDE3D63001D67EA /* CategoryBudget.swift in Sources */,
 				96DFABE61CC46A7D00036DDC /* LedgerViewController.swift in Sources */,
 				96DFABDC1CC4675600036DDC /* AccountViewController.swift in Sources */,
 				96DEC8ED1CC120460025C611 /* Account.swift in Sources */,
