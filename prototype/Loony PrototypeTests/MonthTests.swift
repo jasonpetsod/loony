@@ -1,0 +1,16 @@
+import Foundation
+import XCTest
+@testable import Loony_Prototype
+
+class MonthTests: XCTestCase {
+  func init_FromNSDate() {
+    // Caveat: This only works when the current locale uses the Gregorian
+    // calendar.
+    // TODO: Stub out NSCalendar.currentCalendar().
+
+    // Sat May  7 15:05:29 UTC 2016
+    let month = Month(date: NSDate(timeIntervalSince1970: 1462633529))
+    XCTAssertEqual(2016, month.year)
+    XCTAssertEqual(5, month.month)
+  }
+}
