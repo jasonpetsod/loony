@@ -34,3 +34,10 @@ struct Month {
     return components.date!.timeIntervalSince1970
   }
 }
+
+extension Month: Equatable {
+}
+
+func ==(lhs: Month, rhs: Month) -> Bool {
+  return lhs.year == rhs.year && lhs.month == rhs.month
+}
