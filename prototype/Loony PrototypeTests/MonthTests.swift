@@ -20,4 +20,9 @@ class MonthTests: XCTestCase {
     XCTAssertEqual(2016, month.year)
     XCTAssertEqual(5, month.month)
   }
+
+  func testTimeIntervalSince1970() {
+    let month = Month(year: 2016, month: 5)
+    XCTAssertEqual(1462060800, month.timeIntervalSince1970)
+  }
 }

@@ -19,4 +19,18 @@ struct Month {
   init(timeIntervalSince1970: NSTimeInterval) {
     self.init(date: NSDate(timeIntervalSince1970: timeIntervalSince1970))
   }
+
+  var timeIntervalSince1970: NSTimeInterval {
+    let components = NSDateComponents()
+    components.year = year
+    components.month = month
+    components.day = 1
+    components.hour = 0
+    components.minute = 0
+    components.second = 0
+    components.calendar = NSCalendar.currentCalendar()
+    components.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+
+    return components.date!.timeIntervalSince1970
+  }
 }
