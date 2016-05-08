@@ -24,3 +24,12 @@ func ==(lhs: CategoryBudget, rhs: CategoryBudget) -> Bool {
           lhs.carryOverOverspending == rhs.carryOverOverspending &&
           lhs.notes == rhs.notes)
 }
+
+extension CategoryBudget: CustomDebugStringConvertible {
+  var debugDescription: String {
+    return
+        "CategoryBudget<month:\(month) budgetCents:\(budgetCents) " +
+        "carryOverOverspending:\(carryOverOverspending) "
+        "notes:\(notes)>"
+  }
+}

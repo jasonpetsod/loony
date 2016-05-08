@@ -53,3 +53,10 @@ func ==(lhs: Category, rhs: Category) -> Bool {
           lhs.notes == rhs.notes &&
           lhs.hidden == rhs.hidden)
 }
+
+extension Category: CustomDebugStringConvertible {
+  var debugDescription: String {
+    return
+        "Category<id:\(id) name:\(name) parentId:\(parentId) budgets:\(budgets)"
+  }
+}
