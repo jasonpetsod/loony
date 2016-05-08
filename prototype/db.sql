@@ -49,7 +49,8 @@ CREATE TABLE IF NOT EXISTS transaction_categories (
 );
 
 CREATE TABLE IF NOT EXISTS category_budgets (
-    month TEXT PRIMARY KEY, -- first day of the month, 00:00:00.000
+    -- first day of the month at 00:00:00 in seconds since the epoch
+    month DOUBLE PRIMARY KEY,
     category_id TEXT NOT NULL,
     budget_cents INTEGER NOT NULL DEFAULT 0,
     carry_over_overspending INTEGER DEFAULT 0, -- YNAB "red arrow"
