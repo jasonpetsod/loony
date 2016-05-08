@@ -15,4 +15,8 @@ struct Month {
     let components = calendar.components(unitFlags, fromDate: date)
     self.init(year: components.year, month: components.month)
   }
+
+  init(timeIntervalSince1970: NSTimeInterval) {
+    self.init(date: NSDate(timeIntervalSince1970: timeIntervalSince1970))
+  }
 }
