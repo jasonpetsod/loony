@@ -172,7 +172,7 @@ class SQLiteModelTests: XCTestCase {
     let expectedDate = NSDate(timeIntervalSince1970: 1462578767)
     let expectedPayee = Payee(id: "mu", name: "Mu Ramen", isNew: false)
     let expectedCategory = Category(
-        id: "rst", name: "Restaurants", parentId: nil, notes: nil)
+        id: "rst", name: "Restaurants", parentId: nil, budgets: nil, notes: nil)
     let expectedTxCategory = TransactionCategory(
         category: expectedCategory, amountCents: 5000)
     let expectedTransaction = Transaction(
@@ -182,5 +182,33 @@ class SQLiteModelTests: XCTestCase {
     let results = try model.getTransactions()
     XCTAssertEqual(1, results.count)
     XCTAssertEqual(expectedTransaction, results[0])
+  }
+
+  // MARK: Category tests
+
+  func testGetCategories_NoCategories() throws {
+    let results = try model.getCategories()
+    XCTAssertEqual(0, results.count)
+  }
+
+  func testGetCategories_NoBudgets() throws {
+    try self.insertCategoryWithID("a", name: "Category A")
+    try self.insertCategoryWithID("b", name: "Category B")
+
+    let expectedA = Category(id: "a", name: "Category A", parentId: nil,
+                             budgets: [], notes: nil)
+    let expectedB = Category(id: "b", name: "Category B", parentId: nil,
+                             budgets: [], notes: nil)
+
+    let results = try model.getCategories()
+    XCTAssertEqual(2, results.count)
+    XCTAssertEqual(expectedA, results[0])
+    XCTAssertEqual(expectedB, results[1])
+  }
+
+  func testGetCategories_OneBudget() throws {
+  }
+
+  func testGetCategories_ManyBudgets() throws {
   }
 }

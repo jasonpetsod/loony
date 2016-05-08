@@ -118,6 +118,45 @@ class SQLiteModel {
     }
   }
 
+  func getCategories() throws -> [Category] {
+    let categories = Table("categories")
+    let categoryBudgets = Table("category_budgets")
+
+    let id = Expression<String>("id")
+    let name = Expression<String>("name")
+    let month = Expression<NSTimeInterval>("month")
+    let budgetCents = Expression<Int>("budget_cents")
+    let carryOverOverspending = Expression<Bool>("carry_over_overspending")
+    let categoryId = Expression<String>("category_id")
+
+    let query = categories
+        .select(categories[id],
+                categories[name],
+                categoryBudgets[month],
+                categoryBudgets[budgetCents],
+                categoryBudgets[carryOverOverspending])
+        .join(.LeftOuter, categoryBudgets, on: categoryId == categories[id])
+        .order(categories[id])
+
+    // Mapping of category ID to Category instance.
+    var results = [String: Category]()
+
+    for row in try db.prepare(query) {
+      var category = results[row[id]]
+      if category == nil {
+        category = Category(
+            id: row[id],
+            name: row[name],
+            parentId: nil,
+            budgets: [],
+            notes: nil)
+        results[row[id]] = category
+      }
+    }
+
+    return Array(results.values).sort { $0.id < $1.id }
+  }
+
   // MARK: Payees
 
   func addPayee(payee: Payee) throws {
