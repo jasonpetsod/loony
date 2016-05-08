@@ -11,8 +11,8 @@ struct Month {
 
   init(date: NSDate) {
     let calendar = NSCalendar.currentCalendar()
-    let unitFlags: NSCalendarUnit = [.Month, .Year]
-    let components = calendar.components(unitFlags, fromDate: date)
+    let timeZone = NSTimeZone(forSecondsFromGMT: 0)
+    let components = calendar.componentsInTimeZone(timeZone, fromDate: date)
     self.init(year: components.year, month: components.month)
   }
 

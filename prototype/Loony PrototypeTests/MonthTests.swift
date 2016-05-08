@@ -8,15 +8,15 @@ class MonthTests: XCTestCase {
     // calendar.
     // TODO: Stub out NSCalendar.currentCalendar().
 
-    // Sat May  7 15:05:29 UTC 2016
-    let month = Month(date: NSDate(timeIntervalSince1970: 1462633529))
+    // 2016-05-01 00:00:00 UTC
+    let month = Month(date: NSDate(timeIntervalSince1970: 1462060800))
     XCTAssertEqual(2016, month.year)
     XCTAssertEqual(5, month.month)
   }
 
   func testInit_FromUnixEpoch() {
-    // Sat May  7 15:05:29 UTC 2016
-    let month = Month(timeIntervalSince1970: 1462633529)
+    // 2016-05-01 00:00:00 UTC
+    let month = Month(timeIntervalSince1970: 1462060800)
     XCTAssertEqual(2016, month.year)
     XCTAssertEqual(5, month.month)
   }
