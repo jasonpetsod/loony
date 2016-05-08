@@ -35,9 +35,19 @@ struct Month {
   }
 }
 
+// MARK: Equatable
+
 extension Month: Equatable {
 }
 
 func ==(lhs: Month, rhs: Month) -> Bool {
   return lhs.year == rhs.year && lhs.month == rhs.month
+}
+
+// MARK: Hashable
+
+extension Month: Hashable {
+  var hashValue: Int {
+    return "year=\(year) month=\(month)".hashValue
+  }
 }

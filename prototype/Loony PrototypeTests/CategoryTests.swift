@@ -11,13 +11,13 @@ class CategoryTests: XCTestCase {
   }
 
   func testEq_LHSNilBudgets_RHSNonNilBudgets() {
-    let budgets = [
-        CategoryBudget(
-            month: Month(year: 2016, month: 5),
+    let budgets: [Month: CategoryBudget] = [
+        Month(year: 2016, month: 4): CategoryBudget(
+            month: Month(year: 2016, month: 4),
             budgetCents: 9999,
             carryOverOverspending: false,
             notes: "foo"),
-        CategoryBudget(
+        Month(year: 2016, month: 5): CategoryBudget(
             month: Month(year: 2016, month: 5),
             budgetCents: 1000,
             carryOverOverspending: false,
@@ -31,13 +31,13 @@ class CategoryTests: XCTestCase {
   }
 
   func testEq_LHSNonNilBudgets_RHSNilBudgets() {
-    let budgets = [
-        CategoryBudget(
-            month: Month(year: 2016, month: 5),
+    let budgets: [Month: CategoryBudget] = [
+        Month(year: 2016, month: 4): CategoryBudget(
+            month: Month(year: 2016, month: 4),
             budgetCents: 9999,
             carryOverOverspending: false,
             notes: "foo"),
-        CategoryBudget(
+        Month(year: 2016, month: 5): CategoryBudget(
             month: Month(year: 2016, month: 5),
             budgetCents: 1000,
             carryOverOverspending: false,
@@ -51,13 +51,13 @@ class CategoryTests: XCTestCase {
   }
 
   func testEq_SameBudgets() {
-    let budgets = [
-        CategoryBudget(
-            month: Month(year: 2016, month: 5),
+    let budgets: [Month: CategoryBudget] = [
+        Month(year: 2016, month: 4): CategoryBudget(
+            month: Month(year: 2016, month: 4),
             budgetCents: 9999,
             carryOverOverspending: false,
             notes: "foo"),
-        CategoryBudget(
+        Month(year: 2016, month: 5): CategoryBudget(
             month: Month(year: 2016, month: 5),
             budgetCents: 1000,
             carryOverOverspending: false,

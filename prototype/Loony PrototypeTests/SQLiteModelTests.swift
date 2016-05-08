@@ -207,9 +207,9 @@ class SQLiteModelTests: XCTestCase {
     try self.insertCategoryWithID("b", name: "Category B")
 
     let expectedA = Category(id: "a", name: "Category A", parentId: nil,
-                             budgets: [], notes: nil)
+                             budgets: [:], notes: nil)
     let expectedB = Category(id: "b", name: "Category B", parentId: nil,
-                             budgets: [], notes: nil)
+                             budgets: [:], notes: nil)
 
     let results = try model.getCategories()
     XCTAssertEqual(2, results.count)
@@ -223,12 +223,14 @@ class SQLiteModelTests: XCTestCase {
         "a", month: Month(year: 2016, month: 5), budgetCents: 1000,
         carryOverOverspending: false)
 
+    let expectedMonth = Month(year: 2016, month: 5)
     let expectedCategoryBudget = CategoryBudget(
-        month: Month(year: 2016, month: 5), budgetCents: 1000,
-        carryOverOverspending: false, notes: nil)
+        month: expectedMonth, budgetCents: 1000, carryOverOverspending: false,
+        notes: nil)
     let expectedCategory = Category(
         id: "a", name: "Category A", parentId: nil,
-        budgets: [expectedCategoryBudget], notes: nil)
+        budgets: [expectedMonth: expectedCategoryBudget],
+        notes: nil)
 
     let results = try model.getCategories()
     XCTAssertEqual(1, results.count)
@@ -252,35 +254,43 @@ class SQLiteModelTests: XCTestCase {
         "b", month: Month(year: 2016, month: 9), budgetCents: 5678,
         carryOverOverspending: true)
 
+    let april = Month(year: 2016, month: 4)
+    let may = Month(year: 2016, month: 5)
     let expectedA = Category(
         id: "a",
         name: "Category A",
         parentId: nil,
         budgets: [
-            CategoryBudget(month: Month(year: 2016, month: 4),
-                           budgetCents: 9999,
-                           carryOverOverspending: false,
-                           notes: nil),
-            CategoryBudget(month: Month(year: 2016, month: 5),
-                           budgetCents: 1000,
-                           carryOverOverspending: false,
-                           notes: nil),
+            april: CategoryBudget(
+                month: april,
+                budgetCents: 9999,
+                carryOverOverspending: false,
+                notes: nil),
+            may: CategoryBudget(
+                month: may,
+                budgetCents: 1000,
+                carryOverOverspending: false,
+                notes: nil),
         ],
         notes: nil)
 
+    let march = Month(year: 2016, month: 3)
+    let september = Month(year: 2016, month: 9)
     let expectedB = Category(
         id: "b",
         name: "Category B",
         parentId: nil,
         budgets: [
-            CategoryBudget(month: Month(year: 2016, month: 3),
-                           budgetCents: 1234,
-                           carryOverOverspending: true,
-                           notes: nil),
-            CategoryBudget(month: Month(year: 2016, month: 9),
-                           budgetCents: 5678,
-                           carryOverOverspending: true,
-                           notes: nil),
+            march: CategoryBudget(
+                month: march,
+                budgetCents: 1234,
+                carryOverOverspending: true,
+                notes: nil),
+            september: CategoryBudget(
+                month: september,
+                budgetCents: 5678,
+                carryOverOverspending: true,
+                notes: nil),
         ],
         notes: nil)
 

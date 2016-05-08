@@ -1,6 +1,8 @@
 import Foundation
 
 class CategoryBudget {
+  // TODO: Do we need this property now that Category.budgets is a
+  // Dictionary<Month, CategoryBudget>?
   let month: Month
   let budgetCents: Int
   let carryOverOverspending: Bool

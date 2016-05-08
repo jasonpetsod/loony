@@ -148,18 +148,19 @@ class SQLiteModel {
             id: row[id],
             name: row[name],
             parentId: nil,
-            budgets: [],
+            budgets: [:],
             notes: nil)
         results[row[id]] = category
       }
 
       if row[month] != nil {
+        let month = Month(timeIntervalSince1970: row[month]!)
         let categoryBudget = CategoryBudget(
-            month: Month(timeIntervalSince1970: row[month]!),
+            month: month,
             budgetCents: row[budgetCents]!,
             carryOverOverspending: row[carryOverOverspending]!,
             notes: nil)
-        category!.budgets!.append(categoryBudget)
+        category!.budgets![month] = categoryBudget
       }
     }
 
