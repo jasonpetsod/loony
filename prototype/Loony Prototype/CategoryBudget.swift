@@ -14,3 +14,13 @@ class CategoryBudget {
     self.notes = notes
   }
 }
+
+extension CategoryBudget: Equatable {
+}
+
+func ==(lhs: CategoryBudget, rhs: CategoryBudget) -> Bool {
+  return (lhs.month == rhs.month &&
+          lhs.budgetCents == rhs.budgetCents &&
+          lhs.carryOverOverspending == rhs.carryOverOverspending &&
+          lhs.notes == rhs.notes)
+}
