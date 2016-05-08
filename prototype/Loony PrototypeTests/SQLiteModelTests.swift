@@ -76,6 +76,17 @@ class SQLiteModelTests: XCTestCase {
     try stmt.run(txID, categoryID, amountCents)
   }
 
+  func insertCategoryBudgetWithCategoryID(
+      categoryID: String, month: Month, budgetCents: Int,
+      carryOverOverspending: Bool) throws {
+    let stmt = try model.db.prepare(
+        "INSERT INTO category_budgets " +
+        "(month, category_id, budget_cents, carry_over_overspending) " +
+        "VALUES (?, ?, ?, ?);")
+    try stmt.run(month.timeIntervalSince1970, categoryID, budgetCents,
+                 carryOverOverspending)
+  }
+
   // MARK: Account tests
 
   func testAddAccount() throws {
@@ -207,8 +218,75 @@ class SQLiteModelTests: XCTestCase {
   }
 
   func testGetCategories_OneBudget() throws {
+    try self.insertCategoryWithID("a", name: "Category A")
+    try self.insertCategoryBudgetWithCategoryID(
+        "a", month: Month(year: 2016, month: 5), budgetCents: 1000,
+        carryOverOverspending: false)
+
+    let expectedCategoryBudget = CategoryBudget(
+        month: Month(year: 2016, month: 5), budgetCents: 1000,
+        carryOverOverspending: false, notes: nil)
+    let expectedCategory = Category(
+        id: "a", name: "Category A", parentId: nil,
+        budgets: [expectedCategoryBudget], notes: nil)
+
+    let results = try model.getCategories()
+    XCTAssertEqual(1, results.count)
+    XCTAssertEqual(expectedCategory, results[0])
   }
 
   func testGetCategories_ManyBudgets() throws {
+    try self.insertCategoryWithID("a", name: "Category A")
+    try self.insertCategoryBudgetWithCategoryID(
+        "a", month: Month(year: 2016, month: 4), budgetCents: 9999,
+        carryOverOverspending: false)
+    try self.insertCategoryBudgetWithCategoryID(
+        "a", month: Month(year: 2016, month: 5), budgetCents: 1000,
+        carryOverOverspending: false)
+
+    try self.insertCategoryWithID("b", name: "Category B")
+    try self.insertCategoryBudgetWithCategoryID(
+        "b", month: Month(year: 2016, month: 3), budgetCents: 1234,
+        carryOverOverspending: true)
+    try self.insertCategoryBudgetWithCategoryID(
+        "b", month: Month(year: 2016, month: 9), budgetCents: 5678,
+        carryOverOverspending: true)
+
+    let expectedA = Category(
+        id: "a",
+        name: "Category A",
+        parentId: nil,
+        budgets: [
+            CategoryBudget(month: Month(year: 2016, month: 4),
+                           budgetCents: 9999,
+                           carryOverOverspending: false,
+                           notes: nil),
+            CategoryBudget(month: Month(year: 2016, month: 5),
+                           budgetCents: 1000,
+                           carryOverOverspending: false,
+                           notes: nil),
+        ],
+        notes: nil)
+
+    let expectedB = Category(
+        id: "b",
+        name: "Category B",
+        parentId: nil,
+        budgets: [
+            CategoryBudget(month: Month(year: 2016, month: 3),
+                           budgetCents: 1234,
+                           carryOverOverspending: true,
+                           notes: nil),
+            CategoryBudget(month: Month(year: 2016, month: 9),
+                           budgetCents: 5678,
+                           carryOverOverspending: true,
+                           notes: nil),
+        ],
+        notes: nil)
+
+    let expectedResults = [expectedA, expectedB]
+
+    let results = try model.getCategories()
+    XCTAssertEqual(expectedResults, results)
   }
 }

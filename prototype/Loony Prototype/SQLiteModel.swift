@@ -124,9 +124,9 @@ class SQLiteModel {
 
     let id = Expression<String>("id")
     let name = Expression<String>("name")
-    let month = Expression<NSTimeInterval>("month")
-    let budgetCents = Expression<Int>("budget_cents")
-    let carryOverOverspending = Expression<Bool>("carry_over_overspending")
+    let month = Expression<NSTimeInterval?>("month")
+    let budgetCents = Expression<Int?>("budget_cents")
+    let carryOverOverspending = Expression<Bool?>("carry_over_overspending")
     let categoryId = Expression<String>("category_id")
 
     let query = categories
@@ -136,7 +136,7 @@ class SQLiteModel {
                 categoryBudgets[budgetCents],
                 categoryBudgets[carryOverOverspending])
         .join(.LeftOuter, categoryBudgets, on: categoryId == categories[id])
-        .order(categories[id])
+        .order(categories[id], categoryBudgets[month])
 
     // Mapping of category ID to Category instance.
     var results = [String: Category]()
@@ -151,6 +151,15 @@ class SQLiteModel {
             budgets: [],
             notes: nil)
         results[row[id]] = category
+      }
+
+      if row[month] != nil {
+        let categoryBudget = CategoryBudget(
+            month: Month(timeIntervalSince1970: row[month]!),
+            budgetCents: row[budgetCents]!,
+            carryOverOverspending: row[carryOverOverspending]!,
+            notes: nil)
+        category!.budgets!.append(categoryBudget)
       }
     }
 
