@@ -195,6 +195,53 @@ class SQLiteModelTests: XCTestCase {
     XCTAssertEqual(expectedTransaction, results[0])
   }
 
+  func testGetTransactions_CategoryID_NoResults() throws {
+    try self.insertAccountWithID("acct", name: "Account A")
+    try self.insertPayeeWithID("mu", name: "Mu Ramen")
+    try self.insertCategoryWithID("rst", name: "Restaurants")
+
+    try model.db.transaction {
+      try self.insertTransactionWithID(
+          "tx", accountID: "acct", date: 1462578767, payeeID: "mu")
+      try self.insertTransactionCategoryWithTransactionID(
+          "tx", categoryID: "rst", amountCents: 5000)
+    }
+
+    let results = try model.getTransactions(categoryID: "foo")
+    XCTAssertEqual(0, results.count)
+  }
+
+  func testGetTransactions_CategoryID_HasResults() throws {
+    try self.insertAccountWithID("acct", name: "Account A")
+    try self.insertPayeeWithID("mu", name: "Mu Ramen")
+    try self.insertPayeeWithID("rl", name: "Ramen Lab")
+    try self.insertPayeeWithID("wf", name: "Whole Foods")
+    try self.insertCategoryWithID("rst", name: "Restaurants")
+    try self.insertCategoryWithID("groc", name: "Groceries")
+
+    try model.db.transaction {
+      try self.insertTransactionWithID(
+          "tx1", accountID: "acct", date: 1462578767, payeeID: "mu")
+      try self.insertTransactionCategoryWithTransactionID(
+          "tx1", categoryID: "rst", amountCents: 5000)
+
+      try self.insertTransactionWithID(
+          "tx2", accountID: "acct", date: 1462578767, payeeID: "wf")
+      try self.insertTransactionCategoryWithTransactionID(
+          "tx2", categoryID: "groc", amountCents: 2345)
+
+      try self.insertTransactionWithID(
+          "tx3", accountID: "acct", date: 1462578767, payeeID: "rl")
+      try self.insertTransactionCategoryWithTransactionID(
+          "tx3", categoryID: "rst", amountCents: 1234)
+    }
+
+    let results = try model.getTransactions(categoryID: "rst")
+    XCTAssertEqual(2, results.count)
+    XCTAssertEqual("rl", results[0].payee.id)
+    XCTAssertEqual("mu", results[1].payee.id)
+  }
+
   // MARK: Category tests
 
   func testGetCategories_NoCategories() throws {

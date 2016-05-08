@@ -209,7 +209,8 @@ class SQLiteModel {
 
   // MARK: Transactions
 
-  func getTransactions() throws -> [Transaction] {
+  func getTransactions(categoryID searchCategoryID: String? = nil) throws ->
+      [Transaction] {
     let transactions = Table("transactions")
 
     let id = Expression<String>("id")
@@ -224,7 +225,7 @@ class SQLiteModel {
     let transactionCategories = Table("transaction_categories")
     let categories = Table("categories")
 
-    let query = transactions
+    var query = transactions
         .select(transactions[id],
                 transactions[accountId],
                 transactions[date],
@@ -236,6 +237,10 @@ class SQLiteModel {
               on: transactionId == transactions[id])
         .join(categories,
               on: categoryId == categories[id]);
+
+    if let searchCategoryID = searchCategoryID {
+      query = query.filter(categoryId == searchCategoryID)
+    }
 
     var result = [String: Transaction]()
     for row in try! db.prepare(query) {
