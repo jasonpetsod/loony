@@ -32,9 +32,24 @@ extension Category: Equatable {
 }
 
 func ==(lhs: Category, rhs: Category) -> Bool {
+  if lhs.budgets == nil && rhs.budgets != nil {
+    return false
+  }
+  if lhs.budgets != nil && rhs.budgets == nil {
+    return false
+  }
+
+  var budgetsEqual = false
+  if lhs.budgets == nil && rhs.budgets == nil {
+    budgetsEqual = true
+  } else {
+    budgetsEqual = lhs.budgets! == rhs.budgets!
+  }
+
   return (lhs.id == rhs.id &&
           lhs.name == rhs.name &&
           lhs.parentId == rhs.parentId &&
+          budgetsEqual &&
           lhs.notes == rhs.notes &&
           lhs.hidden == rhs.hidden)
 }
