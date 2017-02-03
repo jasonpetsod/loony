@@ -1,3 +1,0 @@
-[submodule "prototype/SQLite.swift"]
-	path = prototype/SQLite.swift
-	url = https://github.com/stephencelis/SQLite.swift.git
