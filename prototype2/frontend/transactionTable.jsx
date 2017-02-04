@@ -12,19 +12,19 @@ class TransactionRow extends React.Component {
 
   render() {
     return (
-        <tr>
-          <td>{this.props.transaction.account}</td>
-          <td>{moment(this.props.transaction.dateMs).format('YYYY-MM-DD')}</td>
-          <td>{this.props.transaction.payee}</td>
-          <td>{this.props.transaction.category}</td>
-          <td>{this.props.transaction.memo}</td>
-          <td style={{textAlign:'right'}}>
-            {accounting.formatMoney(this.props.transaction.outflow, '$')}
-          </td>
-          <td style={{textAlign:'right'}}>
-            {accounting.formatMoney(this.props.transaction.inflow, '$')}
-          </td>
-        </tr>
+      <tr>
+        <td>{this.props.transaction.account}</td>
+        <td>{moment(this.props.transaction.dateMs).format('YYYY-MM-DD')}</td>
+        <td>{this.props.transaction.payee}</td>
+        <td>{this.props.transaction.category}</td>
+        <td>{this.props.transaction.memo}</td>
+        <td style={{ textAlign: 'right' }}>
+          {accounting.formatMoney(this.props.transaction.outflow, '$')}
+        </td>
+        <td style={{ textAlign: 'right' }}>
+          {accounting.formatMoney(this.props.transaction.inflow, '$')}
+        </td>
+      </tr>
     );
   }
 }
@@ -38,10 +38,10 @@ export default class TransactionTable extends React.Component {
 
   render() {
     const rows = this.props.transactions.map((t) =>
-        <TransactionRow key={t.id} transaction={t} />
+      <TransactionRow key={t.id} transaction={t} />
     );
     return (
-        <table>
+      <table>
         <thead>
           <tr>
             <th>Account</th>
@@ -54,11 +54,12 @@ export default class TransactionTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-        {rows}
-        <AddTransactionRow
-          newTransactionHandler={this.props.newTransactionHandler} />
+          {rows}
+          <AddTransactionRow
+            newTransactionHandler={this.props.newTransactionHandler}
+          />
         </tbody>
-        </table>
+      </table>
     );
   }
 }
