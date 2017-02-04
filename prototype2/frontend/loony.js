@@ -51,7 +51,7 @@ class AddTransactionRow extends React.Component {
 
     this.state = {
       account: '',
-      date: '',
+      date: moment().format('YYYY-MM-DD'),
       payee: '',
       category: '',
       memo: '',
