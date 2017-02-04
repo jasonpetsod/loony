@@ -2,6 +2,7 @@ PROJECT_ROOT = .
 
 NODE_DIR = node_modules
 BROWSERIFY = $(NODE_DIR)/browserify/bin/cmd.js
+ESLINT = $(NODE_DIR)/eslint/bin/eslint.js
 WATCHIFY = $(NODE_DIR)/watchify/bin/cmd.js
 
 YARN_LOCK = yarn.lock
@@ -17,6 +18,9 @@ out.js: $(INPUTS)
 watchify:
 	$(WATCHIFY) $(INPUTS) -t babelify -o out.js -v
 
+lint:
+	$(ESLINT) $(INPUTS)
+
 $(YARN_LOCK): package.json
 	yarn
 	@touch yarn.lock
@@ -31,4 +35,5 @@ clean:
 	all \
 	clean \
 	deps \
+	lint \
 	watchify
