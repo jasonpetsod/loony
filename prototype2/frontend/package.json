@@ -29,6 +29,6 @@
     "react-addons-test-utils": "^15.4.2"
   },
   "scripts": {
-    "precommit": "make lint"
+    "precommit": "make test lint"
   }
 }
