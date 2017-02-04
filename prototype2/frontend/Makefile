@@ -22,7 +22,7 @@ watchify:
 	$(WATCHIFY) $(INPUTS) $(BROWSERIFY_OPTIONS) -o out.js -v
 
 lint:
-	$(ESLINT) $(INPUTS)
+	$(ESLINT) $(INPUTS) 'test/**'
 
 test:
 	$(MOCHA) --require babel-register $(TESTARGS)
