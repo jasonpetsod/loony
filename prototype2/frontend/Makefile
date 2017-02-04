@@ -7,7 +7,7 @@ WATCHIFY = $(NODE_DIR)/watchify/bin/cmd.js
 
 YARN_LOCK = yarn.lock
 
-INPUTS := propTypes.js addTransactionRow.jsx loony.jsx
+INPUTS := propTypes.js addTransactionRow.jsx transactionTable.jsx loony.jsx
 TARGETS := out.js
 
 all: $(TARGETS)
