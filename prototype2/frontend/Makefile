@@ -3,6 +3,7 @@ PROJECT_ROOT = .
 NODE_DIR = node_modules
 BROWSERIFY = $(NODE_DIR)/browserify/bin/cmd.js
 ESLINT = $(NODE_DIR)/eslint/bin/eslint.js
+MOCHA = $(NODE_DIR)/mocha/bin/mocha
 WATCHIFY = $(NODE_DIR)/watchify/bin/cmd.js
 
 YARN_LOCK = yarn.lock
@@ -22,6 +23,9 @@ watchify:
 
 lint:
 	$(ESLINT) $(INPUTS)
+
+test:
+	$(MOCHA) --require babel-register $(TESTARGS)
 
 $(YARN_LOCK): package.json
 	yarn
