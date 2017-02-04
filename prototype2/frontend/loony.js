@@ -1,10 +1,12 @@
 import accounting from 'accounting';
+import moment from 'moment';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 const transactionPropType = React.PropTypes.shape({
     id: React.PropTypes.string.isRequired,
-    date: React.PropTypes.string.isRequired,
+    // Milliseconds since the epoch.
+    dateMs: React.PropTypes.number.isRequired,
     account: React.PropTypes.string.isRequired,
     payee: React.PropTypes.string.isRequired,
     category: React.PropTypes.string,
@@ -22,7 +24,7 @@ class TransactionRow extends React.Component {
     return (
         <tr>
           <td>{this.props.transaction.account}</td>
-          <td>{this.props.transaction.date}</td>
+          <td>{moment(this.props.transaction.dateMs).format('YYYY-MM-DD')}</td>
           <td>{this.props.transaction.payee}</td>
           <td>{this.props.transaction.category}</td>
           <td>{this.props.transaction.memo}</td>
@@ -79,7 +81,7 @@ function App(props) {
 const TRANSACTIONS = [
   {
     id: '1',
-    date: '2017-01-01',
+    dateMs: 1483246800000,  // 2017-01-01 00:00 UTC-05:00
     account: 'Checking',
     payee: 'Google Inc.',
     category: 'Income for January',
@@ -89,7 +91,7 @@ const TRANSACTIONS = [
   },
   {
     id: '2',
-    date: '2017-01-06',
+    dateMs: 1483678800000,  // 2017-01-06 00:00 UTC-05:00
     account: 'Cash',
     payee: 'Raku',
     category: 'Restaurants',
@@ -99,7 +101,7 @@ const TRANSACTIONS = [
   },
   {
     id: '3',
-    date: '2017-01-09',
+    dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
     account: 'Chase Sapphire Reserve',
     payee: 'Ippudo',
     category: 'Restaurants',
