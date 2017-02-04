@@ -25,7 +25,7 @@ lint:
 	$(ESLINT) $(INPUTS) 'test/**'
 
 test:
-	$(MOCHA) --require babel-register $(TESTARGS)
+	$(MOCHA) --compilers jsx:babel-register $(TESTARGS)
 
 $(YARN_LOCK): package.json
 	yarn
