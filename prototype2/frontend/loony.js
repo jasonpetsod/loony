@@ -201,9 +201,11 @@ class App extends React.Component {
   }
 
   addTransaction = (transaction) => {
-    let transactions = this.state.transactions;
-    transactions.push(transaction);
-    this.setState({transactions: transactions});
+    this.setState((prevState, props) => {
+      let transactions = prevState.transactions;
+      transactions.push(transaction);
+      return {transactions: transactions};
+    });
   }
 
   render() {
