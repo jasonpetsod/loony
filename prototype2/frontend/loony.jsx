@@ -4,21 +4,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import uuid from 'uuid';
 
-const transactionPropType = React.PropTypes.shape({
-    id: React.PropTypes.string.isRequired,
-    // Milliseconds since the epoch.
-    dateMs: React.PropTypes.number.isRequired,
-    account: React.PropTypes.string.isRequired,
-    payee: React.PropTypes.string.isRequired,
-    category: React.PropTypes.string,
-    memo: React.PropTypes.string,
-    outflow: React.PropTypes.number,
-    inflow: React.PropTypes.number,
-});
+import * as propTypes from './propTypes';
 
 class TransactionRow extends React.Component {
   static propTypes = {
-    transaction: transactionPropType,
+    transaction: propTypes.transaction,
   };
 
   render() {
@@ -160,7 +150,7 @@ class AddTransactionRow extends React.Component {
 
 class TransactionTable extends React.Component {
   static propTypes = {
-    transactions: React.PropTypes.arrayOf(transactionPropType),
+    transactions: React.PropTypes.arrayOf(propTypes.transaction),
     // TODO: Add function signature.
     newTransactionHandler: React.PropTypes.func
   };

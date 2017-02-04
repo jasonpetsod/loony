@@ -6,15 +6,16 @@ WATCHIFY = $(NODE_DIR)/watchify/bin/cmd.js
 
 YARN_LOCK = yarn.lock
 
+INPUTS := propTypes.js loony.jsx
 TARGETS := out.js
 
 all: $(TARGETS)
 
-out.js: loony.jsx
-	$(BROWSERIFY) loony.jsx -t babelify -o out.js
+out.js: $(INPUTS)
+	$(BROWSERIFY) $(INPUTS) -t babelify -o out.js
 
 watchify:
-	$(WATCHIFY) loony.jsx -t babelify -o out.js -v
+	$(WATCHIFY) $(INPUTS) -t babelify -o out.js -v
 
 $(YARN_LOCK): package.json
 	yarn
