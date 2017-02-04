@@ -29,9 +29,9 @@ TransactionRow.propTypes = {
 
 
 export default function TransactionTable(props) {
-  const rows = props.transactions.map((t) =>
+  const rows = props.transactions.map(t => (
     <TransactionRow key={t.id} transaction={t} />
-  );
+  ));
   return (
     <table>
       <thead>
