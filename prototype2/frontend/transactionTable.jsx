@@ -60,3 +60,5 @@ TransactionTable.propTypes = {
   // TODO: Add function signature.
   newTransactionHandler: React.PropTypes.func.isRequired,
 };
+
+export { TransactionRow };
