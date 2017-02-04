@@ -7,16 +7,18 @@ WATCHIFY = $(NODE_DIR)/watchify/bin/cmd.js
 
 YARN_LOCK = yarn.lock
 
+BROWSERIFY_OPTIONS = -t babelify --extension .jsx
+
 INPUTS := propTypes.js addTransactionRow.jsx transactionTable.jsx loony.jsx
 TARGETS := out.js
 
 all: $(TARGETS)
 
 out.js: $(INPUTS)
-	$(BROWSERIFY) $(INPUTS) -t babelify --extension .jsx -o out.js
+	$(BROWSERIFY) $(INPUTS) $(BROWSERIFY_OPTIONS) -o out.js
 
 watchify:
-	$(WATCHIFY) $(INPUTS) -t babelify --extension .jsx -o out.js -v
+	$(WATCHIFY) $(INPUTS) $(BROWSERIFY_OPTIONS) -o out.js -v
 
 lint:
 	$(ESLINT) $(INPUTS)
