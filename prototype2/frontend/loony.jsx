@@ -10,9 +10,11 @@ class App extends React.Component {
     this.state = {
       transactions: props.transactions,
     };
+
+    this.addTransaction = this.addTransaction.bind(this);
   }
 
-  addTransaction = (transaction) => {
+  addTransaction(transaction) {
     this.setState((prevState) => {
       const transactions = prevState.transactions;
       transactions.push(transaction);

@@ -3,11 +3,6 @@ import React from 'react';
 import uuid from 'uuid';
 
 export default class AddTransactionRow extends React.Component {
-  static propTypes = {
-    // TODO: Add function signature.
-    newTransactionHandler: React.PropTypes.func.isRequired,
-  }
-
   constructor(props) {
     super(props);
 
@@ -20,9 +15,12 @@ export default class AddTransactionRow extends React.Component {
       outflow: '',
       inflow: '',
     };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
   }
 
-  handleInputChange = (event) => {
+  handleInputChange(event) {
     const target = event.target;
     const { name, value } = target;
     this.setState({
@@ -30,7 +28,7 @@ export default class AddTransactionRow extends React.Component {
     });
   }
 
-  handleAdd = () => {
+  handleAdd() {
     const transaction = {
       id: uuid.v4(),
       dateMs: moment(this.state.date).valueOf(),
@@ -118,3 +116,8 @@ export default class AddTransactionRow extends React.Component {
     );
   }
 }
+
+AddTransactionRow.propTypes = {
+  // TODO: Add function signature.
+  newTransactionHandler: React.PropTypes.func.isRequired,
+};
