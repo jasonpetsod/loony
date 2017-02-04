@@ -2,7 +2,7 @@ import accounting from 'accounting';
 import moment from 'moment';
 import React from 'react';
 
-import AddTransactionRow from './addTransactionRow.jsx';
+import AddTransactionRow from './addTransactionRow';
 import * as propTypes from './propTypes';
 
 function TransactionRow(props) {

@@ -13,10 +13,10 @@ TARGETS := out.js
 all: $(TARGETS)
 
 out.js: $(INPUTS)
-	$(BROWSERIFY) $(INPUTS) -t babelify -o out.js
+	$(BROWSERIFY) $(INPUTS) -t babelify --extension .jsx -o out.js
 
 watchify:
-	$(WATCHIFY) $(INPUTS) -t babelify -o out.js -v
+	$(WATCHIFY) $(INPUTS) -t babelify --extension .jsx -o out.js -v
 
 lint:
 	$(ESLINT) $(INPUTS)
