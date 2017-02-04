@@ -28,37 +28,35 @@ TransactionRow.propTypes = {
 };
 
 
-export default class TransactionTable extends React.Component {
-  static propTypes = {
-    transactions: React.PropTypes.arrayOf(propTypes.transaction),
-    // TODO: Add function signature.
-    newTransactionHandler: React.PropTypes.func
-  };
-
-  render() {
-    const rows = this.props.transactions.map((t) =>
-      <TransactionRow key={t.id} transaction={t} />
-    );
-    return (
-      <table>
-        <thead>
-          <tr>
-            <th>Account</th>
-            <th>Date</th>
-            <th>Payee</th>
-            <th>Category</th>
-            <th>Memo</th>
-            <th>Outflow</th>
-            <th>Inflow</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows}
-          <AddTransactionRow
-            newTransactionHandler={this.props.newTransactionHandler}
-          />
-        </tbody>
-      </table>
-    );
-  }
+export default function TransactionTable(props) {
+  const rows = props.transactions.map((t) =>
+    <TransactionRow key={t.id} transaction={t} />
+  );
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Account</th>
+          <th>Date</th>
+          <th>Payee</th>
+          <th>Category</th>
+          <th>Memo</th>
+          <th>Outflow</th>
+          <th>Inflow</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows}
+        <AddTransactionRow
+          newTransactionHandler={props.newTransactionHandler}
+        />
+      </tbody>
+    </table>
+  );
 }
+
+TransactionTable.propTypes = {
+  transactions: React.PropTypes.arrayOf(propTypes.transaction),
+  // TODO: Add function signature.
+  newTransactionHandler: React.PropTypes.func
+};
