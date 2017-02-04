@@ -24,7 +24,7 @@ function TransactionRow(props) {
 }
 
 TransactionRow.propTypes = {
-  transaction: propTypes.transaction,
+  transaction: propTypes.transaction.isRequired,
 };
 
 
@@ -56,7 +56,7 @@ export default function TransactionTable(props) {
 }
 
 TransactionTable.propTypes = {
-  transactions: React.PropTypes.arrayOf(propTypes.transaction),
+  transactions: React.PropTypes.arrayOf(propTypes.transaction).isRequired,
   // TODO: Add function signature.
-  newTransactionHandler: React.PropTypes.func
+  newTransactionHandler: React.PropTypes.func.isRequired,
 };
