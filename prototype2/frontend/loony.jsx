@@ -1,35 +1,41 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import TransactionTable from './transactionTable.jsx';
+import TransactionTable from './transactionTable';
+import * as propTypes from './propTypes';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       transactions: props.transactions,
-    }
+    };
   }
 
   addTransaction = (transaction) => {
-    this.setState((prevState, props) => {
-      let transactions = prevState.transactions;
+    this.setState((prevState) => {
+      const transactions = prevState.transactions;
       transactions.push(transaction);
-      return {transactions: transactions};
+      return { transactions };
     });
   }
 
   render() {
     return (
-        <div>
+      <div>
         <h1>Loony</h1>
         <TransactionTable
           transactions={this.state.transactions}
-          newTransactionHandler={this.addTransaction} />
-        </div>
+          newTransactionHandler={this.addTransaction}
+        />
+      </div>
     );
   }
 }
+
+App.propTypes = {
+  transactions: React.PropTypes.arrayOf(propTypes.transaction).isRequired,
+};
 
 // TODO: Convert this to an object keyed by transaction ID.
 const TRANSACTIONS = [
@@ -67,5 +73,4 @@ const TRANSACTIONS = [
 
 ReactDOM.render(
   <App transactions={TRANSACTIONS} />,
-  document.getElementById('root')
-);
+  document.getElementById('root'));
