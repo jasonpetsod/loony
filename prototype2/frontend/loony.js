@@ -50,13 +50,13 @@ class AddTransactionRow extends React.Component {
     super(props);
 
     this.state = {
-      'account': '',
-      'date': '',
-      'payee': '',
-      'category': '',
-      'memo': '',
-      'outflow': '',
-      'inflow': ''
+      account: '',
+      date: '',
+      payee: '',
+      category: '',
+      memo: '',
+      outflow: '',
+      inflow: ''
     };
   }
 
