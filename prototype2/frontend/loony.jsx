@@ -45,8 +45,8 @@ const TRANSACTIONS = [
     account: 'Checking',
     payee: 'Google Inc.',
     category: 'Income for January',
-    memo: null,
-    outflow: null,
+    memo: '',
+    outflow: 0,
     inflow: 100.00,
   },
   {
@@ -55,9 +55,9 @@ const TRANSACTIONS = [
     account: 'Cash',
     payee: 'Raku',
     category: 'Restaurants',
-    memo: null,
+    memo: '',
     outflow: 27.31,
-    inflow: null,
+    inflow: 0,
   },
   {
     id: '3',
@@ -65,9 +65,9 @@ const TRANSACTIONS = [
     account: 'Chase Sapphire Reserve',
     payee: 'Ippudo',
     category: 'Restaurants',
-    memo: null,
+    memo: '',
     outflow: 27.31,
-    inflow: null,
+    inflow: 0,
   },
 ];
 
