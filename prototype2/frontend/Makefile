@@ -42,4 +42,5 @@ clean:
 	clean \
 	deps \
 	lint \
+	test \
 	watchify
