@@ -1,3 +1,4 @@
+import accounting from 'accounting';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -8,8 +9,8 @@ const transactionPropType = React.PropTypes.shape({
     payee: React.PropTypes.string.isRequired,
     category: React.PropTypes.string,
     memo: React.PropTypes.string,
-    outflow: React.PropTypes.string,
-    inflow: React.PropTypes.string,
+    outflow: React.PropTypes.number,
+    inflow: React.PropTypes.number,
 });
 
 class TransactionRow extends React.Component {
@@ -25,8 +26,12 @@ class TransactionRow extends React.Component {
           <td>{this.props.transaction.payee}</td>
           <td>{this.props.transaction.category}</td>
           <td>{this.props.transaction.memo}</td>
-          <td>{this.props.transaction.outflow}</td>
-          <td>{this.props.transaction.inflow}</td>
+          <td style={{textAlign:'right'}}>
+            {accounting.formatMoney(this.props.transaction.outflow, '$')}
+          </td>
+          <td style={{textAlign:'right'}}>
+            {accounting.formatMoney(this.props.transaction.inflow, '$')}
+          </td>
         </tr>
     );
   }
@@ -80,7 +85,7 @@ const TRANSACTIONS = [
     category: 'Income for January',
     memo: null,
     outflow: null,
-    inflow: '100.00',
+    inflow: 100.00,
   },
   {
     id: '2',
@@ -89,7 +94,7 @@ const TRANSACTIONS = [
     payee: 'Raku',
     category: 'Groceries',
     memo: null,
-    outflow: '27.31',
+    outflow: 27.31,
     inflow: null,
   },
   {
@@ -99,7 +104,7 @@ const TRANSACTIONS = [
     payee: 'Ippudo',
     category: 'Groceries',
     memo: null,
-    outflow: '27.31',
+    outflow: 27.31,
     inflow: null,
   },
 ];
