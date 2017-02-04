@@ -5,29 +5,28 @@ import React from 'react';
 import AddTransactionRow from './addTransactionRow.jsx';
 import * as propTypes from './propTypes';
 
-class TransactionRow extends React.Component {
-  static propTypes = {
-    transaction: propTypes.transaction,
-  };
-
-  render() {
-    return (
-      <tr>
-        <td>{this.props.transaction.account}</td>
-        <td>{moment(this.props.transaction.dateMs).format('YYYY-MM-DD')}</td>
-        <td>{this.props.transaction.payee}</td>
-        <td>{this.props.transaction.category}</td>
-        <td>{this.props.transaction.memo}</td>
-        <td style={{ textAlign: 'right' }}>
-          {accounting.formatMoney(this.props.transaction.outflow, '$')}
-        </td>
-        <td style={{ textAlign: 'right' }}>
-          {accounting.formatMoney(this.props.transaction.inflow, '$')}
-        </td>
-      </tr>
-    );
-  }
+function TransactionRow(props) {
+  return (
+    <tr>
+      <td>{props.transaction.account}</td>
+      <td>{moment(props.transaction.dateMs).format('YYYY-MM-DD')}</td>
+      <td>{props.transaction.payee}</td>
+      <td>{props.transaction.category}</td>
+      <td>{props.transaction.memo}</td>
+      <td style={{ textAlign: 'right' }}>
+        {accounting.formatMoney(props.transaction.outflow, '$')}
+      </td>
+      <td style={{ textAlign: 'right' }}>
+        {accounting.formatMoney(props.transaction.inflow, '$')}
+      </td>
+    </tr>
+  );
 }
+
+TransactionRow.propTypes = {
+  transaction: propTypes.transaction,
+};
+
 
 export default class TransactionTable extends React.Component {
   static propTypes = {
