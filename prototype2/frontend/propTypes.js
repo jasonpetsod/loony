@@ -12,7 +12,6 @@ const transaction = React.PropTypes.shape({
   inflow: React.PropTypes.number,
 });
 
-/* eslint-disable import/prefer-default-export */
-// TODO: Remove this lint suppression once we add more propTypes to this file.
-export { transaction };
-/* eslint-enable import/prefer-default-export */
+export default {
+  transaction,
+};

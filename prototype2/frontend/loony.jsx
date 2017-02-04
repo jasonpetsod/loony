@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import TransactionTable from './transactionTable';
-import * as propTypes from './propTypes';
+import propTypes from './propTypes';
 
 class App extends React.Component {
   constructor(props) {

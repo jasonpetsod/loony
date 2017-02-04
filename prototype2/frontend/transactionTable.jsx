@@ -3,7 +3,7 @@ import moment from 'moment';
 import React from 'react';
 
 import AddTransactionRow from './addTransactionRow';
-import * as propTypes from './propTypes';
+import propTypes from './propTypes';
 
 function TransactionRow(props) {
   return (
