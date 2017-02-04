@@ -10,11 +10,11 @@ TARGETS := out.js
 
 all: $(TARGETS)
 
-out.js: loony.js
-	$(BROWSERIFY) loony.js -t babelify -o out.js
+out.js: loony.jsx
+	$(BROWSERIFY) loony.jsx -t babelify -o out.js
 
 watchify:
-	$(WATCHIFY) loony.js -t babelify -o out.js -v
+	$(WATCHIFY) loony.jsx -t babelify -o out.js -v
 
 $(YARN_LOCK): package.json
 	yarn
