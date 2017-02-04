@@ -43,7 +43,7 @@ class TransactionRow extends React.Component {
 class AddTransactionRow extends React.Component {
   static propTypes = {
     // TODO: Add function signature.
-    newTransactionHander: React.PropTypes.func
+    newTransactionHandler: React.PropTypes.func
   }
 
   constructor(props) {

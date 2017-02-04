@@ -1,10 +1,33 @@
+PROJECT_ROOT = .
+
+NODE_DIR = node_modules
+BROWSERIFY = $(NODE_DIR)/browserify/bin/cmd.js
+WATCHIFY = $(NODE_DIR)/watchify/bin/cmd.js
+
+YARN_LOCK = yarn.lock
+
+TARGETS := out.js
+
+all: $(TARGETS)
+
 out.js: loony.js
-	node_modules/browserify/bin/cmd.js loony.js -t babelify -o out.js
+	$(BROWSERIFY) loony.js -t babelify -o out.js
 
-.PHONY: watchify
 watchify:
-	node_modules/watchify/bin/cmd.js loony.js -t babelify -o out.js -v
+	$(WATCHIFY) loony.js -t babelify -o out.js -v
 
-.PHONY: clean
+$(YARN_LOCK): package.json
+	yarn
+	@touch yarn.lock
+
+deps: $(YARN_LOCK)
+
 clean:
 	rm out.js
+
+.DEFAULT_GOAL := all
+.PHONY: \
+	all \
+	clean \
+	deps \
+	watchify
