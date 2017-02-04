@@ -69,15 +69,25 @@ class TransactionTable extends React.Component {
   }
 }
 
-function App(props) {
-  return (
-      <div>
-      <h1>Loony</h1>
-      <TransactionTable transactions={props.transactions} />
-      </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      transactions: props.transactions,
+    }
+  }
+
+  render() {
+    return (
+        <div>
+        <h1>Loony</h1>
+        <TransactionTable transactions={this.state.transactions} />
+        </div>
+    );
+  }
 }
 
+// TODO: Convert this to an object keyed by transaction ID.
 const TRANSACTIONS = [
   {
     id: '1',
