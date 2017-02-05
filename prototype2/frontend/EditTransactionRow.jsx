@@ -9,10 +9,11 @@ export default class EditTransactionRow extends React.Component {
     this.handleSave = this.handleSave.bind(this);
   }
 
-  /* eslint-disable class-methods-use-this, no-unused-vars */
+  /* eslint-disable no-unused-vars */
   handleSave(data) {
+    this.props.editCompleteHandler();
   }
-  /* eslint-enable class-methods-use-this, no-unused-vars */
+  /* eslint-enable no-unused-vars */
 
   render() {
     return (
@@ -26,4 +27,7 @@ export default class EditTransactionRow extends React.Component {
 
 EditTransactionRow.propTypes = {
   transaction: propTypes.transaction.isRequired,
+
+  // Function to call once the edit has completed.
+  editCompleteHandler: React.PropTypes.func.isRequired,
 };
