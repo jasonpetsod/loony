@@ -1,7 +1,12 @@
 var path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
-  entry: './src/index.jsx',
+  entry: [
+    'webpack-dev-server/client?http://localhost:9000',
+    'webpack/hot/only-dev-server',
+    './src/index.jsx',
+  ],
   output: {
     filename: 'out.js',
     path: path.resolve(__dirname, 'dist'),
@@ -13,7 +18,8 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/,
-        loader: 'babel-loader',
+        loaders: ['react-hot-loader', 'babel-loader'],
+        exclude: /node_modules/,
       },
     ],
   },
@@ -21,6 +27,11 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, "dist"),
     compress: true,
-    port: 9000
+    port: 9000,
+    hot: true,
   },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
+  ],
 }
