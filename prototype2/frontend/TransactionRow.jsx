@@ -16,7 +16,6 @@ export default class TransactionRow extends React.Component {
   }
 
   handleClick() {
-    console.log(this.props.transaction);
     this.setState({ editing: this.props.transaction.id });
   }
 
@@ -26,7 +25,6 @@ export default class TransactionRow extends React.Component {
 
   render() {
     if (this.state.editing === this.props.transaction.id) {
-      console.log('handling edit');
       return (
         <EditTransactionRow
           transaction={this.props.transaction}
