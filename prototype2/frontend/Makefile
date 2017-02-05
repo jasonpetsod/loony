@@ -27,7 +27,7 @@ $(YARN_LOCK): package.json
 deps: $(YARN_LOCK)
 
 clean:
-	rm out.js
+	rm dist/out.js
 
 .DEFAULT_GOAL := all
 .PHONY: \
