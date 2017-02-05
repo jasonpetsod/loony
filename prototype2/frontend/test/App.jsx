@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 
 import App from '../src/App';
+import LoonyInternalError from '../src/LoonyInternalError';
 
 describe('<App />', function () {
   describe('#addTransaction', function () {
@@ -90,7 +91,26 @@ describe('<App />', function () {
 
     it('should fail when the id does not exist');
 
-    it('ensures id parameter matches id in transaction');
+    it('ensures id parameter matches id in transaction', function () {
+      const transactions = {};
+      const wrapper = shallow(<App transactions={transactions} />);
+      const app = wrapper.instance();
+
+      const newTransaction = {
+        id: 'a',
+        dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
+        account: 'Chase Sapphire Reserve',
+        payee: 'Ippudo',
+        category: 'Restaurants',
+        memo: '',
+        outflow: 27.31,
+        inflow: 0,
+      };
+
+      assert.throws(
+        () => { app.editTransaction('zzz', newTransaction); },
+        LoonyInternalError, /id does not match transaction.id/);
+    });
 
     it('should edit the existing transaction in TransactionTable');
   });

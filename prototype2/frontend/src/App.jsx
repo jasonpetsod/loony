@@ -1,5 +1,6 @@
 import React from 'react';
 
+import LoonyInternalError from './LoonyInternalError';
 import TransactionTable from './TransactionTable';
 import PropTypes from './PropTypes';
 
@@ -23,6 +24,11 @@ export default class App extends React.Component {
   }
 
   editTransaction(id, transaction) {
+    if (id !== transaction.id) {
+      throw new LoonyInternalError(
+          `id does not match transaction.id: "${id}" vs. "${transaction.id}"`);
+    }
+
     this.setState((prevState) => {
       const transactions = prevState.transactions;
       transactions[id] = transaction;
