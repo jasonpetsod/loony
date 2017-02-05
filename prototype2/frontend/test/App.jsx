@@ -32,7 +32,7 @@ describe('<App />', function () {
       const wrapper = shallow(<App transactions={transactions} />);
       const app = wrapper.instance();
 
-      app.addTransaction({
+      const newTransaction = {
         id: 'c',
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
         account: 'Chase Sapphire Reserve',
@@ -41,11 +41,15 @@ describe('<App />', function () {
         memo: '',
         outflow: 27.31,
         inflow: 0,
-      });
+      };
 
+      app.addTransaction(newTransaction);
+
+      // FIXME: Accessing app.state directly is racy since setState only
+      // enqueues a state change.
+
+      assert.equal(app.state.transactions.c, newTransaction);
       assert.sameMembers(
-        // FIXME: Accessing app.state directly is racy since setState only
-        // enqueues a state change.
         Object.keys(app.state.transactions),
         ['a', 'b', 'c']);
     });
