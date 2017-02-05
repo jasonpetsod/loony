@@ -3,7 +3,8 @@ import { shallow } from 'enzyme';
 import React from 'react';
 
 import AddTransactionRow from '../addTransactionRow';
-import TransactionTable, { TransactionRow } from '../transactionTable';
+import TransactionRow from '../TransactionRow';
+import TransactionTable from '../transactionTable';
 
 describe('<TransactionTable />', function () {
   const createWrapper = function (transactions) {

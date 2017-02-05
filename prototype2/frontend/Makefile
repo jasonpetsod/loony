@@ -10,8 +10,8 @@ YARN_LOCK = yarn.lock
 
 BROWSERIFY_OPTIONS = -t babelify --extension .jsx
 
-INPUTS := propTypes.js addTransactionRow.jsx MutableTransactionRow.jsx \
-	transactionTable.jsx loony.jsx
+INPUTS := propTypes.js addTransactionRow.jsx TransactionRow.jsx \
+	MutableTransactionRow.jsx transactionTable.jsx loony.jsx
 TARGETS := out.js
 
 all: $(TARGETS)
