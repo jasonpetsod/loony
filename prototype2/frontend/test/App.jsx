@@ -157,6 +157,39 @@ describe('<App />', function () {
         LoonyInternalError, /id does not match transaction.id/);
     });
 
-    it('should edit the existing transaction in TransactionTable');
+    it('should edit the existing TransactionRow', function () {
+      const transactions = {
+        a: {
+          id: 'a',
+          dateMs: 1483246800000,  // 2017-01-01 00:00 UTC-05:00
+          account: 'Checking',
+          payee: 'Google Inc.',
+          category: 'Income for January',
+          memo: '',
+          outflow: 0,
+          inflow: 100.00,
+        },
+      };
+      const wrapper = mount(<App transactions={transactions} />);
+      const app = wrapper.instance();
+
+      const newTransaction = {
+        id: 'a',
+        dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
+        account: 'Chase Sapphire Reserve',
+        payee: 'Ippudo',
+        category: 'Restaurants',
+        memo: '',
+        outflow: 27.31,
+        inflow: 0,
+      };
+
+      app.editTransaction('a', newTransaction);
+
+      const rows = wrapper.find(TransactionRow);
+      assert.lengthOf(rows, 1);
+      const transaction = rows.at(0).prop('transaction');
+      assert.deepEqual(transaction, newTransaction);
+    });
   });
 });
