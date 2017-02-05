@@ -45,12 +45,9 @@ describe('<App />', function () {
 
       app.addTransaction(newTransaction);
 
-      // FIXME: Accessing app.state directly is racy since setState only
-      // enqueues a state change.
-
-      assert.equal(app.state.transactions.c, newTransaction);
+      assert.equal(wrapper.state().transactions.c, newTransaction);
       assert.sameMembers(
-        Object.keys(app.state.transactions),
+        Object.keys(wrapper.state().transactions),
         ['a', 'b', 'c']);
     });
 
@@ -87,11 +84,8 @@ describe('<App />', function () {
 
       app.editTransaction('a', newTransaction);
 
-      // FIXME: Accessing app.state directly is racy since setState only
-      // enqueues a state change.
-
-      assert.equal(app.state.transactions.a, newTransaction);
-      assert.sameMembers(Object.keys(app.state.transactions), ['a']);
+      assert.equal(wrapper.state().transactions.a, newTransaction);
+      assert.sameMembers(Object.keys(wrapper.state().transactions), ['a']);
     });
 
     it('should fail when the id does not exist');
