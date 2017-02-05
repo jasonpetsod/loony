@@ -1,6 +1,5 @@
 import { assert } from 'chai';
 import { mount } from 'enzyme';
-import 'jsdom-global/register';  // global.document
 import React from 'react';
 import sinon from 'sinon';
 

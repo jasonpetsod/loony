@@ -29,7 +29,7 @@ lint:
 	$(ESLINT) src/*.js src/*.jsx 'test/**'
 
 test:
-	$(MOCHA) --compilers jsx:babel-register $(TESTARGS)
+	$(MOCHA) --compilers jsx:babel-register --require test/setup.js $(TESTARGS)
 
 node_modules: package.json yarn.lock
 	yarn

@@ -1,6 +1,5 @@
 import { assert } from 'chai';
 import { mount, shallow } from 'enzyme';
-import 'jsdom-global/register';  // global.document
 import React from 'react';
 
 import App from '../src/App';
