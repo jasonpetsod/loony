@@ -1,11 +1,23 @@
 import { assert } from 'chai';
 import { mount } from 'enzyme';
-import 'jsdom-global/register';  // global.document
 import React from 'react';
 
+import EditTransactionRow from '../src/EditTransactionRow';
 import TransactionRow from '../src/TransactionRow';
 
 describe('<TransactionRow />', function () {
+  const createWrapper = (transaction) => {
+    const options = {
+      attachTo: global.document.createElement('tbody'),
+    };
+    return mount(
+      <TransactionRow
+        transaction={transaction}
+        editTransactionHandler={() => {}}
+      />,
+      options);
+  };
+
   describe('renders', function () {
     it('view mode by default', function () {
       // TODO: Create a unified Transaction type.
@@ -19,16 +31,9 @@ describe('<TransactionRow />', function () {
         outflow: 23,
         inflow: 19.89,
       };
+      const wrapper = createWrapper(transaction);
 
-      const options = {
-        attachTo: global.document.createElement('tbody'),
-      };
-      const wrapper = mount(
-        <TransactionRow
-          transaction={transaction}
-          editTransactionHandler={() => {}}
-        />,
-        options);
+      assert.lengthOf(wrapper.find(EditTransactionRow), 0);
 
       const cells = wrapper.find('td').map(i => i.getNode().innerHTML);
 
@@ -44,6 +49,22 @@ describe('<TransactionRow />', function () {
       assert.deepEqual(cells, expectedCells);
     });
 
-    it('editor on click');
+    it('editor on click', function () {
+      // TODO: Create a unified Transaction type.
+      const transaction = {
+        id: '',
+        dateMs: 1483228800000,  // 2017-01-01 00:00:00 UTC
+        account: 'Cash',
+        payee: 'Mu Ramen',
+        category: 'Restaurants',
+        memo: 'yay noodles',
+        outflow: 23,
+        inflow: 19.89,
+      };
+      const wrapper = createWrapper(transaction);
+
+      wrapper.find('tr').simulate('click');
+      assert.lengthOf(wrapper.find(EditTransactionRow), 1);
+    });
   });
 });
