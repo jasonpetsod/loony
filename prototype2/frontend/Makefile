@@ -6,8 +6,6 @@ MOCHA = $(NODE_DIR)/mocha/bin/mocha
 WEBPACK = $(NODE_DIR)/webpack/bin/webpack.js
 WEBPACK_DEV_SERVER = $(NODE_DIR)/webpack-dev-server/bin/webpack-dev-server.js
 
-YARN_LOCK = yarn.lock
-
 TARGETS := dist/out.js
 
 all: $(TARGETS)
@@ -24,11 +22,11 @@ lint:
 test:
 	$(MOCHA) --compilers jsx:babel-register $(TESTARGS)
 
-$(YARN_LOCK): package.json
+node_modules: package.json yarn.lock
 	yarn
-	@touch yarn.lock
+	@touch $@
 
-deps: $(YARN_LOCK)
+deps: node_modules
 
 clean:
 	-rm $(TARGETS)
