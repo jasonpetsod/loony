@@ -6,8 +6,80 @@ import React from 'react';
 import MutableTransactionRow from '../src/MutableTransactionRow';
 
 describe('<MutableTransactionRow />', function () {
-  it('renders with initialTransactionData');
-  it('renders without initialTransactionData');
+  const createWrapper = (props) => {
+    const defaultProps = {
+      submitHandler: () => {},
+      submitButtonLabel: 'Submit',
+      initialTransactionData: null,
+    };
+    const mergedProps = Object.assign(defaultProps, props);
+
+    const options = {
+      attachTo: global.document.createElement('tbody'),
+    };
+    const wrapper = mount(
+      React.createElement(MutableTransactionRow, mergedProps), options);
+
+    return wrapper;
+  };
+
+  describe('renders', function () {
+    const validateFields = (wrapper, expectedFields) => {
+      const fields = {};
+      wrapper.find('input').forEach((i) => {
+        const node = i.getNode();
+        fields[node.name] = node.value;
+      });
+      assert.deepEqual(fields, expectedFields);
+    };
+
+    it('without initialTransactionData', function () {
+      const wrapper = createWrapper();
+
+      const expectedFields = {
+        account: '',
+        // TODO: Stub out default date.
+        date: '2017-02-05',
+        payee: '',
+        category: '',
+        memo: '',
+        outflow: '',
+        inflow: '',
+        submit: 'Submit',
+      };
+      validateFields(wrapper, expectedFields);
+    });
+
+    it('with initialTransactionData', function () {
+      // TODO: Create a unified Transaction type.
+      const initialTransactionData = {
+        id: '',
+        dateMs: 1483228800000,  // 2017-01-01 00:00:00 UTC
+        account: 'Cash',
+        payee: 'Mu Ramen',
+        category: 'Restaurants',
+        memo: 'yay noodles',
+        outflow: 23,
+        inflow: 19.89,
+      };
+      const wrapper = createWrapper({ initialTransactionData });
+
+      const expectedFields = {
+        account: 'Cash',
+        // TODO: Handle timezones properly. This expected value is dependent
+        // on the timezone of the environment in which the test is run.
+        date: '2016-12-31',
+        payee: 'Mu Ramen',
+        category: 'Restaurants',
+        memo: 'yay noodles',
+        // TODO: This should be 23.00.
+        outflow: '23',
+        inflow: '19.89',
+        submit: 'Submit',
+      };
+      validateFields(wrapper, expectedFields);
+    });
+  });
 
   describe('handles submission', function () {
     const setField = (wrapper, name, value) => {
@@ -25,22 +97,6 @@ describe('<MutableTransactionRow />', function () {
       Object.keys(fields).forEach((name) => {
         setField(wrapper, name, fields[name]);
       });
-    };
-
-    const createWrapper = (props) => {
-      const defaultProps = {
-        submitButtonLabel: 'Submit',
-        initialTransactionData: null,
-      };
-      const mergedProps = Object.assign(defaultProps, props);
-
-      const options = {
-        attachTo: global.document.createElement('tbody'),
-      };
-      const wrapper = mount(
-        React.createElement(MutableTransactionRow, mergedProps), options);
-
-      return wrapper;
     };
 
     it('without initialTransactionData', function () {

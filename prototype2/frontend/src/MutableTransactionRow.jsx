@@ -134,6 +134,7 @@ export default class MutableTransactionRow extends React.Component {
         <td>
           <input
             type="submit"
+            name="submit"
             value={this.props.submitButtonLabel}
             onClick={this.handleSubmit}
           />
