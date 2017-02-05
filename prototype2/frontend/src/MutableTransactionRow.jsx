@@ -1,5 +1,6 @@
 import moment from 'moment';
 import React from 'react';
+import uuid from 'uuid';
 
 import PropTypes from './PropTypes';
 import Transaction from './Transaction';
@@ -10,38 +11,28 @@ export default class MutableTransactionRow extends React.Component {
     return moment().format('YYYY-MM-DD');
   }
 
+  // Test seam.
+  static getUUID() {
+    return uuid.v4();
+  }
+
+  static getEmptyTransaction() {
+    return new Transaction({
+      id: MutableTransactionRow.getUUID(),
+      dateMs: MutableTransactionRow.getDate(),
+    });
+  }
+
   constructor(props) {
     super(props);
 
-    let initialState = null;
-    if (this.props.initialTransactionData !== null) {
-      // TODO: Store a Transaction object in state instead of unpacking it.
-      initialState = {
-        id: this.props.initialTransactionData.id,
-        account: this.props.initialTransactionData.account,
-        // TODO: Do we need to store dates according to the user's desired
-        // timezone?
-        date: moment(this.props.initialTransactionData.dateMs).utc()
-          .format('YYYY-MM-DD'),
-        payee: this.props.initialTransactionData.payee,
-        category: this.props.initialTransactionData.category,
-        memo: this.props.initialTransactionData.memo,
-        outflow: this.props.initialTransactionData.outflow,
-        inflow: this.props.initialTransactionData.inflow,
-      };
+    this.state = {};
+
+    if (this.props.initialTransaction === null) {
+      this.state.transaction = MutableTransactionRow.getEmptyTransaction();
     } else {
-      initialState = {
-        id: null,
-        account: '',
-        date: MutableTransactionRow.getDate(),
-        payee: '',
-        category: '',
-        memo: '',
-        outflow: '',
-        inflow: '',
-      };
+      this.state.transaction = this.props.initialTransaction;
     }
-    this.state = initialState;
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -50,24 +41,26 @@ export default class MutableTransactionRow extends React.Component {
   handleInputChange(event) {
     const target = event.target;
     const { name, value } = target;
-    this.setState({
-      [name]: value,
+    this.setState((prevState) => {
+      const tx = prevState.transaction;
+      tx[name] = value;
+      return { tx };
     });
   }
 
   handleSubmit() {
-    const tx = new Transaction({
-      id: this.state.id,
-      dateMs: moment.utc(this.state.date, 'YYYY-MM-DD').valueOf(),
-      account: this.state.account,
-      payee: this.state.payee,
-      category: this.state.category,
-      memo: this.state.memo,
-      // TODO: Using floats for currencies is so, so wrong.
-      outflow: parseFloat(this.state.outflow),
-      inflow: parseFloat(this.state.inflow),
-    });
-    return this.props.submitHandler(tx);
+    const tx = this.state.transaction;
+
+    // Parse fields into our actual desired types.
+    tx.dateMs = moment.utc(tx.dateMs, 'YYYY-MM-DD').valueOf();
+    // TODO: Stop using floats to represent money.
+    tx.outflow = parseFloat(tx.outflow);
+    tx.inflow = parseFloat(tx.inflow);
+
+    this.props.submitHandler(tx);
+    // Clear the state so this component can be reused (e.g. by
+    // AddTransactionRow).
+    this.state.transaction = MutableTransactionRow.getEmptyTransaction();
   }
 
   render() {
@@ -80,16 +73,17 @@ export default class MutableTransactionRow extends React.Component {
             type="text"
             name="account"
             placeholder="Account"
-            value={this.state.account}
+            value={this.state.transaction.account}
             onChange={this.handleInputChange}
           />
         </td>
         <td>
           <input
             type="date"
-            name="date"
+            name="dateMs"
             placeholder="Date"
-            value={this.state.date}
+            value={
+              moment(this.state.transaction.dateMs).utc().format('YYYY-MM-DD')}
             onChange={this.handleInputChange}
           />
         </td>
@@ -98,7 +92,7 @@ export default class MutableTransactionRow extends React.Component {
             type="text"
             name="payee"
             placeholder="Payee"
-            value={this.state.payee}
+            value={this.state.transaction.payee}
             onChange={this.handleInputChange}
           />
         </td>
@@ -107,7 +101,7 @@ export default class MutableTransactionRow extends React.Component {
             type="text"
             name="category"
             placeholder="Category"
-            value={this.state.category}
+            value={this.state.transaction.category}
             onChange={this.handleInputChange}
           />
         </td>
@@ -116,7 +110,7 @@ export default class MutableTransactionRow extends React.Component {
             type="text"
             name="memo"
             placeholder="Memo"
-            value={this.state.memo}
+            value={this.state.transaction.memo}
             onChange={this.handleInputChange}
           />
         </td>
@@ -125,7 +119,7 @@ export default class MutableTransactionRow extends React.Component {
             type="text"
             name="outflow"
             placeholder="Outflow"
-            value={this.state.outflow}
+            value={this.state.transaction.outflow}
             onChange={this.handleInputChange}
           />
         </td>
@@ -134,7 +128,7 @@ export default class MutableTransactionRow extends React.Component {
             type="text"
             name="inflow"
             placeholder="Inflow"
-            value={this.state.inflow}
+            value={this.state.transaction.inflow}
             onChange={this.handleInputChange}
           />
         </td>
@@ -155,11 +149,11 @@ MutableTransactionRow.propTypes = {
   // function (tx: Transaction) => undefined.
   submitHandler: React.PropTypes.func.isRequired,
 
-  initialTransactionData: PropTypes.transaction,
+  initialTransaction: PropTypes.transaction,
 
   submitButtonLabel: React.PropTypes.string.isRequired,
 };
 
 MutableTransactionRow.defaultProps = {
-  initialTransactionData: null,
+  initialTransaction: null,
 };

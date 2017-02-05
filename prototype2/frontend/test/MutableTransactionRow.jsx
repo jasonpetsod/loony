@@ -20,7 +20,7 @@ describe('<MutableTransactionRow />', function () {
     const defaultProps = {
       submitHandler: () => {},
       submitButtonLabel: 'Submit',
-      initialTransactionData: null,
+      initialTransaction: null,
     };
     const mergedProps = Object.assign(defaultProps, props);
 
@@ -43,7 +43,7 @@ describe('<MutableTransactionRow />', function () {
       assert.deepEqual(fields, expectedFields);
     };
 
-    it('without initialTransactionData', function () {
+    it('without initialTransaction', function () {
       const getDateStub = sinon.stub(MutableTransactionRow, 'getDate');
       getDateStub.returns('2017-01-01');
 
@@ -51,19 +51,19 @@ describe('<MutableTransactionRow />', function () {
 
       const expectedFields = {
         account: '',
-        date: '2017-01-01',
+        dateMs: '2017-01-01',
         payee: '',
         category: '',
         memo: '',
-        outflow: '',
-        inflow: '',
+        outflow: '0',
+        inflow: '0',
         submit: 'Submit',
       };
       validateFields(wrapper, expectedFields);
     });
 
-    it('with initialTransactionData', function () {
-      const initialTransactionData = new Transaction({
+    it('with initialTransaction', function () {
+      const initialTransaction = new Transaction({
         id: 'a',
         dateMs: 1483228800000,  // 2017-01-01 00:00:00 UTC
         account: 'Cash',
@@ -73,11 +73,11 @@ describe('<MutableTransactionRow />', function () {
         outflow: 23,
         inflow: 19.89,
       });
-      const wrapper = createWrapper({ initialTransactionData });
+      const wrapper = createWrapper({ initialTransaction });
 
       const expectedFields = {
         account: 'Cash',
-        date: '2017-01-01',
+        dateMs: '2017-01-01',
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
@@ -108,14 +108,17 @@ describe('<MutableTransactionRow />', function () {
       });
     };
 
-    it('without initialTransactionData', function () {
+    it('without initialTransaction', function () {
+      const getUUIDStub = sinon.stub(MutableTransactionRow, 'getUUID');
+      getUUIDStub.returns('fake-uuid');
+
       let receivedData = null;
       const handler = (data) => { receivedData = data; };
       const wrapper = createWrapper({ submitHandler: handler });
 
       // Edit fields.
       const fields = {
-        date: '2017-01-01',
+        dateMs: '2017-01-01',
         account: 'Cash',
         payee: 'Mu Ramen',
         category: 'Restaurants',
@@ -130,7 +133,7 @@ describe('<MutableTransactionRow />', function () {
 
       // Make sure handler() is called with the right data.
       const expectedData = {
-        id: null,
+        id: 'fake-uuid',
         dateMs: 1483228800000,
         account: 'Cash',
         payee: 'Mu Ramen',
@@ -142,8 +145,8 @@ describe('<MutableTransactionRow />', function () {
       assert.deepEqual(receivedData, expectedData);
     });
 
-    it('with initialTransactionData', function () {
-      const initialTransactionData = new Transaction({
+    it('with initialTransaction', function () {
+      const initialTransaction = new Transaction({
         id: 'a',
         dateMs: 1483228800000,  // 2017-01-01 00:00:00 UTC
         account: 'Cash',
@@ -157,13 +160,13 @@ describe('<MutableTransactionRow />', function () {
       let receivedData = null;
       const handler = (data) => { receivedData = data; };
       const wrapper = createWrapper({
-        initialTransactionData,
+        initialTransaction,
         submitHandler: handler,
       });
 
       // Edit fields.
       const newFields = {
-        date: '2017-01-03',
+        dateMs: '2017-01-03',
         account: 'Chase Sapphire Reserved',
         payee: 'Hi-Collar',
         category: 'Alcohol',
