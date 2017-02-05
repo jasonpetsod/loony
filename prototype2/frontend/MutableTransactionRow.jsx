@@ -1,19 +1,35 @@
 import moment from 'moment';
 import React from 'react';
 
+import PropTypes from './propTypes';
+
 export default class MutableTransactionRow extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      account: '',
-      date: moment().format('YYYY-MM-DD'),
-      payee: '',
-      category: '',
-      memo: '',
-      outflow: '',
-      inflow: '',
-    };
+    let initialState = null;
+    if (this.props.initialTransactionData !== null) {
+      initialState = {
+        account: this.props.initialTransactionData.account,
+        date: this.props.initialTransactionData.date,
+        payee: this.props.initialTransactionData.payee,
+        category: this.props.initialTransactionData.category,
+        memo: this.props.initialTransactionData.memo,
+        outflow: this.props.initialTransactionData.outflow,
+        inflow: this.props.initialTransactionData.inflow,
+      };
+    } else {
+      initialState = {
+        account: '',
+        date: moment().format('YYYY-MM-DD'),
+        payee: '',
+        category: '',
+        memo: '',
+        outflow: '',
+        inflow: '',
+      };
+    }
+    this.state = initialState;
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -42,6 +58,8 @@ export default class MutableTransactionRow extends React.Component {
   }
 
   render() {
+    // TODO: Make a factory for these fields and autogen each field based on a
+    // separate entity.
     return (
       <tr>
         <td>
@@ -119,4 +137,10 @@ MutableTransactionRow.propTypes = {
   // Function takes an object with fields defined in
   // MutableTransactionRow#handleSubmit.
   submitHandler: React.PropTypes.func.isRequired,
+
+  initialTransactionData: PropTypes.transaction,
+};
+
+MutableTransactionRow.defaultProps = {
+  initialTransactionData: null,
 };
