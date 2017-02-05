@@ -16,10 +16,10 @@ TARGETS := out.js
 all: $(TARGETS)
 
 out.js: $(INPUTS)
-	$(BROWSERIFY) $(INPUTS) $(BROWSERIFY_OPTIONS) -o out.js
+	$(BROWSERIFY) $(INPUTS) $(BROWSERIFY_OPTIONS) -o out.js -d
 
 watchify:
-	$(WATCHIFY) $(INPUTS) $(BROWSERIFY_OPTIONS) -o out.js -v
+	$(WATCHIFY) $(INPUTS) $(BROWSERIFY_OPTIONS) -o out.js -v -d
 
 lint:
 	$(ESLINT) $(INPUTS) 'test/**'
