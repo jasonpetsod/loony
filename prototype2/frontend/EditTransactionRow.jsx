@@ -10,7 +10,7 @@ export default class EditTransactionRow extends React.Component {
   }
 
   handleSave(data) {
-    this.props.editTransactionHandler(data);
+    this.props.editTransactionHandler(data.id, data);  // App#editTransaction
     this.props.editCompleteHandler();
   }
 

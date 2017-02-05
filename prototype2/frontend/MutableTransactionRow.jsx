@@ -10,6 +10,7 @@ export default class MutableTransactionRow extends React.Component {
     let initialState = null;
     if (this.props.initialTransactionData !== null) {
       initialState = {
+        id: this.props.initialTransactionData.id,
         account: this.props.initialTransactionData.account,
         date: this.props.initialTransactionData.date,
         payee: this.props.initialTransactionData.payee,
@@ -20,6 +21,7 @@ export default class MutableTransactionRow extends React.Component {
       };
     } else {
       initialState = {
+        id: '',
         account: '',
         date: moment().format('YYYY-MM-DD'),
         payee: '',
@@ -45,6 +47,7 @@ export default class MutableTransactionRow extends React.Component {
 
   handleSubmit() {
     const data = {
+      id: this.state.id,
       dateMs: moment(this.state.date).valueOf(),
       account: this.state.account,
       payee: this.state.payee,

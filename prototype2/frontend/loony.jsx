@@ -23,10 +23,13 @@ class App extends React.Component {
     });
   }
 
-  /* eslint-disable class-methods-use-this */
-  editTransaction() {
+  editTransaction(id, transaction) {
+    this.setState((prevState) => {
+      const transactions = prevState.transactions;
+      transactions[id] = transaction;
+      return { transactions };
+    });
   }
-  /* eslint-enable class-methods-use-this */
 
   render() {
     return (
