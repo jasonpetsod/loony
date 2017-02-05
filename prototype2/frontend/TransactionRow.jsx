@@ -30,6 +30,7 @@ export default class TransactionRow extends React.Component {
       return (
         <EditTransactionRow
           transaction={this.props.transaction}
+          editTransactionHandler={this.props.editTransactionHandler}
           editCompleteHandler={this.finishEdit}
         />
       );
@@ -55,4 +56,6 @@ export default class TransactionRow extends React.Component {
 
 TransactionRow.propTypes = {
   transaction: propTypes.transaction.isRequired,
+
+  editTransactionHandler: React.PropTypes.func.isRequired,
 };

@@ -6,7 +6,11 @@ import propTypes from './propTypes';
 
 export default function TransactionTable(props) {
   const rows = props.transactions.map(t => (
-    <TransactionRow key={t.id} transaction={t} />
+    <TransactionRow
+      key={t.id}
+      transaction={t}
+      editTransactionHandler={props.editTransactionHandler}
+    />
   ));
   return (
     <table>
@@ -35,4 +39,5 @@ TransactionTable.propTypes = {
   transactions: React.PropTypes.arrayOf(propTypes.transaction).isRequired,
   // TODO: Add function signature.
   newTransactionHandler: React.PropTypes.func.isRequired,
+  editTransactionHandler: React.PropTypes.func.isRequired,
 };

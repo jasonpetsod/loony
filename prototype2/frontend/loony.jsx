@@ -12,6 +12,7 @@ class App extends React.Component {
     };
 
     this.addTransaction = this.addTransaction.bind(this);
+    this.editTransaction = this.editTransaction.bind(this);
   }
 
   addTransaction(transaction) {
@@ -22,6 +23,11 @@ class App extends React.Component {
     });
   }
 
+  /* eslint-disable class-methods-use-this */
+  editTransaction() {
+  }
+  /* eslint-enable class-methods-use-this */
+
   render() {
     return (
       <div>
@@ -29,6 +35,7 @@ class App extends React.Component {
         <TransactionTable
           transactions={this.state.transactions}
           newTransactionHandler={this.addTransaction}
+          editTransactionHandler={this.editTransaction}
         />
       </div>
     );

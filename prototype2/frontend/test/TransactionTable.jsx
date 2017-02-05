@@ -8,11 +8,12 @@ import TransactionTable from '../transactionTable';
 
 describe('<TransactionTable />', function () {
   const createWrapper = function (transactions) {
-    const dummyNewTransactionHandler = function () {};
+    const dummyHandler = function () {};
     const wrapper = shallow(
       <TransactionTable
         transactions={transactions}
-        newTransactionHandler={dummyNewTransactionHandler}
+        newTransactionHandler={dummyHandler}
+        editTransactionHandler={dummyHandler}
       />);
     return wrapper;
   };
