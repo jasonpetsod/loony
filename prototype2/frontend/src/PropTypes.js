@@ -1,17 +1,9 @@
 import React from 'react';
 
-// TODO: Create a unified Transaction type.
-const transaction = React.PropTypes.shape({
-  id: React.PropTypes.string.isRequired,
-  // Milliseconds since the epoch.
-  dateMs: React.PropTypes.number.isRequired,
-  account: React.PropTypes.string.isRequired,
-  payee: React.PropTypes.string.isRequired,
-  category: React.PropTypes.string,
-  memo: React.PropTypes.string,
-  outflow: React.PropTypes.number,
-  inflow: React.PropTypes.number,
-});
+import Transaction from './Transaction';
+
+// TODO: Change call sites to reference React.PropTypes.instanceOf directly.
+const transaction = React.PropTypes.instanceOf(Transaction);
 
 export default {
   transaction,

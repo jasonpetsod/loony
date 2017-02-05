@@ -9,19 +9,10 @@ export default class AddTransactionRow extends React.Component {
     this.handleAdd = this.handleAdd.bind(this);
   }
 
-  handleAdd(data) {
-    // TODO: Create a unified Transaction type.
-    const transaction = {
-      id: uuid.v4(),
-      dateMs: data.dateMs,
-      account: data.account,
-      payee: data.payee,
-      category: data.category,
-      memo: data.memo,
-      outflow: data.outflow,
-      inflow: data.inflow,
-    };
-    this.props.newTransactionHandler(transaction);
+  handleAdd(tx) {
+    // TODO: Move ID creation to Transaction.
+    tx.id = uuid.v4();  // eslint-disable-line no-param-reassign
+    this.props.newTransactionHandler(tx);  // App#addTransaction
   }
 
   render() {
@@ -35,6 +26,6 @@ export default class AddTransactionRow extends React.Component {
 }
 
 AddTransactionRow.propTypes = {
-  // TODO: Add function signature.
+  // function (tx: Transaction) => undefined.
   newTransactionHandler: React.PropTypes.func.isRequired,
 };

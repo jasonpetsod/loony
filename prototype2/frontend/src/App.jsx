@@ -16,6 +16,9 @@ export default class App extends React.Component {
   }
 
   addTransaction(transaction) {
+    // TODO: Disallow transactions with incomplete data.
+    // TODO: Ensure transaction with the ID doesn't already exist.
+
     this.setState((prevState) => {
       const transactions = prevState.transactions;
       transactions[transaction.id] = transaction;
@@ -24,6 +27,8 @@ export default class App extends React.Component {
   }
 
   editTransaction(id, transaction) {
+    // TODO: Disallow transactions with incomplete data.
+
     if (id !== transaction.id) {
       throw new LoonyInternalError(
           `id does not match transaction.id: "${id}" vs. "${transaction.id}"`);

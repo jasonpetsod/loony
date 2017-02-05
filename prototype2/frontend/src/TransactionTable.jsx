@@ -40,7 +40,10 @@ export default function TransactionTable(props) {
 
 TransactionTable.propTypes = {
   transactions: React.PropTypes.objectOf(PropTypes.transaction).isRequired,
-  // TODO: Add function signature.
+
+  // function (tx: Transaction) => undefined.
   newTransactionHandler: React.PropTypes.func.isRequired,
+
+  // function (id: string, tx: Transaction) => undefined.
   editTransactionHandler: React.PropTypes.func.isRequired,
 };

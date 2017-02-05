@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 
 import EditTransactionRow from '../src/EditTransactionRow';
+import Transaction from '../src/Transaction';
 import TransactionRow from '../src/TransactionRow';
 
 describe('<TransactionRow />', function () {
@@ -20,9 +21,8 @@ describe('<TransactionRow />', function () {
 
   describe('renders', function () {
     it('view mode by default', function () {
-      // TODO: Create a unified Transaction type.
-      const transaction = {
-        id: '',
+      const transaction = new Transaction({
+        id: 'a',
         dateMs: 1483228800000,  // 2017-01-01 00:00:00 UTC
         account: 'Cash',
         payee: 'Mu Ramen',
@@ -30,7 +30,7 @@ describe('<TransactionRow />', function () {
         memo: 'yay noodles',
         outflow: 23,
         inflow: 19.89,
-      };
+      });
       const wrapper = createWrapper(transaction);
 
       assert.lengthOf(wrapper.find(EditTransactionRow), 0);
@@ -50,9 +50,8 @@ describe('<TransactionRow />', function () {
     });
 
     it('editor on click', function () {
-      // TODO: Create a unified Transaction type.
-      const transaction = {
-        id: '',
+      const transaction = new Transaction({
+        id: 'a',
         dateMs: 1483228800000,  // 2017-01-01 00:00:00 UTC
         account: 'Cash',
         payee: 'Mu Ramen',
@@ -60,7 +59,7 @@ describe('<TransactionRow />', function () {
         memo: 'yay noodles',
         outflow: 23,
         inflow: 19.89,
-      };
+      });
       const wrapper = createWrapper(transaction);
 
       wrapper.find('tr').simulate('click');
@@ -68,9 +67,8 @@ describe('<TransactionRow />', function () {
     });
 
     it('editor returns to view on submission', function () {
-      // TODO: Create a unified Transaction type.
-      const transaction = {
-        id: '',
+      const transaction = new Transaction({
+        id: 'a',
         dateMs: 1483228800000,  // 2017-01-01 00:00:00 UTC
         account: 'Cash',
         payee: 'Mu Ramen',
@@ -78,7 +76,7 @@ describe('<TransactionRow />', function () {
         memo: 'yay noodles',
         outflow: 23,
         inflow: 19.89,
-      };
+      });
       const wrapper = createWrapper(transaction);
 
       wrapper.find('tr').simulate('click');

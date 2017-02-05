@@ -4,6 +4,7 @@ import React from 'react';
 import sinon from 'sinon';
 
 import MutableTransactionRow from '../src/MutableTransactionRow';
+import Transaction from '../src/Transaction';
 
 describe('<MutableTransactionRow />', function () {
   let sandbox;
@@ -62,9 +63,8 @@ describe('<MutableTransactionRow />', function () {
     });
 
     it('with initialTransactionData', function () {
-      // TODO: Create a unified Transaction type.
-      const initialTransactionData = {
-        id: '',
+      const initialTransactionData = new Transaction({
+        id: 'a',
         dateMs: 1483228800000,  // 2017-01-01 00:00:00 UTC
         account: 'Cash',
         payee: 'Mu Ramen',
@@ -72,7 +72,7 @@ describe('<MutableTransactionRow />', function () {
         memo: 'yay noodles',
         outflow: 23,
         inflow: 19.89,
-      };
+      });
       const wrapper = createWrapper({ initialTransactionData });
 
       const expectedFields = {
@@ -130,7 +130,7 @@ describe('<MutableTransactionRow />', function () {
 
       // Make sure handler() is called with the right data.
       const expectedData = {
-        id: '',
+        id: null,
         dateMs: 1483228800000,
         account: 'Cash',
         payee: 'Mu Ramen',
@@ -143,9 +143,8 @@ describe('<MutableTransactionRow />', function () {
     });
 
     it('with initialTransactionData', function () {
-      // TODO: Create a unified Transaction type.
-      const initialTransactionData = {
-        id: '',
+      const initialTransactionData = new Transaction({
+        id: 'a',
         dateMs: 1483228800000,  // 2017-01-01 00:00:00 UTC
         account: 'Cash',
         payee: 'Mu Ramen',
@@ -153,7 +152,7 @@ describe('<MutableTransactionRow />', function () {
         memo: 'yay noodles',
         outflow: 23,
         inflow: 19.89,
-      };
+      });
 
       let receivedData = null;
       const handler = (data) => { receivedData = data; };
@@ -179,7 +178,7 @@ describe('<MutableTransactionRow />', function () {
 
       // Make sure handler() is called with the right data.
       const expectedData = {
-        id: '',
+        id: 'a',
         dateMs: 1483401600000,  // 2017-01-03 00:00:00 UTC
         account: 'Chase Sapphire Reserved',
         payee: 'Hi-Collar',

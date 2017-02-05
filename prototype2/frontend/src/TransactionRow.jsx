@@ -40,7 +40,10 @@ export default class TransactionRow extends React.Component {
         <td>{this.props.transaction.account}</td>
         <td>
           {/* TODO: Do we need to store dates according to the user's desired
-              timezone? */}
+            * timezone?
+            * TODO: Create a method on Transaction that returns this formatted
+            * version.
+            */}
           {moment(this.props.transaction.dateMs).utc().format('YYYY-MM-DD')}
         </td>
         <td>{this.props.transaction.payee}</td>
@@ -61,5 +64,6 @@ export default class TransactionRow extends React.Component {
 TransactionRow.propTypes = {
   transaction: PropTypes.transaction.isRequired,
 
+  // function (id: string, tx: Transaction) => undefined.
   editTransactionHandler: React.PropTypes.func.isRequired,
 };

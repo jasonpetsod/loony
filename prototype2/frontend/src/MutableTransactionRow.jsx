@@ -2,6 +2,7 @@ import moment from 'moment';
 import React from 'react';
 
 import PropTypes from './PropTypes';
+import Transaction from './Transaction';
 
 export default class MutableTransactionRow extends React.Component {
   // Test seam.
@@ -14,7 +15,7 @@ export default class MutableTransactionRow extends React.Component {
 
     let initialState = null;
     if (this.props.initialTransactionData !== null) {
-      // TODO: Create a unified Transaction type.
+      // TODO: Store a Transaction object in state instead of unpacking it.
       initialState = {
         id: this.props.initialTransactionData.id,
         account: this.props.initialTransactionData.account,
@@ -30,7 +31,7 @@ export default class MutableTransactionRow extends React.Component {
       };
     } else {
       initialState = {
-        id: '',
+        id: null,
         account: '',
         date: MutableTransactionRow.getDate(),
         payee: '',
@@ -55,8 +56,7 @@ export default class MutableTransactionRow extends React.Component {
   }
 
   handleSubmit() {
-    // TODO: Create a unified Transaction type.
-    const data = {
+    const tx = new Transaction({
       id: this.state.id,
       dateMs: moment.utc(this.state.date, 'YYYY-MM-DD').valueOf(),
       account: this.state.account,
@@ -66,8 +66,8 @@ export default class MutableTransactionRow extends React.Component {
       // TODO: Using floats for currencies is so, so wrong.
       outflow: parseFloat(this.state.outflow),
       inflow: parseFloat(this.state.inflow),
-    };
-    return this.props.submitHandler(data);
+    });
+    return this.props.submitHandler(tx);
   }
 
   render() {
@@ -152,8 +152,7 @@ export default class MutableTransactionRow extends React.Component {
 }
 
 MutableTransactionRow.propTypes = {
-  // Function takes an object with fields defined in
-  // MutableTransactionRow#handleSubmit.
+  // function (tx: Transaction) => undefined.
   submitHandler: React.PropTypes.func.isRequired,
 
   initialTransactionData: PropTypes.transaction,

@@ -4,38 +4,34 @@ import React from 'react';
 
 import App from '../src/App';
 import LoonyInternalError from '../src/LoonyInternalError';
+import Transaction from '../src/Transaction';
 import TransactionRow from '../src/TransactionRow';
 
 describe('<App />', function () {
   describe('#addTransaction', function () {
     it('should add a new transaction to state', function () {
-      // TODO: Create a unified Transaction type.
       const transactions = {
-        a: {
+        a: new Transaction({
           id: 'a',
           dateMs: 1483246800000,  // 2017-01-01 00:00 UTC-05:00
           account: 'Checking',
           payee: 'Google Inc.',
           category: 'Income for January',
-          memo: '',
-          outflow: 0,
           inflow: 100.00,
-        },
-        b: {
+        }),
+        b: new Transaction({
           id: 'b',
           dateMs: 1483678800000,  // 2017-01-06 00:00 UTC-05:00
           account: 'Cash',
           payee: 'Raku',
           category: 'Restaurants',
-          memo: '',
           outflow: 27.31,
-          inflow: 0,
-        },
+        }),
       };
       const wrapper = shallow(<App transactions={transactions} />);
       const app = wrapper.instance();
 
-      const newTransaction = {
+      const newTransaction = new Transaction({
         id: 'c',
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
         account: 'Chase Sapphire Reserve',
@@ -44,7 +40,7 @@ describe('<App />', function () {
         memo: '',
         outflow: 27.31,
         inflow: 0,
-      };
+      });
 
       app.addTransaction(newTransaction);
 
@@ -59,17 +55,14 @@ describe('<App />', function () {
       const wrapper = mount(<App transactions={transactions} />);
       const app = wrapper.instance();
 
-      // TODO: Create a unified Transaction type.
-      const newTransaction = {
+      const newTransaction = new Transaction({
         id: 'c',
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
         account: 'Chase Sapphire Reserve',
         payee: 'Ippudo',
         category: 'Restaurants',
-        memo: '',
         outflow: 27.31,
-        inflow: 0,
-      };
+      });
 
       assert.lengthOf(wrapper.find(TransactionRow), 0);
 
@@ -84,33 +77,27 @@ describe('<App />', function () {
 
   describe('#editTransaction', function () {
     it('should edit the transaction in state', function () {
-      // TODO: Create a unified Transaction type.
       const transactions = {
-        a: {
+        a: new Transaction({
           id: 'a',
           dateMs: 1483246800000,  // 2017-01-01 00:00 UTC-05:00
           account: 'Checking',
           payee: 'Google Inc.',
           category: 'Income for January',
-          memo: '',
-          outflow: 0,
           inflow: 100.00,
-        },
+        }),
       };
       const wrapper = shallow(<App transactions={transactions} />);
       const app = wrapper.instance();
 
-      // TODO: Create a unified Transaction type.
-      const newTransaction = {
+      const newTransaction = new Transaction({
         id: 'a',
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
         account: 'Chase Sapphire Reserve',
         payee: 'Ippudo',
         category: 'Restaurants',
-        memo: '',
         outflow: 27.31,
-        inflow: 0,
-      };
+      });
 
       app.editTransaction('a', newTransaction);
 
@@ -123,17 +110,14 @@ describe('<App />', function () {
       const wrapper = shallow(<App transactions={transactions} />);
       const app = wrapper.instance();
 
-      // TODO: Create a unified Transaction type.
-      const newTransaction = {
+      const newTransaction = new Transaction({
         id: 'a',
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
         account: 'Chase Sapphire Reserve',
         payee: 'Ippudo',
         category: 'Restaurants',
-        memo: '',
         outflow: 27.31,
-        inflow: 0,
-      };
+      });
 
       assert.throws(
         () => { app.editTransaction('a', newTransaction); },
@@ -145,16 +129,14 @@ describe('<App />', function () {
       const wrapper = shallow(<App transactions={transactions} />);
       const app = wrapper.instance();
 
-      const newTransaction = {
+      const newTransaction = new Transaction({
         id: 'a',
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
         account: 'Chase Sapphire Reserve',
         payee: 'Ippudo',
         category: 'Restaurants',
-        memo: '',
         outflow: 27.31,
-        inflow: 0,
-      };
+      });
 
       assert.throws(
         () => { app.editTransaction('zzz', newTransaction); },
@@ -162,33 +144,27 @@ describe('<App />', function () {
     });
 
     it('should edit the existing TransactionRow', function () {
-      // TODO: Create a unified Transaction type.
       const transactions = {
-        a: {
+        a: new Transaction({
           id: 'a',
           dateMs: 1483246800000,  // 2017-01-01 00:00 UTC-05:00
           account: 'Checking',
           payee: 'Google Inc.',
           category: 'Income for January',
-          memo: '',
-          outflow: 0,
           inflow: 100.00,
-        },
+        }),
       };
       const wrapper = mount(<App transactions={transactions} />);
       const app = wrapper.instance();
 
-      // TODO: Create a unified Transaction type.
-      const newTransaction = {
+      const newTransaction = new Transaction({
         id: 'a',
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
         account: 'Chase Sapphire Reserve',
         payee: 'Ippudo',
         category: 'Restaurants',
-        memo: '',
         outflow: 27.31,
-        inflow: 0,
-      };
+      });
 
       app.editTransaction('a', newTransaction);
 

@@ -9,8 +9,8 @@ export default class EditTransactionRow extends React.Component {
     this.handleSave = this.handleSave.bind(this);
   }
 
-  handleSave(data) {
-    this.props.editTransactionHandler(data.id, data);  // App#editTransaction
+  handleSave(tx) {
+    this.props.editTransactionHandler(tx.id, tx);  // App#editTransaction
     this.props.editCompleteHandler();
   }
 
@@ -28,9 +28,9 @@ export default class EditTransactionRow extends React.Component {
 EditTransactionRow.propTypes = {
   transaction: PropTypes.transaction.isRequired,
 
-  // Function to call to save the contents of the new transaction.
+  // function (id: string, tx: Transaction) => undefined.
   editTransactionHandler: React.PropTypes.func.isRequired,
 
-  // Function to call once the edit has completed.
+  // function () => undefined.
   editCompleteHandler: React.PropTypes.func.isRequired,
 };
