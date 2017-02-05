@@ -4,6 +4,7 @@ NODE_DIR = node_modules
 ESLINT = $(NODE_DIR)/eslint/bin/eslint.js
 MOCHA = $(NODE_DIR)/mocha/bin/mocha
 WEBPACK = $(NODE_DIR)/webpack/bin/webpack.js
+WEBPACK_DEV_SERVER = $(NODE_DIR)/webpack-dev-server/bin/webpack-dev-server.js
 
 YARN_LOCK = yarn.lock
 
@@ -13,6 +14,9 @@ all: $(TARGETS)
 
 out.js:
 	$(WEBPACK)
+
+devserver:
+	$(WEBPACK_DEV_SERVER) --watch -d --progress
 
 lint:
 	$(ESLINT) src/*.js src/*.jsx 'test/**'
