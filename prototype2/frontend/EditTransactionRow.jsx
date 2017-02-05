@@ -19,6 +19,7 @@ export default class EditTransactionRow extends React.Component {
       <MutableTransactionRow
         initialTransactionData={this.props.transaction}
         submitHandler={this.handleSave}
+        submitButtonLabel="Save"
       />
     );
   }

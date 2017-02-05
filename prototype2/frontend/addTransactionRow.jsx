@@ -24,7 +24,12 @@ export default class AddTransactionRow extends React.Component {
   }
 
   render() {
-    return <MutableTransactionRow submitHandler={this.handleAdd} />;
+    return (
+      <MutableTransactionRow
+        submitHandler={this.handleAdd}
+        submitButtonLabel="Add"
+      />
+    );
   }
 }
 

@@ -130,7 +130,11 @@ export default class MutableTransactionRow extends React.Component {
           />
         </td>
         <td>
-          <input type="submit" value="Add" onClick={this.handleSubmit} />
+          <input
+            type="submit"
+            value={this.props.submitButtonLabel}
+            onClick={this.handleSubmit}
+          />
         </td>
       </tr>
     );
@@ -143,6 +147,8 @@ MutableTransactionRow.propTypes = {
   submitHandler: React.PropTypes.func.isRequired,
 
   initialTransactionData: PropTypes.transaction,
+
+  submitButtonLabel: React.PropTypes.string.isRequired,
 };
 
 MutableTransactionRow.defaultProps = {
