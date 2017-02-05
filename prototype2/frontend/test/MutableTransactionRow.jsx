@@ -54,7 +54,7 @@ describe('<MutableTransactionRow />', function () {
     // Make sure handler() is called with the right data.
     const expectedData = {
       id: '',
-      dateMs: 1483246800000,  // TODO: Fix timezones here.
+      dateMs: 1483228800000,
       account: 'Cash',
       payee: 'Mu Ramen',
       category: 'Restaurants',
@@ -64,4 +64,6 @@ describe('<MutableTransactionRow />', function () {
     };
     assert.deepEqual(receivedData, expectedData);
   });
+
+  it('handles submission with initialTransactionData');
 });

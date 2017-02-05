@@ -49,7 +49,7 @@ export default class MutableTransactionRow extends React.Component {
   handleSubmit() {
     const data = {
       id: this.state.id,
-      dateMs: moment(this.state.date).valueOf(),
+      dateMs: moment.utc(this.state.date, 'YYYY-MM-DD').valueOf(),
       account: this.state.account,
       payee: this.state.payee,
       category: this.state.category,
