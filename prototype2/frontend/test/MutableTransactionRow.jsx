@@ -27,21 +27,24 @@ describe('<MutableTransactionRow />', function () {
       });
     };
 
-    it('without initialTransactionData', function () {
-      let receivedData = null;
-      const handler = (data) => {
-        receivedData = data;
-      };
-
+    const createWrapper = (submitHandler) => {
       const options = {
         attachTo: global.document.createElement('tbody'),
       };
       const wrapper = mount(
         <MutableTransactionRow
-          submitHandler={handler}
+          submitHandler={submitHandler}
           submitButtonLabel="Submit"
         />,
         options);
+
+      return wrapper;
+    };
+
+    it('without initialTransactionData', function () {
+      let receivedData = null;
+      const handler = (data) => { receivedData = data; };
+      const wrapper = createWrapper(handler);
 
       // Edit fields.
       const fields = {
