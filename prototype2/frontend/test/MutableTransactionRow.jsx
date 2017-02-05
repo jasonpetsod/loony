@@ -27,16 +27,18 @@ describe('<MutableTransactionRow />', function () {
       });
     };
 
-    const createWrapper = (submitHandler) => {
+    const createWrapper = (props) => {
+      const defaultProps = {
+        submitButtonLabel: 'Submit',
+        initialTransactionData: null,
+      };
+      const mergedProps = Object.assign(defaultProps, props);
+
       const options = {
         attachTo: global.document.createElement('tbody'),
       };
       const wrapper = mount(
-        <MutableTransactionRow
-          submitHandler={submitHandler}
-          submitButtonLabel="Submit"
-        />,
-        options);
+        React.createElement(MutableTransactionRow, mergedProps), options);
 
       return wrapper;
     };
@@ -44,7 +46,7 @@ describe('<MutableTransactionRow />', function () {
     it('without initialTransactionData', function () {
       let receivedData = null;
       const handler = (data) => { receivedData = data; };
-      const wrapper = createWrapper(handler);
+      const wrapper = createWrapper({ submitHandler: handler });
 
       // Edit fields.
       const fields = {
@@ -75,6 +77,7 @@ describe('<MutableTransactionRow />', function () {
       assert.deepEqual(receivedData, expectedData);
     });
 
-    it('with initialTransactionData');
+    it('with initialTransactionData', function () {
+    });
   });
 });
