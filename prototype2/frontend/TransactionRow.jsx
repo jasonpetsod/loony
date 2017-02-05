@@ -9,7 +9,7 @@ export default class TransactionRow extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
+    this.finishEdit = this.finishEdit.bind(this);
     this.state = {
       editing: null,
     };
@@ -20,10 +20,7 @@ export default class TransactionRow extends React.Component {
     this.setState({ editing: this.props.transaction.id });
   }
 
-  handleEdit() {
-    const trID = this.state.editing;
-
-    console.log('editing ', trID);
+  finishEdit() {
     this.setState({ editing: null });
   }
 
