@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React from 'react';
 
-import PropTypes from './propTypes';
+import PropTypes from './PropTypes';
 
 export default class MutableTransactionRow extends React.Component {
   constructor(props) {

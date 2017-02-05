@@ -1,8 +1,8 @@
 import React from 'react';
 
-import AddTransactionRow from './addTransactionRow';
+import AddTransactionRow from './AddTransactionRow';
 import TransactionRow from './TransactionRow';
-import propTypes from './propTypes';
+import PropTypes from './PropTypes';
 
 export default function TransactionTable(props) {
   const transactions = Object.values(props.transactions);
@@ -39,7 +39,7 @@ export default function TransactionTable(props) {
 }
 
 TransactionTable.propTypes = {
-  transactions: React.PropTypes.objectOf(propTypes.transaction).isRequired,
+  transactions: React.PropTypes.objectOf(PropTypes.transaction).isRequired,
   // TODO: Add function signature.
   newTransactionHandler: React.PropTypes.func.isRequired,
   editTransactionHandler: React.PropTypes.func.isRequired,

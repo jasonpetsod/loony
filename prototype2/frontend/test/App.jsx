@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import App from '../App';
+import App from '../src/App';
 
 describe('<App />', function () {
   describe('#addTransaction', function () {

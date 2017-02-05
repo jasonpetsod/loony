@@ -2,9 +2,9 @@ import { assert } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import AddTransactionRow from '../addTransactionRow';
-import TransactionRow from '../TransactionRow';
-import TransactionTable from '../transactionTable';
+import AddTransactionRow from '../src/AddTransactionRow';
+import TransactionRow from '../src/TransactionRow';
+import TransactionTable from '../src/TransactionTable';
 
 describe('<TransactionTable />', function () {
   const createWrapper = function (transactions) {

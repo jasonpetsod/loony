@@ -15,7 +15,7 @@ out.js:
 	$(WEBPACK)
 
 lint:
-	$(ESLINT) *.js *.jsx 'test/**'
+	$(ESLINT) src/*.js src/*.jsx 'test/**'
 
 test:
 	$(MOCHA) --compilers jsx:babel-register $(TESTARGS)

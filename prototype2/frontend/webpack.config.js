@@ -1,7 +1,7 @@
 var path = require('path');
 
 module.exports = {
-  entry: './loony.jsx',
+  entry: './src/index.jsx',
   output: {
     filename: 'out.js',
   },
