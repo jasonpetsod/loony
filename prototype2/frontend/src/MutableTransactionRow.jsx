@@ -4,6 +4,11 @@ import React from 'react';
 import PropTypes from './PropTypes';
 
 export default class MutableTransactionRow extends React.Component {
+  // Test seam.
+  static getDate() {
+    return moment().format('YYYY-MM-DD');
+  }
+
   constructor(props) {
     super(props);
 
@@ -27,7 +32,7 @@ export default class MutableTransactionRow extends React.Component {
       initialState = {
         id: '',
         account: '',
-        date: moment().format('YYYY-MM-DD'),
+        date: MutableTransactionRow.getDate(),
         payee: '',
         category: '',
         memo: '',

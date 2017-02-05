@@ -2,10 +2,20 @@ import { assert } from 'chai';
 import { mount } from 'enzyme';
 import 'jsdom-global/register';  // global.document
 import React from 'react';
+import sinon from 'sinon';
 
 import MutableTransactionRow from '../src/MutableTransactionRow';
 
 describe('<MutableTransactionRow />', function () {
+  let sandbox;
+  beforeEach(function () {
+    sandbox = sinon.sandbox.create();
+  });
+
+  afterEach(function () {
+    sandbox.restore();
+  });
+
   const createWrapper = (props) => {
     const defaultProps = {
       submitHandler: () => {},
@@ -34,12 +44,14 @@ describe('<MutableTransactionRow />', function () {
     };
 
     it('without initialTransactionData', function () {
+      const getDateStub = sinon.stub(MutableTransactionRow, 'getDate');
+      getDateStub.returns('2017-01-01');
+
       const wrapper = createWrapper();
 
       const expectedFields = {
         account: '',
-        // TODO: Stub out default date.
-        date: '2017-02-05',
+        date: '2017-01-01',
         payee: '',
         category: '',
         memo: '',
