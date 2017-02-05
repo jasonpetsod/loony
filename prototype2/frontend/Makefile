@@ -8,11 +8,11 @@ WEBPACK_DEV_SERVER = $(NODE_DIR)/webpack-dev-server/bin/webpack-dev-server.js
 
 YARN_LOCK = yarn.lock
 
-TARGETS := out.js
+TARGETS := dist/out.js
 
 all: $(TARGETS)
 
-out.js:
+dist/out.js:
 	$(WEBPACK)
 
 devserver:
@@ -31,14 +31,13 @@ $(YARN_LOCK): package.json
 deps: $(YARN_LOCK)
 
 clean:
-	rm dist/out.js
+	-rm $(TARGETS)
 
 .DEFAULT_GOAL := all
 .PHONY: \
 	all \
 	clean \
 	deps \
+	devserver \
 	lint \
-	out.js \
 	test \
-	watchify
