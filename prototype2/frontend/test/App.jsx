@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { mount, shallow } from 'enzyme';
-import 'jsdom-global/register';
+import 'jsdom-global/register';  // global.document
 import React from 'react';
 
 import App from '../src/App';
@@ -77,7 +77,7 @@ describe('<App />', function () {
       const rows = wrapper.find(TransactionRow);
       assert.lengthOf(rows, 1);
       const transaction = rows.at(0).prop('transaction');
-      assert.equal(transaction.id, 'c');
+      assert.deepEqual(transaction, newTransaction);
     });
   });
 

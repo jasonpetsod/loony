@@ -20,8 +20,8 @@ describe('<TransactionTable />', function () {
 
   it('should support no transactions', function () {
     const wrapper = createWrapper({});
-    assert.equal(wrapper.find(TransactionRow).length, 0);
-    assert.equal(wrapper.find(AddTransactionRow).length, 1);
+    assert.lengthOf(wrapper.find(TransactionRow), 0);
+    assert.lengthOf(wrapper.find(AddTransactionRow), 1);
   });
 
   it('should render multiple transactions', function () {
@@ -48,8 +48,8 @@ describe('<TransactionTable />', function () {
       },
     };
     const wrapper = createWrapper(transactions);
-    assert.equal(wrapper.find(TransactionRow).length, 2);
-    assert.equal(wrapper.find(AddTransactionRow).length, 1);
+    assert.lengthOf(wrapper.find(TransactionRow), 2);
+    assert.lengthOf(wrapper.find(AddTransactionRow), 1);
   });
 
   it('should sort transactions in ascending date order');
