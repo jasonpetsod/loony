@@ -4,7 +4,7 @@ import React from 'react';
 
 import propTypes from './propTypes';
 
-export default class EditableTransactionRow extends React.Component {
+export default class TransactionRow extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
@@ -126,6 +126,6 @@ export default class EditableTransactionRow extends React.Component {
   }
 }
 
-EditableTransactionRow.propTypes = {
+TransactionRow.propTypes = {
   transaction: propTypes.transaction.isRequired,
 };
