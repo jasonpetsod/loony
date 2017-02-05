@@ -2,6 +2,7 @@ import accounting from 'accounting';
 import moment from 'moment';
 import React from 'react';
 
+import EditTransactionRow from './EditTransactionRow';
 import propTypes from './propTypes';
 
 export default class TransactionRow extends React.Component {
@@ -12,11 +13,6 @@ export default class TransactionRow extends React.Component {
     this.state = {
       editing: null,
     };
-  }
-
-  handleInputChange() {
-    console.log('something changed!');
-    // TODO: gotta do more here
   }
 
   handleClick() {
@@ -35,76 +31,9 @@ export default class TransactionRow extends React.Component {
     if (this.state.editing === this.props.transaction.id) {
       console.log('handling edit');
       return (
-        // TODO: Make a factory for these fields and autogen each field based on
-        // a separate entity
-        <tr>
-          <td>
-            <input
-              type="text"
-              name="account"
-              placeholder="Account"
-              value={this.props.transaction.account}
-              onChange={this.handleInputChange}
-            />
-          </td>
-          <td>
-            <input
-              type="date"
-              name="date"
-              placeholder="Date"
-              value={moment(this.props.transaction.dateMs).format('YYYY-MM-DD')}
-              onChange={this.handleInputChange}
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              name="payee"
-              placeholder="Payee"
-              value={this.props.transaction.payee}
-              onChange={this.handleInputChange}
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              name="category"
-              placeholder="Category"
-              value={this.props.transaction.category}
-              onChange={this.handleInputChange}
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              name="memo"
-              placeholder="Memo"
-              value={this.props.transaction.memo}
-              onChange={this.handleInputChange}
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              name="outflow"
-              placeholder="Outflow"
-              value={this.props.transaction.outflow}
-              onChange={this.handleInputChange}
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              name="inflow"
-              placeholder="Inflow"
-              value={this.props.transaction.inflow}
-              onChange={this.handleInputChange}
-            />
-          </td>
-          <td>
-            <input type="submit" value="Edit" onClick={this.handleEdit} />
-          </td>
-        </tr>
+        <EditTransactionRow
+          transaction={this.props.transaction}
+        />
       );
     }
 
