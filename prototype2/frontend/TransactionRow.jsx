@@ -36,6 +36,7 @@ export default class TransactionRow extends React.Component {
       );
     }
 
+    /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
       <tr onClick={this.handleClick}>
         <td>{this.props.transaction.account}</td>
@@ -51,6 +52,7 @@ export default class TransactionRow extends React.Component {
         </td>
       </tr>
     );
+    /* eslint-enable jsx-a11y/no-static-element-interactions */
   }
 }
 
