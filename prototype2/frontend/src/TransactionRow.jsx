@@ -1,5 +1,4 @@
 import accounting from 'accounting';
-import moment from 'moment';
 import React from 'react';
 
 import EditTransactionRow from './EditTransactionRow';
@@ -38,14 +37,7 @@ export default class TransactionRow extends React.Component {
     return (
       <tr onClick={this.handleClick}>
         <td>{this.props.transaction.account}</td>
-        <td>
-          {/* TODO: Do we need to store dates according to the user's desired
-            * timezone?
-            * TODO: Create a method on Transaction that returns this formatted
-            * version.
-            */}
-          {moment(this.props.transaction.dateMs).utc().format('YYYY-MM-DD')}
-        </td>
+        <td>{this.props.transaction.prettyDate()}</td>
         <td>{this.props.transaction.payee}</td>
         <td>{this.props.transaction.category}</td>
         <td>{this.props.transaction.memo}</td>

@@ -81,8 +81,7 @@ export default class MutableTransactionRow extends React.Component {
             type="date"
             name="dateMs"
             placeholder="Date"
-            value={
-              moment(this.state.transaction.dateMs).utc().format('YYYY-MM-DD')}
+            value={this.state.transaction.prettyDate()}
             onChange={this.handleInputChange}
           />
         </td>
