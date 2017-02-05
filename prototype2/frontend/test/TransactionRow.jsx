@@ -66,5 +66,25 @@ describe('<TransactionRow />', function () {
       wrapper.find('tr').simulate('click');
       assert.lengthOf(wrapper.find(EditTransactionRow), 1);
     });
+
+    it('editor returns to view on submission', function () {
+      // TODO: Create a unified Transaction type.
+      const transaction = {
+        id: '',
+        dateMs: 1483228800000,  // 2017-01-01 00:00:00 UTC
+        account: 'Cash',
+        payee: 'Mu Ramen',
+        category: 'Restaurants',
+        memo: 'yay noodles',
+        outflow: 23,
+        inflow: 19.89,
+      };
+      const wrapper = createWrapper(transaction);
+
+      wrapper.find('tr').simulate('click');
+      wrapper.find('input[type="submit"]').simulate('click');
+      assert.lengthOf(wrapper.find(EditTransactionRow), 0);
+      assert.lengthOf(wrapper.find('input'), 0);
+    });
   });
 });
