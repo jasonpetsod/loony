@@ -78,6 +78,52 @@ describe('<MutableTransactionRow />', function () {
     });
 
     it('with initialTransactionData', function () {
+      // TODO: Create a unified Transaction type.
+      const initialTransactionData = {
+        id: '',
+        dateMs: 1483228800000,  // 2017-01-01 00:00:00 UTC
+        account: 'Cash',
+        payee: 'Mu Ramen',
+        category: 'Restaurants',
+        memo: 'yay noodles',
+        outflow: 23,
+        inflow: 19.89,
+      };
+
+      let receivedData = null;
+      const handler = (data) => { receivedData = data; };
+      const wrapper = createWrapper({
+        initialTransactionData,
+        submitHandler: handler,
+      });
+
+      // Edit fields.
+      const newFields = {
+        date: '2017-01-03',
+        account: 'Chase Sapphire Reserved',
+        payee: 'Hi-Collar',
+        category: 'Alcohol',
+        memo: 'yay sake',
+        outflow: '100.00',
+        inflow: '200.00',
+      };
+      setFields(wrapper, newFields);
+
+      // Click submit.
+      wrapper.find('input[type="submit"]').simulate('click');
+
+      // Make sure handler() is called with the right data.
+      const expectedData = {
+        id: '',
+        dateMs: 1483401600000,  // 2017-01-03 00:00:00 UTC
+        account: 'Chase Sapphire Reserved',
+        payee: 'Hi-Collar',
+        category: 'Alcohol',
+        memo: 'yay sake',
+        outflow: 100,
+        inflow: 200,
+      };
+      assert.deepEqual(receivedData, expectedData);
     });
   });
 });

@@ -9,6 +9,7 @@ export default class MutableTransactionRow extends React.Component {
 
     let initialState = null;
     if (this.props.initialTransactionData !== null) {
+      // TODO: Create a unified Transaction type.
       initialState = {
         id: this.props.initialTransactionData.id,
         account: this.props.initialTransactionData.account,
@@ -47,6 +48,7 @@ export default class MutableTransactionRow extends React.Component {
   }
 
   handleSubmit() {
+    // TODO: Create a unified Transaction type.
     const data = {
       id: this.state.id,
       dateMs: moment.utc(this.state.date, 'YYYY-MM-DD').valueOf(),
