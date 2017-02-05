@@ -16,11 +16,12 @@ TARGETS := out.js
 
 all: $(TARGETS)
 
+# We don't actually need to pass $(INPUTS) to browserify; all that's needed is
+# loony.jsx since browserify will automatically resolve imports. We do need
+# $(INPUTS) as part of the recipe for make(1) pick up dependency changes
+# though and that's kinda annoying.
+# TODO: Switch to Webpack which is the future.
 out.js: $(INPUTS)
-	# $(INPUTS) isn't actually needed here; all that's needed is loony.jsx since
-	# browserify will automatically resolve imports. We do need it to have
-	# make(1) pick up dependency changes though and that's kinda annoying.
-	# TODO: Switch to Webpack which is the future.
 	$(BROWSERIFY) $(INPUTS) $(BROWSERIFY_OPTIONS) -o out.js -d
 
 watchify:
