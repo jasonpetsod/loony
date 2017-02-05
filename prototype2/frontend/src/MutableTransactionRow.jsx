@@ -2,7 +2,6 @@ import moment from 'moment';
 import React from 'react';
 import uuid from 'uuid';
 
-import PropTypes from './PropTypes';
 import Transaction from './Transaction';
 
 export default class MutableTransactionRow extends React.Component {
@@ -149,7 +148,7 @@ MutableTransactionRow.propTypes = {
   // function (tx: Transaction) => undefined.
   submitHandler: React.PropTypes.func.isRequired,
 
-  initialTransaction: PropTypes.transaction,
+  initialTransaction: React.PropTypes.instanceOf(Transaction),
 
   submitButtonLabel: React.PropTypes.string.isRequired,
 };

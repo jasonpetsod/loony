@@ -1,7 +1,7 @@
 import React from 'react';
 
 import MutableTransactionRow from './MutableTransactionRow';
-import PropTypes from './PropTypes';
+import Transaction from './Transaction';
 
 export default class EditTransactionRow extends React.Component {
   constructor(props) {
@@ -26,7 +26,7 @@ export default class EditTransactionRow extends React.Component {
 }
 
 EditTransactionRow.propTypes = {
-  transaction: PropTypes.transaction.isRequired,
+  transaction: React.PropTypes.instanceOf(Transaction).isRequired,
 
   // function (id: string, tx: Transaction) => undefined.
   editTransactionHandler: React.PropTypes.func.isRequired,

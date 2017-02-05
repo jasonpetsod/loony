@@ -1,8 +1,8 @@
 import React from 'react';
 
 import AddTransactionRow from './AddTransactionRow';
+import Transaction from './Transaction';
 import TransactionRow from './TransactionRow';
-import PropTypes from './PropTypes';
 
 export default function TransactionTable(props) {
   const transactions = Object.values(props.transactions);
@@ -39,7 +39,8 @@ export default function TransactionTable(props) {
 }
 
 TransactionTable.propTypes = {
-  transactions: React.PropTypes.objectOf(PropTypes.transaction).isRequired,
+  transactions: React.PropTypes.objectOf(
+    React.PropTypes.instanceOf(Transaction)).isRequired,
 
   // function (tx: Transaction) => undefined.
   newTransactionHandler: React.PropTypes.func.isRequired,

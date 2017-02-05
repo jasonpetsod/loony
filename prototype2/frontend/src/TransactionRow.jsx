@@ -3,7 +3,7 @@ import moment from 'moment';
 import React from 'react';
 
 import EditTransactionRow from './EditTransactionRow';
-import PropTypes from './PropTypes';
+import Transaction from './Transaction';
 
 export default class TransactionRow extends React.Component {
   constructor(props) {
@@ -62,7 +62,7 @@ export default class TransactionRow extends React.Component {
 }
 
 TransactionRow.propTypes = {
-  transaction: PropTypes.transaction.isRequired,
+  transaction: React.PropTypes.instanceOf(Transaction).isRequired,
 
   // function (id: string, tx: Transaction) => undefined.
   editTransactionHandler: React.PropTypes.func.isRequired,

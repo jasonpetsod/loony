@@ -1,8 +1,8 @@
 import React from 'react';
 
 import LoonyInternalError from './LoonyInternalError';
+import Transaction from './Transaction';
 import TransactionTable from './TransactionTable';
-import PropTypes from './PropTypes';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -59,5 +59,6 @@ export default class App extends React.Component {
 }
 
 App.propTypes = {
-  transactions: React.PropTypes.objectOf(PropTypes.transaction).isRequired,
+  transactions: React.PropTypes.objectOf(
+    React.PropTypes.instanceOf(Transaction)).isRequired,
 };
