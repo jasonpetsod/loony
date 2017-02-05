@@ -22,7 +22,7 @@ describe('<TransactionTable />', function () {
     assert.equal(wrapper.find(AddTransactionRow).length, 1);
   });
 
-  it('should render multple transactions', function () {
+  it('should render multiple transactions', function () {
     const transactions = [
       {
         id: '1',
