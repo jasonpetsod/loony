@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 
 const TRANSACTIONS = {
+  // TODO: Create a unified Transaction type.
   a: {
     id: 'a',
     dateMs: 1483246800000,  // 2017-01-01 00:00 UTC-05:00

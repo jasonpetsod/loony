@@ -1,5 +1,6 @@
 import React from 'react';
 
+// TODO: Create a unified Transaction type.
 const transaction = React.PropTypes.shape({
   id: React.PropTypes.string.isRequired,
   // Milliseconds since the epoch.

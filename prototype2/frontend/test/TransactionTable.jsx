@@ -25,6 +25,7 @@ describe('<TransactionTable />', function () {
   });
 
   it('should render multiple transactions', function () {
+    // TODO: Create a unified Transaction type.
     const transactions = {
       a: {
         id: 'a',

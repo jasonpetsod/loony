@@ -10,6 +10,7 @@ import TransactionRow from '../src/TransactionRow';
 describe('<App />', function () {
   describe('#addTransaction', function () {
     it('should add a new transaction to state', function () {
+      // TODO: Create a unified Transaction type.
       const transactions = {
         a: {
           id: 'a',
@@ -59,6 +60,7 @@ describe('<App />', function () {
       const wrapper = mount(<App transactions={transactions} />);
       const app = wrapper.instance();
 
+      // TODO: Create a unified Transaction type.
       const newTransaction = {
         id: 'c',
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
@@ -83,6 +85,7 @@ describe('<App />', function () {
 
   describe('#editTransaction', function () {
     it('should edit the transaction in state', function () {
+      // TODO: Create a unified Transaction type.
       const transactions = {
         a: {
           id: 'a',
@@ -98,6 +101,7 @@ describe('<App />', function () {
       const wrapper = shallow(<App transactions={transactions} />);
       const app = wrapper.instance();
 
+      // TODO: Create a unified Transaction type.
       const newTransaction = {
         id: 'a',
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
@@ -120,6 +124,7 @@ describe('<App />', function () {
       const wrapper = shallow(<App transactions={transactions} />);
       const app = wrapper.instance();
 
+      // TODO: Create a unified Transaction type.
       const newTransaction = {
         id: 'a',
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
@@ -158,6 +163,7 @@ describe('<App />', function () {
     });
 
     it('should edit the existing TransactionRow', function () {
+      // TODO: Create a unified Transaction type.
       const transactions = {
         a: {
           id: 'a',
@@ -173,6 +179,7 @@ describe('<App />', function () {
       const wrapper = mount(<App transactions={transactions} />);
       const app = wrapper.instance();
 
+      // TODO: Create a unified Transaction type.
       const newTransaction = {
         id: 'a',
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00

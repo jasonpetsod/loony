@@ -10,6 +10,7 @@ export default class AddTransactionRow extends React.Component {
   }
 
   handleAdd(data) {
+    // TODO: Create a unified Transaction type.
     const transaction = {
       id: uuid.v4(),
       dateMs: data.dateMs,
