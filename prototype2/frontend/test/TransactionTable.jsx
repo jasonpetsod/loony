@@ -19,15 +19,15 @@ describe('<TransactionTable />', function () {
   };
 
   it('should support no transactions', function () {
-    const wrapper = createWrapper([]);
+    const wrapper = createWrapper({});
     assert.equal(wrapper.find(TransactionRow).length, 0);
     assert.equal(wrapper.find(AddTransactionRow).length, 1);
   });
 
   it('should render multiple transactions', function () {
-    const transactions = [
-      {
-        id: '1',
+    const transactions = {
+      a: {
+        id: 'a',
         dateMs: 1483246800000,  // 2017-01-01 00:00 UTC-05:00
         account: 'Checking',
         payee: 'Werk',
@@ -36,8 +36,8 @@ describe('<TransactionTable />', function () {
         outflow: null,
         inflow: 100.00,
       },
-      {
-        id: '2',
+      b: {
+        id: 'b',
         dateMs: 1483678800000,  // 2017-01-06 00:00 UTC-05:00
         account: 'Cash',
         payee: 'Raku',
@@ -46,9 +46,11 @@ describe('<TransactionTable />', function () {
         outflow: 27.31,
         inflow: null,
       },
-    ];
+    };
     const wrapper = createWrapper(transactions);
     assert.equal(wrapper.find(TransactionRow).length, 2);
     assert.equal(wrapper.find(AddTransactionRow).length, 1);
   });
+
+  it('should sort transactions in ascending date order');
 });

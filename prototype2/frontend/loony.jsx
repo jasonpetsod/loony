@@ -18,7 +18,7 @@ class App extends React.Component {
   addTransaction(transaction) {
     this.setState((prevState) => {
       const transactions = prevState.transactions;
-      transactions.push(transaction);
+      transactions[transaction.id] = transaction;
       return { transactions };
     });
   }
@@ -43,13 +43,12 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  transactions: React.PropTypes.arrayOf(propTypes.transaction).isRequired,
+  transactions: React.PropTypes.objectOf(propTypes.transaction).isRequired,
 };
 
-// TODO: Convert this to an object keyed by transaction ID.
-const TRANSACTIONS = [
-  {
-    id: '1',
+const TRANSACTIONS = {
+  a: {
+    id: 'a',
     dateMs: 1483246800000,  // 2017-01-01 00:00 UTC-05:00
     account: 'Checking',
     payee: 'Google Inc.',
@@ -58,8 +57,8 @@ const TRANSACTIONS = [
     outflow: 0,
     inflow: 100.00,
   },
-  {
-    id: '2',
+  b: {
+    id: 'b',
     dateMs: 1483678800000,  // 2017-01-06 00:00 UTC-05:00
     account: 'Cash',
     payee: 'Raku',
@@ -68,8 +67,8 @@ const TRANSACTIONS = [
     outflow: 27.31,
     inflow: 0,
   },
-  {
-    id: '3',
+  c: {
+    id: 'c',
     dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
     account: 'Chase Sapphire Reserve',
     payee: 'Ippudo',
@@ -78,7 +77,7 @@ const TRANSACTIONS = [
     outflow: 27.31,
     inflow: 0,
   },
-];
+};
 
 ReactDOM.render(
   <App transactions={TRANSACTIONS} />,

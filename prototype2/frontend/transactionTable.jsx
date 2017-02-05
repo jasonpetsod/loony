@@ -5,7 +5,10 @@ import TransactionRow from './TransactionRow';
 import propTypes from './propTypes';
 
 export default function TransactionTable(props) {
-  const rows = props.transactions.map(t => (
+  const transactions = Object.values(props.transactions);
+  // Sort transactions in ascending order by date.
+  transactions.sort((a, b) => a.dateMs - b.dateMs);
+  const rows = transactions.map(t => (
     <TransactionRow
       key={t.id}
       transaction={t}
@@ -36,7 +39,7 @@ export default function TransactionTable(props) {
 }
 
 TransactionTable.propTypes = {
-  transactions: React.PropTypes.arrayOf(propTypes.transaction).isRequired,
+  transactions: React.PropTypes.objectOf(propTypes.transaction).isRequired,
   // TODO: Add function signature.
   newTransactionHandler: React.PropTypes.func.isRequired,
   editTransactionHandler: React.PropTypes.func.isRequired,
