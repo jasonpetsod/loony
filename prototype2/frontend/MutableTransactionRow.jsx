@@ -12,7 +12,8 @@ export default class MutableTransactionRow extends React.Component {
       initialState = {
         id: this.props.initialTransactionData.id,
         account: this.props.initialTransactionData.account,
-        date: this.props.initialTransactionData.date,
+        date: moment(this.props.initialTransactionData.dateMs)
+          .format('YYYY-MM-DD'),
         payee: this.props.initialTransactionData.payee,
         category: this.props.initialTransactionData.category,
         memo: this.props.initialTransactionData.memo,
