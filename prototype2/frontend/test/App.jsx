@@ -89,7 +89,26 @@ describe('<App />', function () {
       assert.sameMembers(Object.keys(wrapper.state().transactions), ['a']);
     });
 
-    it('should fail when the id does not exist');
+    it('should fail when the id does not exist', function () {
+      const transactions = {};
+      const wrapper = shallow(<App transactions={transactions} />);
+      const app = wrapper.instance();
+
+      const newTransaction = {
+        id: 'a',
+        dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
+        account: 'Chase Sapphire Reserve',
+        payee: 'Ippudo',
+        category: 'Restaurants',
+        memo: '',
+        outflow: 27.31,
+        inflow: 0,
+      };
+
+      assert.throws(
+        () => { app.editTransaction('a', newTransaction); },
+        LoonyInternalError, /no transaction with ID/);
+    });
 
     it('ensures id parameter matches id in transaction', function () {
       const transactions = {};

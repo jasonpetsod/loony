@@ -31,6 +31,9 @@ export default class App extends React.Component {
 
     this.setState((prevState) => {
       const transactions = prevState.transactions;
+      if (!Object.prototype.hasOwnProperty.call(transactions, id)) {
+        throw new LoonyInternalError(`no transaction with ID: ${id}`);
+      }
       transactions[id] = transaction;
       return { transactions };
     });
