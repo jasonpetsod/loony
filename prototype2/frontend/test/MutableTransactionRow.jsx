@@ -66,9 +66,7 @@ describe('<MutableTransactionRow />', function () {
 
       const expectedFields = {
         account: 'Cash',
-        // TODO: Handle timezones properly. This expected value is dependent
-        // on the timezone of the environment in which the test is run.
-        date: '2016-12-31',
+        date: '2017-01-01',
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',

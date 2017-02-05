@@ -38,7 +38,11 @@ export default class TransactionRow extends React.Component {
     return (
       <tr onClick={this.handleClick}>
         <td>{this.props.transaction.account}</td>
-        <td>{moment(this.props.transaction.dateMs).format('YYYY-MM-DD')}</td>
+        <td>
+          {/* TODO: Do we need to store dates according to the user's desired
+              timezone? */}
+          {moment(this.props.transaction.dateMs).utc().format('YYYY-MM-DD')}
+        </td>
         <td>{this.props.transaction.payee}</td>
         <td>{this.props.transaction.category}</td>
         <td>{this.props.transaction.memo}</td>

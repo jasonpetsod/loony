@@ -13,7 +13,9 @@ export default class MutableTransactionRow extends React.Component {
       initialState = {
         id: this.props.initialTransactionData.id,
         account: this.props.initialTransactionData.account,
-        date: moment(this.props.initialTransactionData.dateMs)
+        // TODO: Do we need to store dates according to the user's desired
+        // timezone?
+        date: moment(this.props.initialTransactionData.dateMs).utc()
           .format('YYYY-MM-DD'),
         payee: this.props.initialTransactionData.payee,
         category: this.props.initialTransactionData.category,
