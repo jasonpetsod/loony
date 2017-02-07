@@ -1,15 +1,16 @@
 import moment from 'moment';
 
 export default class Transaction {
-  constructor(fields) {
-    this.id = fields.id || null;
-    this.account = fields.account || '';
-    this.dateMs = fields.dateMs || 0;
-    this.payee = fields.payee || '';
-    this.category = fields.category || '';
-    this.memo = fields.memo || '';
-    this.outflow = fields.outflow || 0.0;
-    this.inflow = fields.inflow || 0.0;
+  constructor({ id = null, account = '', dateMs = 0, payee = '', category = '',
+                memo = '', outflow = 0.0, inflow = 0.0 }) {
+    this.id = id;
+    this.account = account;
+    this.dateMs = dateMs;
+    this.payee = payee;
+    this.category = category;
+    this.memo = memo;
+    this.outflow = outflow;
+    this.inflow = inflow;
   }
 
   prettyDate() {
