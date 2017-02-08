@@ -1,5 +1,5 @@
 language: node_js
 node_js:
   - "node"
-before_script: cd prototype2/frontend && make deps
+before_script: npm install yarn && cd prototype2/frontend && make deps
 script: cd prototype2/frontend && make test
