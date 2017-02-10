@@ -1,0 +1,7 @@
+// TODO: Lock down ACLs once Firebase Auth is set up.
+{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}
