@@ -1,38 +1,28 @@
-import { assert } from 'chai';
+import chai, { assert } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import { mount, shallow } from 'enzyme';
+import firebase from 'firebase';
 import React from 'react';
 
 import App from '../src/App';
 import LoonyInternalError from '../src/LoonyInternalError';
 import Transaction from '../src/Transaction';
 import TransactionRow from '../src/TransactionRow';
+import firebaseConfig from '../src/firebaseConfig';
+
+chai.use(chaiAsPromised);
+
+// TODO: Make these tests hermetic and clean up after themselves.
+firebase.initializeApp(firebaseConfig);
 
 describe('<App />', function () {
   describe('#addTransaction', function () {
     it('should add a new transaction to state', function () {
-      const transactions = {
-        a: new Transaction({
-          id: 'a',
-          dateMs: 1483246800000,  // 2017-01-01 00:00 UTC-05:00
-          account: 'Checking',
-          payee: 'Google Inc.',
-          category: 'Income for January',
-          inflow: 100.00,
-        }),
-        b: new Transaction({
-          id: 'b',
-          dateMs: 1483678800000,  // 2017-01-06 00:00 UTC-05:00
-          account: 'Cash',
-          payee: 'Raku',
-          category: 'Restaurants',
-          outflow: 27.31,
-        }),
-      };
+      const transactions = {};
       const wrapper = shallow(<App transactions={transactions} />);
       const app = wrapper.instance();
 
-      const newTransaction = new Transaction({
-        id: 'c',
+      const tx = new Transaction({
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
         account: 'Chase Sapphire Reserve',
         payee: 'Ippudo',
@@ -42,12 +32,20 @@ describe('<App />', function () {
         inflow: 0,
       });
 
-      app.addTransaction(newTransaction);
+      const p = app.addTransaction(tx)
+        .then(() => {
+          const expectedState = {
+            transactions: {
+              [tx.id]: tx,
+            },
+          };
+          assert.deepEqual(wrapper.state(), expectedState);
+        })
+        .catch((error) => {
+          assert(false, `addTransaction failed: ${error}`);
+        });
 
-      assert.equal(wrapper.state().transactions.c, newTransaction);
-      assert.sameMembers(
-        Object.keys(wrapper.state().transactions),
-        ['a', 'b', 'c']);
+      return assert.isFulfilled(p);
     });
 
     it('should add a new TransactionRow', function () {
@@ -56,7 +54,6 @@ describe('<App />', function () {
       const app = wrapper.instance();
 
       const newTransaction = new Transaction({
-        id: 'c',
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
         account: 'Chase Sapphire Reserve',
         payee: 'Ippudo',
@@ -64,14 +61,18 @@ describe('<App />', function () {
         outflow: 27.31,
       });
 
-      assert.lengthOf(wrapper.find(TransactionRow), 0);
+      const p = app.addTransaction(newTransaction)
+        .then(() => {
+          const rows = wrapper.find(TransactionRow);
+          assert.lengthOf(rows, 1);
+          const transaction = rows.at(0).prop('transaction');
+          assert.deepEqual(transaction, newTransaction);
+        })
+        .catch((error) => {
+          assert(false, `addTransaction failed: ${error}`);
+        });
 
-      app.addTransaction(newTransaction);
-
-      const rows = wrapper.find(TransactionRow);
-      assert.lengthOf(rows, 1);
-      const transaction = rows.at(0).prop('transaction');
-      assert.deepEqual(transaction, newTransaction);
+      return assert.isFulfilled(p);
     });
   });
 

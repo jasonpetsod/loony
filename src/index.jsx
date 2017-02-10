@@ -1,8 +1,12 @@
+import firebase from 'firebase';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './App';
 import Transaction from './Transaction';
+import firebaseConfig from './firebaseConfig';
+
+firebase.initializeApp(firebaseConfig);
 
 const TRANSACTIONS = {
   a: new Transaction({

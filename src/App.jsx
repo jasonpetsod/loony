@@ -1,8 +1,12 @@
 import React from 'react';
+import firebase from 'firebase';
 
 import LoonyInternalError from './LoonyInternalError';
 import Transaction from './Transaction';
 import TransactionTable from './TransactionTable';
+
+const TEST_USER_ID = 'test-user-id';
+const TEST_BUDGET_ID = 'test-budget-id';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -17,13 +21,32 @@ export default class App extends React.Component {
 
   addTransaction(transaction) {
     // TODO: Disallow transactions with incomplete data.
-    // TODO: Ensure transaction with the ID doesn't already exist.
 
-    this.setState((prevState) => {
-      const transactions = prevState.transactions;
-      transactions[transaction.id] = transaction;
-      return { transactions };
-    });
+    const path = (
+        `/users/${TEST_USER_ID}/budgets/${TEST_BUDGET_ID}/transactions`);
+    const key = firebase.database().ref(path).push().key;
+    const updates = {
+      [key]: transaction.firebaseData(),
+    };
+
+    const success = () => {
+      transaction.id = key;  // eslint-disable-line no-param-reassign
+      this.setState(prevState => ({
+        transactions: {
+          ...prevState.transactions,
+          [key]: transaction,
+        },
+      }));
+    };
+
+    const failed = (error) => {
+      throw new LoonyInternalError(
+        `Write failed: ${error}; key=${key}, transaction=${transaction}`);
+    };
+
+    return firebase.database().ref(path).update(updates)
+      .then(success)
+      .catch(failed);
   }
 
   editTransaction(id, transaction) {
