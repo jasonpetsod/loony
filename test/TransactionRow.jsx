@@ -29,7 +29,7 @@ describe('<TransactionRow />', function () {
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
-        outflow: new Decimal('23'),
+        amountMinor: new Decimal('-2300'),
       });
       const wrapper = createWrapper(transaction);
 

@@ -6,6 +6,7 @@ import sinon from 'sinon';
 
 import MutableTransactionRow from '../src/MutableTransactionRow';
 import Transaction from '../src/Transaction';
+import errors from '../src/errors';
 
 describe('<MutableTransactionRow />', function () {
   let sandbox;
@@ -71,7 +72,7 @@ describe('<MutableTransactionRow />', function () {
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
-        outflow: new Decimal('23'),
+        amountMinor: new Decimal('-2300'),
       });
       const wrapper = createWrapper({ initialTransaction });
 
@@ -89,6 +90,58 @@ describe('<MutableTransactionRow />', function () {
       validateFields(wrapper, expectedFields);
     });
   });
+
+  describe('#parseAmountMinor', function () {
+    it('fails if both inflow and outflow are given', function () {
+      assert.throws(
+        () => { MutableTransactionRow.parseAmountMinor('100.00', '200.30'); },
+        errors.ParseError, /Both outflow.*and inflow.* can't be given/);
+    });
+
+    it('fails if inflow is negative', function () {
+      assert.throws(
+        () => { MutableTransactionRow.parseAmountMinor('-100.30', ''); },
+        errors.ParseError, /inflow can't be negative.*/);
+    });
+
+    it('fails if outflow is negative', function () {
+      assert.throws(
+        () => { MutableTransactionRow.parseAmountMinor('', '-100.30'); },
+        errors.ParseError, /outflow can't be negative.*/);
+    });
+
+    it('fails if inflow is not a number', function () {
+      assert.throws(
+        () => { MutableTransactionRow.parseAmountMinor('hello', ''); },
+        errors.ParseError, /inflow is not a number: hello/);
+    });
+
+    it('fails if outflow is not a number', function () {
+      assert.throws(
+        () => { MutableTransactionRow.parseAmountMinor('', 'hello'); },
+        errors.ParseError, /outflow is not a number: hello/);
+    });
+
+    it('parses valid inflow and empty outflow', function () {
+      const result = MutableTransactionRow.parseAmountMinor('100.30', '');
+      assert.equal(result, 10030);
+    });
+
+    it('parses valid inflow and zero outflow', function () {
+      const result = MutableTransactionRow.parseAmountMinor('100.30', '0');
+      assert.equal(result, 10030);
+    });
+
+    it('parses empty inflow and valid outflow', function () {
+      const result = MutableTransactionRow.parseAmountMinor('', '100.30');
+      assert.equal(result, -10030);
+    });
+
+    it('parses zero inflow and valid outflow', function () {
+      const result = MutableTransactionRow.parseAmountMinor('0', '100.30');
+      assert.equal(result, -10030);
+    });
+  });  // #parseAmountMinor
 
   describe('handles submission', function () {
     const setField = (wrapper, name, value) => {
@@ -150,7 +203,7 @@ describe('<MutableTransactionRow />', function () {
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
-        outflow: new Decimal('23'),
+        amountMinor: new Decimal('-2300'),
       });
 
       let receivedData = null;

@@ -3,6 +3,7 @@ import moment from 'moment';
 import React from 'react';
 
 import Transaction from './Transaction';
+import errors from './errors';
 
 export default class MutableTransactionRow extends React.Component {
   // Test seam.
@@ -21,6 +22,48 @@ export default class MutableTransactionRow extends React.Component {
       outflow: '',
       inflow: '',
     };
+  }
+
+  static parseAmountMinor(inflowStr, outflowStr) {
+    let inflow = new Decimal('0');
+    let outflow = new Decimal('0');
+
+    if (inflowStr !== '') {
+      try {
+        inflow = new Decimal(inflowStr);
+      } catch (e) {
+        throw new errors.ParseError(`inflow is not a number: ${inflowStr}`);
+      }
+    }
+
+    if (outflowStr !== '') {
+      try {
+        outflow = new Decimal(outflowStr);
+      } catch (e) {
+        throw new errors.ParseError(`outflow is not a number: ${outflowStr}`);
+      }
+    }
+
+    if (!outflow.isZero() && !inflow.isZero()) {
+      throw new errors.ParseError(
+        `Both outflow=${outflow} and inflow=${inflow} can't be given`);
+    }
+
+    if (outflow < 0) {
+      throw new errors.ParseError(`outflow can't be negative: ${outflow}`);
+    }
+    if (inflow < 0) {
+      throw new errors.ParseError(`inflow can't be negative: ${outflow}`);
+    }
+
+    if (inflow > 0) {
+      // TODO: Support currencies with different minor units.
+      return inflow.times(100);
+    } else if (outflow > 0) {
+      // TODO: Support currencies with different minor units.
+      return outflow.neg().times(100);
+    }
+    return new Decimal('0');
   }
 
   constructor(props) {
@@ -59,8 +102,8 @@ export default class MutableTransactionRow extends React.Component {
       payee: this.state.payee,
       category: this.state.category,
       memo: this.state.memo,
-      outflow: new Decimal(this.state.outflow),
-      inflow: new Decimal(this.state.inflow),
+      amountMinor: MutableTransactionRow.parseAmountMinor(
+        this.state.inflow, this.state.outflow),
     });
 
     this.props.submitHandler(tx);
