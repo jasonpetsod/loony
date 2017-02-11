@@ -24,6 +24,80 @@ describe('Transaction', function () {
     });
   });
 
+  describe('#fromFirebaseData', function () {
+    it('handles inflow', function () {
+      const data = {
+        accountId: 'foo-account-id',
+        transferSrcAccountId: null,
+        transferDstAccountId: null,
+        dateMs: 12345,
+        payeeId: 'foo-payee-id',
+        amountMinor: 100,
+        chargedCurrency: null,
+        chargedCurrencyAmountMinor: null,
+        memo: 'hello',
+        cleared: false,
+        reconciled: false,
+        categories: {
+          'foo-category-id': {
+            amountMinor: 100,
+            chargedCurrencyAmountMinor: null,
+            incomeAvailableNextMonth: false,
+            debtorId: null,
+          },
+        },
+      };
+      const tx = Transaction.fromFirebaseData('foo-id', data);
+
+      const expected = new Transaction({
+        id: 'foo-id',
+        account: '',
+        dateMs: 12345,
+        payee: '',
+        category: '',
+        memo: 'hello',
+        inflow: 1.0,
+      });
+      assert.deepEqual(tx, expected);
+    });
+
+    it('handles outflow', function () {
+      const data = {
+        accountId: 'foo-account-id',
+        transferSrcAccountId: null,
+        transferDstAccountId: null,
+        dateMs: 12345,
+        payeeId: 'foo-payee-id',
+        amountMinor: -100,
+        chargedCurrency: null,
+        chargedCurrencyAmountMinor: null,
+        memo: 'hello',
+        cleared: false,
+        reconciled: false,
+        categories: {
+          'foo-category-id': {
+            amountMinor: 100,
+            chargedCurrencyAmountMinor: null,
+            incomeAvailableNextMonth: false,
+            debtorId: null,
+          },
+        },
+      };
+      const tx = Transaction.fromFirebaseData('foo-id', data);
+
+      const expected = new Transaction({
+        id: 'foo-id',
+        account: '',
+        dateMs: 12345,
+        payee: '',
+        category: '',
+        memo: 'hello',
+        outflow: 1.0,
+      });
+      assert.deepEqual(tx, expected);
+    });
+  });
+
   describe('firebaseData', function () {
     it('returns', function () {
       const tx = new Transaction({

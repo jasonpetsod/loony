@@ -36,12 +36,57 @@ describe('<App />', function () {
     firebase.database().ref(path).remove();
   };
 
+  describe('#componentDidMount', function () {
+    it('fetches transactions from Firebase', function () {
+      const prefix = stubGetRef();
+
+      const tx = new Transaction({
+        dateMs: 12345,
+        outflow: 1000,
+        memo: 'hello',
+      });
+      const ref = App.budgetRef().child('transactions');
+      const key = ref.push().key;
+      tx.id = key;
+
+      const expectedState = {
+        transactions: {
+          [key]: {
+            id: key,
+            account: '',
+            dateMs: 12345,
+            payee: '',
+            category: '',
+            memo: 'hello',
+            outflow: 1000,
+            inflow: 0,
+          },
+        },
+      };
+
+      const wrapper = shallow(<App />);
+      const app = wrapper.instance();
+
+      const p = ref.child(key).set(tx.firebaseData())
+        .then(() => app.componentDidMount())
+        .then(() => {
+          assert.deepEqual(wrapper.state(), expectedState);
+          cleanUp(prefix);
+        })
+        .catch((error) => {
+          cleanUp(prefix);
+          assert(false, `App.componentDidMount failed: ${error}`);
+        });
+
+      return assert.isFulfilled(p);
+    });
+  });
+
   describe('#addTransaction', function () {
     it('should add a new transaction to state', function () {
       const prefix = stubGetRef();
 
-      const transactions = {};
-      const wrapper = shallow(<App transactions={transactions} />);
+      const wrapper = shallow(<App />);
       const app = wrapper.instance();
 
       const tx = new Transaction({
@@ -75,8 +120,7 @@ describe('<App />', function () {
     it('should add a new TransactionRow', function () {
       const prefix = stubGetRef();
 
-      const transactions = {};
-      const wrapper = mount(<App transactions={transactions} />);
+      const wrapper = mount(<App />);
       const app = wrapper.instance();
 
       const newTransaction = new Transaction({
@@ -116,7 +160,8 @@ describe('<App />', function () {
           inflow: 100.00,
         }),
       };
-      const wrapper = shallow(<App transactions={transactions} />);
+      const wrapper = shallow(<App />);
+      wrapper.setState({ transactions });
       const app = wrapper.instance();
 
       const newTransaction = new Transaction({
@@ -136,7 +181,8 @@ describe('<App />', function () {
 
     it('should fail when the id does not exist', function () {
       const transactions = {};
-      const wrapper = shallow(<App transactions={transactions} />);
+      const wrapper = shallow(<App />);
+      wrapper.setState({ transactions });
       const app = wrapper.instance();
 
       const newTransaction = new Transaction({
@@ -155,7 +201,8 @@ describe('<App />', function () {
 
     it('ensures id parameter matches id in transaction', function () {
       const transactions = {};
-      const wrapper = shallow(<App transactions={transactions} />);
+      const wrapper = shallow(<App />);
+      wrapper.setState({ transactions });
       const app = wrapper.instance();
 
       const newTransaction = new Transaction({
@@ -183,7 +230,8 @@ describe('<App />', function () {
           inflow: 100.00,
         }),
       };
-      const wrapper = mount(<App transactions={transactions} />);
+      const wrapper = mount(<App />);
+      wrapper.setState({ transactions });
       const app = wrapper.instance();
 
       const newTransaction = new Transaction({

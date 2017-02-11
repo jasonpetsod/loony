@@ -7,6 +7,30 @@ const TEST_CATEGORY_ID = 'test-category-id';
 const TEST_PAYEE_ID = 'test-payee-id';
 
 export default class Transaction {
+  static fromFirebaseData(key, data) {
+    let inflow = 0.0;
+    let outflow = 0.0;
+    if (data.amountMinor < 0) {
+      outflow = Math.abs(data.amountMinor) / 100;
+    } else {
+      inflow = data.amountMinor / 100;
+    }
+
+    return new Transaction({
+      id: key,
+      // TODO(#10): Implement accounts.
+      account: '',
+      dateMs: data.dateMs,
+      // TODO(#26): Implement payees.
+      payee: '',
+      // TODO(#9): Implement categories.
+      category: '',
+      memo: data.memo,
+      outflow,
+      inflow,
+    });
+  }
+
   constructor({ id = null, account = '', dateMs = 0, payee = '', category = '',
                 memo = '', outflow = 0.0, inflow = 0.0 }) {
     this.id = id;
@@ -45,6 +69,7 @@ export default class Transaction {
   }
 
   firebaseData() {
+    // TODO: Make this class more similar to the data model.
     return {
       // TODO: Support user-provided accounts.
       accountId: TEST_ACCOUNT_ID,
