@@ -1,5 +1,6 @@
 import chai, { assert } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import Decimal from 'decimal.js-light';
 import { mount, shallow } from 'enzyme';
 import firebase from 'firebase';
 import React from 'react';
@@ -95,8 +96,8 @@ describe('<App />', function () {
         payee: 'Ippudo',
         category: 'Restaurants',
         memo: '',
-        outflow: 27.31,
-        inflow: 0,
+        outflow: new Decimal('27.31'),
+        inflow: new Decimal('0'),
       });
 
       const p = app.addTransaction(tx)
@@ -128,7 +129,7 @@ describe('<App />', function () {
         account: 'Chase Sapphire Reserve',
         payee: 'Ippudo',
         category: 'Restaurants',
-        outflow: 27.31,
+        outflow: new Decimal('27.31'),
       });
 
       const p = app.addTransaction(newTransaction)
@@ -157,7 +158,7 @@ describe('<App />', function () {
           account: 'Checking',
           payee: 'Google Inc.',
           category: 'Income for January',
-          inflow: 100.00,
+          inflow: new Decimal('100.00'),
         }),
       };
       const wrapper = shallow(<App />);
@@ -170,7 +171,7 @@ describe('<App />', function () {
         account: 'Chase Sapphire Reserve',
         payee: 'Ippudo',
         category: 'Restaurants',
-        outflow: 27.31,
+        outflow: new Decimal('27.31'),
       });
 
       app.editTransaction('a', newTransaction);
@@ -191,7 +192,7 @@ describe('<App />', function () {
         account: 'Chase Sapphire Reserve',
         payee: 'Ippudo',
         category: 'Restaurants',
-        outflow: 27.31,
+        outflow: new Decimal('27.31'),
       });
 
       assert.throws(
@@ -211,7 +212,7 @@ describe('<App />', function () {
         account: 'Chase Sapphire Reserve',
         payee: 'Ippudo',
         category: 'Restaurants',
-        outflow: 27.31,
+        outflow: new Decimal('27.31'),
       });
 
       assert.throws(
@@ -227,7 +228,7 @@ describe('<App />', function () {
           account: 'Checking',
           payee: 'Google Inc.',
           category: 'Income for January',
-          inflow: 100.00,
+          inflow: new Decimal('100.00'),
         }),
       };
       const wrapper = mount(<App />);
@@ -240,7 +241,7 @@ describe('<App />', function () {
         account: 'Chase Sapphire Reserve',
         payee: 'Ippudo',
         category: 'Restaurants',
-        outflow: 27.31,
+        outflow: new Decimal('27.31'),
       });
 
       app.editTransaction('a', newTransaction);

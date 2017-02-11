@@ -1,10 +1,12 @@
 import { assert } from 'chai';
+import Decimal from 'decimal.js-light';
 import { mount } from 'enzyme';
 import React from 'react';
 import sinon from 'sinon';
 
 import MutableTransactionRow from '../src/MutableTransactionRow';
 import Transaction from '../src/Transaction';
+import errors from '../src/errors';
 
 describe('<MutableTransactionRow />', function () {
   let sandbox;
@@ -44,19 +46,19 @@ describe('<MutableTransactionRow />', function () {
     };
 
     it('without initialTransaction', function () {
-      const getDateStub = sinon.stub(MutableTransactionRow, 'getDate');
+      const getDateStub = sandbox.stub(MutableTransactionRow, 'getDate');
       getDateStub.returns('2017-01-01');
 
       const wrapper = createWrapper();
 
       const expectedFields = {
         account: '',
-        dateMs: '2017-01-01',
+        date: '2017-01-01',
         payee: '',
         category: '',
         memo: '',
-        outflow: '0',
-        inflow: '0',
+        outflow: '',
+        inflow: '',
         submit: 'Submit',
       };
       validateFields(wrapper, expectedFields);
@@ -70,29 +72,81 @@ describe('<MutableTransactionRow />', function () {
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
-        outflow: 23,
-        inflow: 19.89,
+        amountMinor: new Decimal('-2300'),
       });
       const wrapper = createWrapper({ initialTransaction });
 
       const expectedFields = {
         account: 'Cash',
-        dateMs: '2017-01-01',
+        date: '2017-01-01',
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
         // TODO: This should be 23.00.
         outflow: '23',
-        inflow: '19.89',
+        inflow: '0',
         submit: 'Submit',
       };
       validateFields(wrapper, expectedFields);
     });
   });
 
+  describe('#parseAmountMinor', function () {
+    it('fails if both inflow and outflow are given', function () {
+      assert.throws(
+        () => { MutableTransactionRow.parseAmountMinor('100.00', '200.30'); },
+        errors.ParseError, /Both outflow.*and inflow.* can't be given/);
+    });
+
+    it('fails if inflow is negative', function () {
+      assert.throws(
+        () => { MutableTransactionRow.parseAmountMinor('-100.30', ''); },
+        errors.ParseError, /inflow can't be negative.*/);
+    });
+
+    it('fails if outflow is negative', function () {
+      assert.throws(
+        () => { MutableTransactionRow.parseAmountMinor('', '-100.30'); },
+        errors.ParseError, /outflow can't be negative.*/);
+    });
+
+    it('fails if inflow is not a number', function () {
+      assert.throws(
+        () => { MutableTransactionRow.parseAmountMinor('hello', ''); },
+        errors.ParseError, /inflow is not a number: hello/);
+    });
+
+    it('fails if outflow is not a number', function () {
+      assert.throws(
+        () => { MutableTransactionRow.parseAmountMinor('', 'hello'); },
+        errors.ParseError, /outflow is not a number: hello/);
+    });
+
+    it('parses valid inflow and empty outflow', function () {
+      const result = MutableTransactionRow.parseAmountMinor('100.30', '');
+      assert.equal(result, 10030);
+    });
+
+    it('parses valid inflow and zero outflow', function () {
+      const result = MutableTransactionRow.parseAmountMinor('100.30', '0');
+      assert.equal(result, 10030);
+    });
+
+    it('parses empty inflow and valid outflow', function () {
+      const result = MutableTransactionRow.parseAmountMinor('', '100.30');
+      assert.equal(result, -10030);
+    });
+
+    it('parses zero inflow and valid outflow', function () {
+      const result = MutableTransactionRow.parseAmountMinor('0', '100.30');
+      assert.equal(result, -10030);
+    });
+  });  // #parseAmountMinor
+
   describe('handles submission', function () {
     const setField = (wrapper, name, value) => {
       const field = wrapper.find({ name });
+      assert.lengthOf(field, 1, `Couldn't find field: ${name}`);
       const event = {
         target: {
           name,
@@ -109,22 +163,19 @@ describe('<MutableTransactionRow />', function () {
     };
 
     it('without initialTransaction', function () {
-      const getUUIDStub = sinon.stub(MutableTransactionRow, 'getUUID');
-      getUUIDStub.returns('fake-uuid');
-
       let receivedData = null;
       const handler = (data) => { receivedData = data; };
       const wrapper = createWrapper({ submitHandler: handler });
 
       // Edit fields.
       const fields = {
-        dateMs: '2017-01-01',
+        date: '2017-01-01',
         account: 'Cash',
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
         outflow: '23.00',
-        inflow: '19.89',
+        inflow: '0',
       };
       setFields(wrapper, fields);
 
@@ -133,14 +184,13 @@ describe('<MutableTransactionRow />', function () {
 
       // Make sure handler() is called with the right data.
       const expectedData = {
-        id: 'fake-uuid',
+        id: null,
         dateMs: 1483228800000,
         account: 'Cash',
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
-        outflow: 23,
-        inflow: 19.89,
+        amountMinor: new Decimal('-2300'),
       };
       assert.deepEqual(receivedData, expectedData);
     });
@@ -153,8 +203,7 @@ describe('<MutableTransactionRow />', function () {
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
-        outflow: 23,
-        inflow: 19.89,
+        amountMinor: new Decimal('-2300'),
       });
 
       let receivedData = null;
@@ -166,13 +215,13 @@ describe('<MutableTransactionRow />', function () {
 
       // Edit fields.
       const newFields = {
-        dateMs: '2017-01-03',
+        date: '2017-01-03',
         account: 'Chase Sapphire Reserved',
         payee: 'Hi-Collar',
         category: 'Alcohol',
         memo: 'yay sake',
         outflow: '100.00',
-        inflow: '200.00',
+        inflow: '0',
       };
       setFields(wrapper, newFields);
 
@@ -187,8 +236,7 @@ describe('<MutableTransactionRow />', function () {
         payee: 'Hi-Collar',
         category: 'Alcohol',
         memo: 'yay sake',
-        outflow: 100,
-        inflow: 200,
+        amountMinor: new Decimal('-10000'),
       };
       assert.deepEqual(receivedData, expectedData);
     });

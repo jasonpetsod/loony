@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js-light';
 import moment from 'moment';
 
 import LoonyInternalError from './LoonyInternalError';
@@ -32,16 +33,18 @@ export default class Transaction {
   }
 
   constructor({ id = null, account = '', dateMs = 0, payee = '', category = '',
-                memo = '', outflow = 0.0, inflow = 0.0 }) {
+                memo = '', amountMinor = new Decimal('0') }) {
     this.id = id;
     this.account = account;
     this.dateMs = dateMs;
     this.payee = payee;
     this.category = category;
     this.memo = memo;
-    // TODO: Ensure outflow > 0 and inflow > 0.
-    this.outflow = outflow;
-    this.inflow = inflow;
+
+    if (amountMinor instanceof Decimal === false) {
+      throw new LoonyInternalError(`amountMinor isn't Decimal: ${amountMinor}`);
+    }
+    this.amountMinor = amountMinor;
   }
 
   prettyDate() {
@@ -50,22 +53,20 @@ export default class Transaction {
     return moment(this.dateMs).utc().format('YYYY-MM-DD');
   }
 
-  amountMinor() {
-    if (this.outflow && this.inflow) {
-      throw new LoonyInternalError(
-        `Both inflow and outflow specified: inflow=${this.inflow} outflow=${this.outflow}`);
+  inflow() {
+    if (this.amountMinor >= 0) {
+      // TODO: Support currencies besides USD.
+      return this.amountMinor.dividedBy(100);
     }
-    if (this.outflow === 0.0 && this.inflow === 0.0) {
-      return 0;
+    return new Decimal('0');
+  }
+
+  outflow() {
+    if (this.amountMinor <= 0) {
+      // TODO: Support currencies besides USD.
+      return this.amountMinor.absoluteValue().dividedBy(100);
     }
-    // TODO: Use a proper money library.
-    // TODO: Support custom currencies.
-    if (this.outflow !== 0.0) {
-      return parseInt(this.outflow * -100, 10);
-    } else if (this.inflow !== 0.0) {
-      return parseInt(this.inflow * 100, 10);
-    }
-    throw new LoonyInternalError('Should not get here');
+    return new Decimal('0');
   }
 
   firebaseData() {
@@ -78,7 +79,7 @@ export default class Transaction {
       transferDstAccountId: null,
       dateMs: this.dateMs,
       payeeId: TEST_PAYEE_ID,
-      amountMinor: this.amountMinor(),
+      amountMinor: this.amountMinor.toNumber(),
       // TODO: Implement charged currency.
       chargedCurrency: null,
       chargedCurrencyAmountMinor: null,
@@ -87,7 +88,7 @@ export default class Transaction {
       reconciled: false,
       categories: {
         [TEST_CATEGORY_ID]: {
-          amountMinor: this.amountMinor(),
+          amountMinor: this.amountMinor.toNumber(),
           chargedCurrencyAmountMinor: null,
           // TODO: Implement rule 4.
           incomeAvailableNextMonth: false,
