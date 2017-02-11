@@ -35,8 +35,8 @@ export default class MutableTransactionRow extends React.Component {
         payee: this.props.initialTransaction.payee,
         category: this.props.initialTransaction.category,
         memo: this.props.initialTransaction.memo,
-        outflow: this.props.initialTransaction.outflow,
-        inflow: this.props.initialTransaction.inflow,
+        outflow: this.props.initialTransaction.outflow(),
+        inflow: this.props.initialTransaction.inflow(),
       };
     }
 

@@ -71,7 +71,6 @@ describe('<MutableTransactionRow />', function () {
         category: 'Restaurants',
         memo: 'yay noodles',
         outflow: 23,
-        inflow: 19.89,
       });
       const wrapper = createWrapper({ initialTransaction });
 
@@ -83,7 +82,7 @@ describe('<MutableTransactionRow />', function () {
         memo: 'yay noodles',
         // TODO: This should be 23.00.
         outflow: '23',
-        inflow: '19.89',
+        inflow: '0',
         submit: 'Submit',
       };
       validateFields(wrapper, expectedFields);
@@ -122,7 +121,7 @@ describe('<MutableTransactionRow />', function () {
         category: 'Restaurants',
         memo: 'yay noodles',
         outflow: '23.00',
-        inflow: '19.89',
+        inflow: '0',
       };
       setFields(wrapper, fields);
 
@@ -137,8 +136,7 @@ describe('<MutableTransactionRow />', function () {
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
-        outflow: 23,
-        inflow: 19.89,
+        amountMinor: -2300,
       };
       assert.deepEqual(receivedData, expectedData);
     });
@@ -152,7 +150,6 @@ describe('<MutableTransactionRow />', function () {
         category: 'Restaurants',
         memo: 'yay noodles',
         outflow: 23,
-        inflow: 19.89,
       });
 
       let receivedData = null;
@@ -170,7 +167,7 @@ describe('<MutableTransactionRow />', function () {
         category: 'Alcohol',
         memo: 'yay sake',
         outflow: '100.00',
-        inflow: '200.00',
+        inflow: '0',
       };
       setFields(wrapper, newFields);
 
@@ -185,8 +182,7 @@ describe('<MutableTransactionRow />', function () {
         payee: 'Hi-Collar',
         category: 'Alcohol',
         memo: 'yay sake',
-        outflow: 100,
-        inflow: 200,
+        amountMinor: -10000,
       };
       assert.deepEqual(receivedData, expectedData);
     });
