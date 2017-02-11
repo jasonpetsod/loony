@@ -1,8 +1,9 @@
+import Decimal from 'decimal.js-light';
 import moment from 'moment';
 import React from 'react';
-import uuid from 'uuid';
 
 import Transaction from './Transaction';
+import errors from './errors';
 
 export default class MutableTransactionRow extends React.Component {
   // Test seam.
@@ -10,27 +11,77 @@ export default class MutableTransactionRow extends React.Component {
     return moment().format('YYYY-MM-DD');
   }
 
-  // Test seam.
-  static getUUID() {
-    return uuid.v4();
+  static getEmptyState() {
+    return {
+      id: null,
+      account: '',
+      date: MutableTransactionRow.getDate(),
+      payee: '',
+      category: '',
+      memo: '',
+      outflow: '',
+      inflow: '',
+    };
   }
 
-  static getEmptyTransaction() {
-    return new Transaction({
-      id: MutableTransactionRow.getUUID(),
-      dateMs: MutableTransactionRow.getDate(),
-    });
+  static parseAmountMinor(inflowStr, outflowStr) {
+    let inflow = new Decimal('0');
+    let outflow = new Decimal('0');
+
+    if (inflowStr !== '') {
+      try {
+        inflow = new Decimal(inflowStr);
+      } catch (e) {
+        throw new errors.ParseError(`inflow is not a number: ${inflowStr}`);
+      }
+    }
+
+    if (outflowStr !== '') {
+      try {
+        outflow = new Decimal(outflowStr);
+      } catch (e) {
+        throw new errors.ParseError(`outflow is not a number: ${outflowStr}`);
+      }
+    }
+
+    if (!outflow.isZero() && !inflow.isZero()) {
+      throw new errors.ParseError(
+        `Both outflow=${outflow} and inflow=${inflow} can't be given`);
+    }
+
+    if (outflow < 0) {
+      throw new errors.ParseError(`outflow can't be negative: ${outflow}`);
+    }
+    if (inflow < 0) {
+      throw new errors.ParseError(`inflow can't be negative: ${outflow}`);
+    }
+
+    if (inflow > 0) {
+      // TODO: Support currencies with different minor units.
+      return inflow.times(100);
+    } else if (outflow > 0) {
+      // TODO: Support currencies with different minor units.
+      return outflow.neg().times(100);
+    }
+    return new Decimal('0');
   }
 
   constructor(props) {
     super(props);
 
-    this.state = {};
-
     if (this.props.initialTransaction === null) {
-      this.state.transaction = MutableTransactionRow.getEmptyTransaction();
+      this.state = MutableTransactionRow.getEmptyState();
     } else {
-      this.state.transaction = this.props.initialTransaction;
+      this.state = {
+        id: this.props.initialTransaction.id,
+        account: this.props.initialTransaction.account,
+        date: this.props.initialTransaction.prettyDate(),
+        payee: this.props.initialTransaction.payee,
+        category: this.props.initialTransaction.category,
+        memo: this.props.initialTransaction.memo,
+        outflow: this.props.initialTransaction.outflow(),
+        inflow: this.props.initialTransaction.inflow(),
+      };
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -40,26 +91,25 @@ export default class MutableTransactionRow extends React.Component {
   handleInputChange(event) {
     const target = event.target;
     const { name, value } = target;
-    this.setState((prevState) => {
-      const tx = prevState.transaction;
-      tx[name] = value;
-      return { tx };
-    });
+    this.setState({ [name]: value });
   }
 
   handleSubmit() {
-    const tx = this.state.transaction;
-
-    // Parse fields into our actual desired types.
-    tx.dateMs = moment.utc(tx.dateMs, 'YYYY-MM-DD').valueOf();
-    // TODO: Stop using floats to represent money.
-    tx.outflow = parseFloat(tx.outflow);
-    tx.inflow = parseFloat(tx.inflow);
+    const tx = new Transaction({
+      id: this.state.id,
+      account: this.state.account,
+      dateMs: moment.utc(this.state.date, 'YYYY-MM-DD').valueOf(),
+      payee: this.state.payee,
+      category: this.state.category,
+      memo: this.state.memo,
+      amountMinor: MutableTransactionRow.parseAmountMinor(
+        this.state.inflow, this.state.outflow),
+    });
 
     this.props.submitHandler(tx);
     // Clear the state so this component can be reused (e.g. by
     // AddTransactionRow).
-    this.state.transaction = MutableTransactionRow.getEmptyTransaction();
+    this.setState(MutableTransactionRow.getEmptyState());
   }
 
   render() {
@@ -72,16 +122,16 @@ export default class MutableTransactionRow extends React.Component {
             type="text"
             name="account"
             placeholder="Account"
-            value={this.state.transaction.account}
+            value={this.state.account}
             onChange={this.handleInputChange}
           />
         </td>
         <td>
           <input
             type="date"
-            name="dateMs"
+            name="date"
             placeholder="Date"
-            value={this.state.transaction.prettyDate()}
+            value={this.state.date}
             onChange={this.handleInputChange}
           />
         </td>
@@ -90,7 +140,7 @@ export default class MutableTransactionRow extends React.Component {
             type="text"
             name="payee"
             placeholder="Payee"
-            value={this.state.transaction.payee}
+            value={this.state.payee}
             onChange={this.handleInputChange}
           />
         </td>
@@ -99,7 +149,7 @@ export default class MutableTransactionRow extends React.Component {
             type="text"
             name="category"
             placeholder="Category"
-            value={this.state.transaction.category}
+            value={this.state.category}
             onChange={this.handleInputChange}
           />
         </td>
@@ -108,7 +158,7 @@ export default class MutableTransactionRow extends React.Component {
             type="text"
             name="memo"
             placeholder="Memo"
-            value={this.state.transaction.memo}
+            value={this.state.memo}
             onChange={this.handleInputChange}
           />
         </td>
@@ -117,7 +167,7 @@ export default class MutableTransactionRow extends React.Component {
             type="text"
             name="outflow"
             placeholder="Outflow"
-            value={this.state.transaction.outflow}
+            value={this.state.outflow}
             onChange={this.handleInputChange}
           />
         </td>
@@ -126,7 +176,7 @@ export default class MutableTransactionRow extends React.Component {
             type="text"
             name="inflow"
             placeholder="Inflow"
-            value={this.state.transaction.inflow}
+            value={this.state.inflow}
             onChange={this.handleInputChange}
           />
         </td>

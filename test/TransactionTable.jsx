@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import Decimal from 'decimal.js-light';
 import { shallow } from 'enzyme';
 import React from 'react';
 
@@ -33,7 +34,7 @@ describe('<TransactionTable />', function () {
         account: 'Checking',
         payee: 'Werk',
         category: 'Income for January',
-        inflow: 100.00,
+        inflow: new Decimal('100.00'),
       }),
       b: new Transaction({
         id: 'b',
@@ -41,7 +42,7 @@ describe('<TransactionTable />', function () {
         account: 'Cash',
         payee: 'Raku',
         category: 'Restaurants',
-        outflow: 27.31,
+        outflow: new Decimal('27.31'),
       }),
     };
     const wrapper = createWrapper(transactions);
