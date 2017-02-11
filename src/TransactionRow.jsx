@@ -42,10 +42,10 @@ export default class TransactionRow extends React.Component {
         <td>{this.props.transaction.category}</td>
         <td>{this.props.transaction.memo}</td>
         <td style={{ textAlign: 'right' }}>
-          {accounting.formatMoney(this.props.transaction.outflow, '$')}
+          {accounting.formatMoney(this.props.transaction.outflow(), '$')}
         </td>
         <td style={{ textAlign: 'right' }}>
-          {accounting.formatMoney(this.props.transaction.inflow, '$')}
+          {accounting.formatMoney(this.props.transaction.inflow(), '$')}
         </td>
       </tr>
     );

@@ -1,3 +1,4 @@
+// TODO: Move to errors.js.
 export default function LoonyInternalError(message) {
   this.message = `Loony internal error: ${message}`;
 }
