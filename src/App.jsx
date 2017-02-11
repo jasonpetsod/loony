@@ -9,6 +9,12 @@ const TEST_USER_ID = 'test-user-id';
 const TEST_BUDGET_ID = 'test-budget-id';
 
 export default class App extends React.Component {
+  // Return a firebase.database.Reference for the given path.
+  // Used as a test seam.
+  static getRef(path) {
+    return firebase.database().ref(path);
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -24,7 +30,8 @@ export default class App extends React.Component {
 
     const path = (
         `/users/${TEST_USER_ID}/budgets/${TEST_BUDGET_ID}/transactions`);
-    const key = firebase.database().ref(path).push().key;
+    const ref = App.getRef(path);
+    const key = ref.push().key;
     const updates = {
       [key]: transaction.firebaseData(),
     };
@@ -44,7 +51,7 @@ export default class App extends React.Component {
         `Write failed: ${error}; key=${key}, transaction=${transaction}`);
     };
 
-    return firebase.database().ref(path).update(updates)
+    return ref.update(updates)
       .then(success)
       .catch(failed);
   }
