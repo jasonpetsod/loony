@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import Decimal from 'decimal.js-light';
 import { mount } from 'enzyme';
 import React from 'react';
 
@@ -28,7 +29,7 @@ describe('<TransactionRow />', function () {
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
-        outflow: 23,
+        outflow: new Decimal('23'),
       });
       const wrapper = createWrapper(transaction);
 
@@ -56,7 +57,7 @@ describe('<TransactionRow />', function () {
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
-        outflow: 23,
+        outflow: new Decimal('23'),
       });
       const wrapper = createWrapper(transaction);
 
@@ -72,7 +73,7 @@ describe('<TransactionRow />', function () {
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
-        outflow: 23,
+        outflow: new Decimal('23'),
       });
       const wrapper = createWrapper(transaction);
 

@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js-light';
 import moment from 'moment';
 import React from 'react';
 
@@ -58,9 +59,8 @@ export default class MutableTransactionRow extends React.Component {
       payee: this.state.payee,
       category: this.state.category,
       memo: this.state.memo,
-      // TODO: Stop using floats to represent money.
-      outflow: parseFloat(this.state.outflow),
-      inflow: parseFloat(this.state.inflow),
+      outflow: new Decimal(this.state.outflow),
+      inflow: new Decimal(this.state.inflow),
     });
 
     this.props.submitHandler(tx);

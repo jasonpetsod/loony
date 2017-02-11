@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import Decimal from 'decimal.js-light';
 import { mount } from 'enzyme';
 import React from 'react';
 import sinon from 'sinon';
@@ -70,7 +71,7 @@ describe('<MutableTransactionRow />', function () {
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
-        outflow: 23,
+        outflow: new Decimal('23'),
       });
       const wrapper = createWrapper({ initialTransaction });
 
@@ -136,7 +137,7 @@ describe('<MutableTransactionRow />', function () {
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
-        amountMinor: -2300,
+        amountMinor: new Decimal('-2300'),
       };
       assert.deepEqual(receivedData, expectedData);
     });
@@ -149,7 +150,7 @@ describe('<MutableTransactionRow />', function () {
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
-        outflow: 23,
+        outflow: new Decimal('23'),
       });
 
       let receivedData = null;
@@ -182,7 +183,7 @@ describe('<MutableTransactionRow />', function () {
         payee: 'Hi-Collar',
         category: 'Alcohol',
         memo: 'yay sake',
-        amountMinor: -10000,
+        amountMinor: new Decimal('-10000'),
       };
       assert.deepEqual(receivedData, expectedData);
     });
