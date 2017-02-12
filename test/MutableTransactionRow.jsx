@@ -44,19 +44,19 @@ describe('<MutableTransactionRow />', function () {
     };
 
     it('without initialTransaction', function () {
-      const getDateStub = sinon.stub(MutableTransactionRow, 'getDate');
+      const getDateStub = sandbox.stub(MutableTransactionRow, 'getDate');
       getDateStub.returns('2017-01-01');
 
       const wrapper = createWrapper();
 
       const expectedFields = {
         account: '',
-        dateMs: '2017-01-01',
+        date: '2017-01-01',
         payee: '',
         category: '',
         memo: '',
-        outflow: '0',
-        inflow: '0',
+        outflow: '',
+        inflow: '',
         submit: 'Submit',
       };
       validateFields(wrapper, expectedFields);
@@ -77,7 +77,7 @@ describe('<MutableTransactionRow />', function () {
 
       const expectedFields = {
         account: 'Cash',
-        dateMs: '2017-01-01',
+        date: '2017-01-01',
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
@@ -93,6 +93,7 @@ describe('<MutableTransactionRow />', function () {
   describe('handles submission', function () {
     const setField = (wrapper, name, value) => {
       const field = wrapper.find({ name });
+      assert.lengthOf(field, 1, `Couldn't find field: ${name}`);
       const event = {
         target: {
           name,
@@ -109,16 +110,13 @@ describe('<MutableTransactionRow />', function () {
     };
 
     it('without initialTransaction', function () {
-      const getUUIDStub = sinon.stub(MutableTransactionRow, 'getUUID');
-      getUUIDStub.returns('fake-uuid');
-
       let receivedData = null;
       const handler = (data) => { receivedData = data; };
       const wrapper = createWrapper({ submitHandler: handler });
 
       // Edit fields.
       const fields = {
-        dateMs: '2017-01-01',
+        date: '2017-01-01',
         account: 'Cash',
         payee: 'Mu Ramen',
         category: 'Restaurants',
@@ -133,7 +131,7 @@ describe('<MutableTransactionRow />', function () {
 
       // Make sure handler() is called with the right data.
       const expectedData = {
-        id: 'fake-uuid',
+        id: null,
         dateMs: 1483228800000,
         account: 'Cash',
         payee: 'Mu Ramen',
@@ -166,7 +164,7 @@ describe('<MutableTransactionRow />', function () {
 
       // Edit fields.
       const newFields = {
-        dateMs: '2017-01-03',
+        date: '2017-01-03',
         account: 'Chase Sapphire Reserved',
         payee: 'Hi-Collar',
         category: 'Alcohol',
