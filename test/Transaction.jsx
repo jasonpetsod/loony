@@ -13,6 +13,16 @@ describe('Transaction', function () {
         /* eslint-enable no-new */
         LoonyInternalError, /amountMinor isn't Decimal/);
     });
+
+    it('amountMinor=100.5 rounded to 100', function () {
+      const tx = new Transaction({ amountMinor: new Decimal('100.5') });
+      assert(tx.amountMinor.eq(100));
+    });
+
+    it('amountMinor=101.5 rounded to 102', function () {
+      const tx = new Transaction({ amountMinor: new Decimal('101.5') });
+      assert(tx.amountMinor.eq(102));
+    });
   });  // ctor
 
   describe('outflow', function () {
