@@ -37,12 +37,12 @@ describe('<App />', function () {
     firebase.database().ref(path).remove();
   };
 
-  // Wait for a sinon.Spy to be called, polling every 50 ms. No deadline;
-  // Mocha will timeout the test after 2000 ms by default. (Each test's
-  // timeout is configurable using this.timeout in a test context.)
-  const waitForCall = spy => new Promise((resolve) => {
+  // Wait for a condition to be true, polling every 250 ms. No deadline; Mocha
+  // will timeout the test after 2000 ms by default. (Each test's timeout is
+  // configurable using this.timeout in a test context.)
+  const waitFor = condition => new Promise((resolve) => {
     const check = () => {
-      if (spy.called) {
+      if (condition()) {
         resolve();
       }
       window.setTimeout(check, 250);
@@ -56,19 +56,88 @@ describe('<App />', function () {
     it('Firebase tx add should add it to state', function () {
       const prefix = stubGetRef();
 
-      const tx = newTx({
+      const tx1 = newTx({
         dateMs: 12345,
         amountMinor: new Decimal('100000'),
         memo: 'hello',
       });
-      const txRef = App.budgetRef().child('transactions').push();
-      const key = txRef.key;
-      tx.id = key;
+      const txRef1 = App.budgetRef().child('transactions').push();
+
+      const tx2 = newTx({
+        dateMs: 45678,
+        amountMinor: new Decimal('-2030'),
+        memo: 'i am hungry',
+      });
+      const txRef2 = App.budgetRef().child('transactions').push();
 
       const expectedState = {
         transactions: {
-          [key]: {
-            id: key,
+          [txRef1.key]: {
+            id: txRef1.key,
+            account: '',
+            dateMs: 12345,
+            payee: '',
+            category: '',
+            memo: 'hello',
+            amountMinor: new Decimal('100000'),
+          },
+          [txRef2.key]: {
+            id: txRef2.key,
+            account: '',
+            dateMs: 45678,
+            payee: '',
+            category: '',
+            memo: 'i am hungry',
+            amountMinor: new Decimal('-2030'),
+          },
+        },
+      };
+
+      const spy = sandbox.stub(App, 'testOnlyTransactionAddedComplete');
+
+      const wrapper = shallow(<App />);
+      const app = wrapper.instance();
+      app.componentDidMount();
+
+      const p =
+        Promise.all([
+          txRef1.set(tx1.firebaseData()), txRef2.set(tx2.firebaseData())])
+        .then(() => waitFor(() => spy.calledTwice))
+        .then(() => {
+          assert.deepEqual(wrapper.state(), expectedState);
+          cleanUp(prefix);
+        })
+        .catch((error) => {
+          cleanUp(prefix);
+          assert(false, `Promise rejected: ${error}`);
+        });
+
+      return assert.isFulfilled(p);
+    });
+
+    it('Firebase tx add should add a TransactionRow');
+
+    it('Firebase tx remove should remove it from state', function () {
+      const prefix = stubGetRef();
+
+      const tx1 = newTx({
+        dateMs: 12345,
+        amountMinor: new Decimal('100000'),
+        memo: 'hello',
+      });
+      const txRef1 = App.budgetRef().child('transactions').push();
+
+      const tx2 = newTx({
+        dateMs: 45678,
+        amountMinor: new Decimal('-2030'),
+        memo: 'i am hungry',
+      });
+      const txRef2 = App.budgetRef().child('transactions').push();
+
+      const expectedState = {
+        transactions: {
+          [txRef1.key]: {
+            id: txRef1.key,
             account: '',
             dateMs: 12345,
             payee: '',
@@ -79,16 +148,19 @@ describe('<App />', function () {
         },
       };
 
-      const spy = sandbox.stub(App, 'testOnlyTransactionAddedComplete');
+      const txAdded = sandbox.stub(App, 'testOnlyTransactionAddedComplete');
+      const txRemoved = sandbox.stub(App, 'testOnlyTransactionRemovedComplete');
 
       const wrapper = shallow(<App />);
       const app = wrapper.instance();
+      app.componentDidMount();
 
-      const p = txRef.set(tx.firebaseData())
-        .then(() => {
-          app.componentDidMount();
-          return waitForCall(spy);
-        })
+      const p =
+        Promise.all([
+          txRef1.set(tx1.firebaseData()), txRef2.set(tx2.firebaseData())])
+        .then(() => waitFor(() => txAdded.calledTwice))
+        .then(() => txRef2.remove())
+        .then(() => waitFor(() => txRemoved.called))
         .then(() => {
           assert.deepEqual(wrapper.state(), expectedState);
           cleanUp(prefix);
@@ -101,69 +173,44 @@ describe('<App />', function () {
       return assert.isFulfilled(p);
     });
 
-    it('Multiple Firebase tx add should add multiple tx to state');
-    it('Firebase tx add should add a TransactionRow');
-
-    it('Firebase tx remove should remove it from state', function () {
-      const prefix = stubGetRef();
-
-      const tx = newTx({
-        dateMs: 12345,
-        amountMinor: new Decimal('100000'),
-        memo: 'hello',
-      });
-      const txRef = App.budgetRef().child('transactions').push();
-
-      const txAdded = sandbox.stub(App, 'testOnlyTransactionAddedComplete');
-      const txRemoved = sandbox.stub(App, 'testOnlyTransactionRemovedComplete');
-
-      const wrapper = shallow(<App />);
-      const app = wrapper.instance();
-
-      const p =
-        txRef.set(tx.firebaseData())
-        .then(() => {
-          app.componentDidMount();
-          return waitForCall(txAdded);
-        })
-        .then(() => txRef.remove())
-        .then(() => waitForCall(txRemoved))
-        .then(() => {
-          assert.deepEqual(wrapper.state(), { transactions: {} });
-          cleanUp(prefix);
-        })
-        .catch((error) => {
-          cleanUp(prefix);
-          assert(false, `Promise rejected: ${error}`);
-        });
-
-      return assert.isFulfilled(p);
-    });
-
-    it('Multiple Firebase tx remove should remove multiple tx from state');
     it('Firebase tx remove should remove a TransactionRow');
 
     it('Firebase tx change should change the tx in state', function () {
       const prefix = stubGetRef();
 
-      const tx = newTx({
+      const tx1 = newTx({
         dateMs: 12345,
         amountMinor: new Decimal('100000'),
         memo: 'hello',
       });
-      const txRef = App.budgetRef().child('transactions').push();
-      const key = txRef.key;
+      const txRef1 = App.budgetRef().child('transactions').push();
+
+      const tx2 = newTx({
+        dateMs: 45678,
+        amountMinor: new Decimal('-2030'),
+        memo: 'i am hungry',
+      });
+      const txRef2 = App.budgetRef().child('transactions').push();
 
       const expectedState = {
         transactions: {
-          [key]: {
-            id: key,
+          [txRef1.key]: {
+            id: txRef1.key,
             account: '',
             dateMs: 12345,
             payee: '',
             category: '',
             memo: 'goodbye',
             amountMinor: new Decimal('-1500'),
+          },
+          [txRef2.key]: {
+            id: txRef2.key,
+            account: '',
+            dateMs: 45678,
+            payee: '',
+            category: '',
+            memo: 'i am hungry',
+            amountMinor: new Decimal('-2030'),
           },
         },
       };
@@ -173,20 +220,20 @@ describe('<App />', function () {
 
       const wrapper = shallow(<App />);
       const app = wrapper.instance();
+      app.componentDidMount();
 
-      const p = txRef.set(tx.firebaseData())
-        .then(() => {
-          app.componentDidMount();
-          return waitForCall(txAdded);
-        })
+      const p =
+        Promise.all([
+          txRef1.set(tx1.firebaseData()), txRef2.set(tx2.firebaseData())])
+        .then(() => waitFor(() => txAdded.calledTwice))
         .then(() => {
           const updates = {
             memo: 'goodbye',
             amountMinor: -1500,
           };
-          return txRef.update(updates);
+          return txRef1.update(updates);
         })
-        .then(() => waitForCall(txChanged))
+        .then(() => waitFor(() => txChanged.called))
         .then(() => {
           assert.deepEqual(wrapper.state(), expectedState);
           cleanUp(prefix);
@@ -199,7 +246,6 @@ describe('<App />', function () {
       return assert.isFulfilled(p);
     });
 
-    it('Multiple Firebase tx change should change multiple tx in state');
     it('Firebase tx change should change the TransactionRow');
   });  // transactions/ listeners
 
@@ -237,7 +283,7 @@ describe('<App />', function () {
               },
             },
           };
-          return waitForCall(spy);
+          return waitFor(() => spy.called);
         })
         .then(() => {
           assert.deepEqual(wrapper.state(), expectedState);
