@@ -3,8 +3,8 @@ import Decimal from 'decimal.js-light';
 import { shallow } from 'enzyme';
 import React from 'react';
 
+import { newTx } from './transactionTestLib';
 import AddTransactionRow from '../src/AddTransactionRow';
-import Transaction from '../src/Transaction';
 import TransactionRow from '../src/TransactionRow';
 import TransactionTable from '../src/TransactionTable';
 
@@ -28,7 +28,7 @@ describe('<TransactionTable />', function () {
 
   it('should render multiple transactions', function () {
     const transactions = {
-      a: new Transaction({
+      a: newTx({
         id: 'a',
         dateMs: 1483246800000,  // 2017-01-01 00:00 UTC-05:00
         account: 'Checking',
@@ -36,7 +36,7 @@ describe('<TransactionTable />', function () {
         category: 'Income for January',
         inflow: new Decimal('100.00'),
       }),
-      b: new Transaction({
+      b: newTx({
         id: 'b',
         dateMs: 1483678800000,  // 2017-01-06 00:00 UTC-05:00
         account: 'Cash',
