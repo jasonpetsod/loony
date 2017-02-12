@@ -35,7 +35,7 @@ export default class Transaction {
     if (amountMinor instanceof Decimal === false) {
       throw new LoonyInternalError(`amountMinor isn't Decimal: ${amountMinor}`);
     }
-    this.amountMinor = amountMinor;
+    this.amountMinor = amountMinor.todp(0, Decimal.ROUND_HALF_EVEN);
   }
 
   prettyDate() {
