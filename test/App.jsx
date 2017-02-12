@@ -465,59 +465,130 @@ describe('<App />', function () {
 
   describe('#editTransaction', function () {
     it('should edit the transaction in state', function () {
-      const transactions = {
-        a: newTx({
-          id: 'a',
-          dateMs: 1483246800000,  // 2017-01-01 00:00 UTC-05:00
-          account: 'Checking',
-          payee: 'Google Inc.',
-          category: 'Income for January',
-          inflow: new Decimal('100.00'),
-        }),
-      };
-      const wrapper = shallow(<App />);
-      wrapper.setState({ transactions });
-      const app = wrapper.instance();
+      stubGetRef(testPrefix);
 
-      const newTransaction = newTx({
-        id: 'a',
-        dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
-        account: 'Chase Sapphire Reserve',
-        payee: 'Ippudo',
-        category: 'Restaurants',
-        outflow: new Decimal('27.31'),
+      const tx1 = newTx({
+        dateMs: 12345,
+        amountMinor: new Decimal('100000'),
+        memo: 'hello',
       });
+      const txRef1 = App.budgetRef().child('transactions').push();
+      tx1.id = txRef1.key;
 
-      app.editTransaction('a', newTransaction);
+      const tx2 = newTx({
+        dateMs: 45678,
+        amountMinor: new Decimal('-2030'),
+        memo: 'i am hungry',
+      });
+      const txRef2 = App.budgetRef().child('transactions').push();
+      tx2.id = txRef2.key;
 
-      assert.equal(wrapper.state().transactions.a, newTransaction);
-      assert.sameMembers(Object.keys(wrapper.state().transactions), ['a']);
+      const expectedState = {
+        transactions: {
+          [txRef1.key]: {
+            id: txRef1.key,
+            account: '',
+            dateMs: 12345,
+            payee: '',
+            category: '',
+            memo: 'goodbye',
+            amountMinor: new Decimal('-1500'),
+          },
+          [txRef2.key]: {
+            id: txRef2.key,
+            account: '',
+            dateMs: 45678,
+            payee: '',
+            category: '',
+            memo: 'i am hungry',
+            amountMinor: new Decimal('-2030'),
+          },
+        },
+      };
+
+      const txAdded = sandbox.stub(App, 'testOnlyTransactionAddedComplete');
+      const txChanged = sandbox.stub(App, 'testOnlyTransactionChangedComplete');
+
+      const wrapper = shallow(<App />);
+      const app = wrapper.instance();
+      app.componentDidMount();
+
+      const p =
+        Promise.all([
+          txRef1.set(tx1.firebaseData()), txRef2.set(tx2.firebaseData())])
+        .then(() => waitFor(() => txAdded.calledTwice))
+        .then(() => {
+          tx1.memo = 'goodbye';
+          tx1.amountMinor = new Decimal('-1500');
+          return app.editTransaction(txRef1.key, tx1);
+        })
+        .then(() => waitFor(() => txChanged.called))
+        .then(() => {
+          assert.deepEqual(wrapper.state(), expectedState);
+        });
+      return assert.isFulfilled(p);
     });
 
-    it('should fail when the id does not exist', function () {
-      const transactions = {};
-      const wrapper = shallow(<App />);
-      wrapper.setState({ transactions });
-      const app = wrapper.instance();
+    it('should fail when the transaction does not exist', function () {
+      stubGetRef(testPrefix);
 
-      const newTransaction = newTx({
-        id: 'a',
-        dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
-        account: 'Chase Sapphire Reserve',
-        payee: 'Ippudo',
-        category: 'Restaurants',
-        outflow: new Decimal('27.31'),
+      const tx1 = newTx({
+        dateMs: 12345,
+        amountMinor: new Decimal('100000'),
+        memo: 'hello',
       });
+      const txRef1 = App.budgetRef().child('transactions').push();
+      tx1.id = txRef1.key;
 
-      assert.throws(
-        () => { app.editTransaction('a', newTransaction); },
-        LoonyInternalError, /no transaction with ID/);
+      const tx2 = newTx({
+        dateMs: 45678,
+        amountMinor: new Decimal('-2030'),
+        memo: 'i am hungry',
+      });
+      const txRef2 = App.budgetRef().child('transactions').push();
+      tx2.id = txRef2.key;
+
+      const expectedState = {
+        transactions: {
+          [txRef1.key]: {
+            id: txRef1.key,
+            account: '',
+            dateMs: 12345,
+            payee: '',
+            category: '',
+            memo: 'hello',
+            amountMinor: new Decimal('100000'),
+          },
+        },
+      };
+
+      const txAdded = sandbox.stub(App, 'testOnlyTransactionAddedComplete');
+
+      const wrapper = shallow(<App />);
+      const app = wrapper.instance();
+      app.componentDidMount();
+
+      this.timeout(5000);
+
+      const p =
+        txRef1.set(tx1.firebaseData())
+        .then(() => waitFor(() => txAdded.called))
+        .then(() => app.editTransaction(tx2.id, tx2))
+        .then((result) => {
+          assert.isFalse(result.committed);
+          assert.deepEqual(wrapper.state(), expectedState);
+
+          // Ensure Firebase doesn't have anything at txRef2.
+          return txRef2.once('value');
+        })
+        .then((data) => {
+          assert.isNull(data.val());
+        });
+      return assert.isFulfilled(p);
     });
 
     it('ensures id parameter matches id in transaction', function () {
-      const transactions = {};
       const wrapper = shallow(<App />);
-      wrapper.setState({ transactions });
       const app = wrapper.instance();
 
       const newTransaction = newTx({
@@ -535,35 +606,71 @@ describe('<App />', function () {
     });
 
     it('should edit the existing TransactionRow', function () {
-      const transactions = {
-        a: newTx({
-          id: 'a',
-          dateMs: 1483246800000,  // 2017-01-01 00:00 UTC-05:00
-          account: 'Checking',
-          payee: 'Google Inc.',
-          category: 'Income for January',
-          inflow: new Decimal('100.00'),
-        }),
-      };
+      stubGetRef(testPrefix);
+
+      const tx1 = newTx({
+        dateMs: 12345,
+        amountMinor: new Decimal('100000'),
+        memo: 'hello',
+      });
+      const txRef1 = App.budgetRef().child('transactions').push();
+      tx1.id = txRef1.key;
+
+      const tx2 = newTx({
+        dateMs: 45678,
+        amountMinor: new Decimal('-2030'),
+        memo: 'i am hungry',
+      });
+      const txRef2 = App.budgetRef().child('transactions').push();
+      tx2.id = txRef2.key;
+
+      const expected = [
+        {
+          id: txRef1.key,
+          account: '',
+          dateMs: 12345,
+          payee: '',
+          category: '',
+          memo: 'goodbye',
+          amountMinor: new Decimal('-1500'),
+        },
+        {
+          id: txRef2.key,
+          account: '',
+          dateMs: 45678,
+          payee: '',
+          category: '',
+          memo: 'i am hungry',
+          amountMinor: new Decimal('-2030'),
+        },
+      ];
+
+      const txAdded = sandbox.stub(App, 'testOnlyTransactionAddedComplete');
+      const txChanged = sandbox.stub(App, 'testOnlyTransactionChangedComplete');
+
       const wrapper = mount(<App />);
-      wrapper.setState({ transactions });
       const app = wrapper.instance();
 
-      const newTransaction = newTx({
-        id: 'a',
-        dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
-        account: 'Chase Sapphire Reserve',
-        payee: 'Ippudo',
-        category: 'Restaurants',
-        outflow: new Decimal('27.31'),
-      });
+      const p =
+        Promise.all([
+          txRef1.set(tx1.firebaseData()), txRef2.set(tx2.firebaseData())])
+        .then(() => waitFor(() => txAdded.calledTwice))
+        .then(() => {
+          tx1.memo = 'goodbye';
+          tx1.amountMinor = new Decimal('-1500');
+          return app.editTransaction(txRef1.key, tx1);
+        })
+        .then(() => waitFor(() => txChanged.called))
+        .then(() => {
+          const transactions =
+            wrapper.find(TransactionRow).map(n => n.prop('transaction'));
+          assert.sameDeepMembers(transactions, expected);
+        })
+        .catch((error) => {
+          assert(false, `Promise rejected: ${error}`);
+        });
 
-      app.editTransaction('a', newTransaction);
-
-      const rows = wrapper.find(TransactionRow);
-      assert.lengthOf(rows, 1);
-      const transaction = rows.at(0).prop('transaction');
-      assert.deepEqual(transaction, newTransaction);
+      return assert.isFulfilled(p);
     });
   });
 });

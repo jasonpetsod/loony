@@ -78,23 +78,23 @@ export default class App extends React.Component {
   }
   /* eslint-enable class-methods-use-this */
 
+  /* eslint-disable class-methods-use-this */
   editTransaction(id, transaction) {
-    // TODO: Disallow transactions with incomplete data.
-
     if (id !== transaction.id) {
       throw new LoonyInternalError(
           `id does not match transaction.id: "${id}" vs. "${transaction.id}"`);
     }
 
-    this.setState((prevState) => {
-      const transactions = prevState.transactions;
-      if (!Object.prototype.hasOwnProperty.call(transactions, id)) {
-        throw new LoonyInternalError(`no transaction with ID: ${id}`);
+    const ref = App.budgetRef().child('transactions').child(id);
+    return ref.transaction((currentData) => {
+      // Bail if the transaction with the given id no longer exists.
+      if (currentData === null) {
+        return undefined;
       }
-      transactions[id] = transaction;
-      return { transactions };
+      return transaction.firebaseData();
     });
   }
+  /* eslint-enable class-methods-use-this */
 
   render() {
     return (
