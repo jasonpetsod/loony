@@ -30,6 +30,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
+    // TODO: Paginate.
     return App.budgetRef().child('transactions').once('value')
       .then((snapshot) => {
         const transactions = {};
