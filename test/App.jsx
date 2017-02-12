@@ -261,7 +261,7 @@ describe('<App />', function () {
           account: 'Checking',
           payee: 'Google Inc.',
           category: 'Income for January',
-          inflow: new Decimal('100.00'),
+          amountMinor: new Decimal('10000'),
         }),
       };
       const wrapper = shallow(<App />);
@@ -274,7 +274,7 @@ describe('<App />', function () {
         account: 'Chase Sapphire Reserve',
         payee: 'Ippudo',
         category: 'Restaurants',
-        outflow: new Decimal('27.31'),
+        amountMinor: new Decimal('-2731'),
       });
 
       app.editTransaction('a', newTransaction);
@@ -295,7 +295,7 @@ describe('<App />', function () {
         account: 'Chase Sapphire Reserve',
         payee: 'Ippudo',
         category: 'Restaurants',
-        outflow: new Decimal('27.31'),
+        amountMinor: new Decimal('-2731'),
       });
 
       assert.throws(
@@ -315,7 +315,7 @@ describe('<App />', function () {
         account: 'Chase Sapphire Reserve',
         payee: 'Ippudo',
         category: 'Restaurants',
-        outflow: new Decimal('27.31'),
+        amountMinor: new Decimal('-2731'),
       });
 
       assert.throws(
@@ -331,7 +331,7 @@ describe('<App />', function () {
           account: 'Checking',
           payee: 'Google Inc.',
           category: 'Income for January',
-          inflow: new Decimal('100.00'),
+          amountMinor: new Decimal('10000'),
         }),
       };
       const wrapper = mount(<App />);
@@ -344,7 +344,7 @@ describe('<App />', function () {
         account: 'Chase Sapphire Reserve',
         payee: 'Ippudo',
         category: 'Restaurants',
-        outflow: new Decimal('27.31'),
+        amountMinor: new Decimal('2731'),
       });
 
       app.editTransaction('a', newTransaction);
