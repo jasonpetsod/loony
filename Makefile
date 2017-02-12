@@ -26,7 +26,7 @@ devserver:
 	$(WEBPACK_DEV_SERVER) --watch -d --progress
 
 lint:
-	$(ESLINT) src/*.js src/*.jsx 'test/**'
+	$(ESLINT) --max-warnings=0 src/*.js src/*.jsx 'test/**'
 
 test:
 	$(MOCHA) --compilers jsx:babel-register --require test/setup.js $(TESTARGS)
