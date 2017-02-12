@@ -19,6 +19,12 @@ export default class App extends React.Component {
     return App.getRef(`/users/${TEST_USER_ID}/budgets/${TEST_BUDGET_ID}`);
   }
 
+  // Callbacks that can be stubbed out in tests to signal when the component
+  // finishes rendering changes to transactions.
+  static testOnlyTransactionAddedComplete() {}
+  static testOnlyTransactionChangedComplete() {}
+  static testOnlyTransactionRemovedComplete() {}
+
   constructor(props) {
     super(props);
     this.state = {
@@ -30,20 +36,32 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    return App.budgetRef().child('transactions').once('value')
-      .then((snapshot) => {
-        const transactions = {};
-        snapshot.forEach((child) => {
-          transactions[child.key] = Transaction.fromFirebaseData(
-            child.key, child.val());
-        });
-        this.setState({ transactions });
-      })
-      .catch((error) => {
-        throw new LoonyInternalError(`Couldn't fetch transactions: ${error}`);
-      });
+    const setTransaction = (data, callback) => {
+      this.setState(prevState => ({
+        transactions: {
+          ...prevState.transactions,
+          [data.key]: Transaction.fromFirebaseData(data.key, data.val()),
+        },
+      }),
+      callback);
+    };
 
-    // TODO: Attach listeners.
+    App.budgetRef().child('transactions').on('child_added', (data) => {
+      setTransaction(data, App.testOnlyTransactionAddedComplete);
+    });
+
+    App.budgetRef().child('transactions').on('child_changed', (data) => {
+      setTransaction(data, App.testOnlyTransactionChangedComplete);
+    });
+
+    App.budgetRef().child('transactions').on('child_removed', (data) => {
+      this.setState((prevState) => {
+        const transactions = { ...prevState.transactions };
+        delete transactions[data.key];
+        return { transactions };
+      },
+      App.testOnlyTransactionRemovedComplete);
+    });
   }
 
   addTransaction(transaction) {

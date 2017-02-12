@@ -38,16 +38,26 @@ describe('<App />', function () {
   };
 
   describe('#componentDidMount', function () {
+    const waitForCall = spy => new Promise((resolve) => {
+      const check = () => {
+        if (spy.called) {
+          resolve();
+        }
+        window.setTimeout(check, 50);
+      };
+      check();
+    });
+
     it('fetches transactions from Firebase', function () {
       const prefix = stubGetRef();
 
       const tx = new Transaction({
         dateMs: 12345,
-        outflow: 1000,
+        amountMinor: new Decimal('100000'),
         memo: 'hello',
       });
-      const ref = App.budgetRef().child('transactions');
-      const key = ref.push().key;
+      const txRef = App.budgetRef().child('transactions').push();
+      const key = txRef.key;
       tx.id = key;
 
       const expectedState = {
@@ -59,29 +69,124 @@ describe('<App />', function () {
             payee: '',
             category: '',
             memo: 'hello',
-            outflow: 1000,
-            inflow: 0,
+            amountMinor: new Decimal('100000'),
           },
         },
       };
 
+      const spy = sandbox.stub(App, 'testOnlyTransactionAddedComplete');
+
       const wrapper = shallow(<App />);
       const app = wrapper.instance();
 
-      const p = ref.child(key).set(tx.firebaseData())
-        .then(() => app.componentDidMount())
+      const p = txRef.set(tx.firebaseData())
+        .then(() => {
+          app.componentDidMount();
+          return waitForCall(spy);
+        })
         .then(() => {
           assert.deepEqual(wrapper.state(), expectedState);
           cleanUp(prefix);
         })
         .catch((error) => {
           cleanUp(prefix);
-          assert(false, `App.componentDidMount failed: ${error}`);
+          assert(false, `Promise rejected: ${error}`);
         });
 
       return assert.isFulfilled(p);
     });
-  });
+
+    it('set up listener on transaction removal', function () {
+      const prefix = stubGetRef();
+
+      const tx = new Transaction({
+        dateMs: 12345,
+        amountMinor: new Decimal('100000'),
+        memo: 'hello',
+      });
+      const txRef = App.budgetRef().child('transactions').push();
+
+      const txAdded = sandbox.stub(App, 'testOnlyTransactionAddedComplete');
+      const txRemoved = sandbox.stub(App, 'testOnlyTransactionRemovedComplete');
+
+      const wrapper = shallow(<App />);
+      const app = wrapper.instance();
+
+      const p = txRef.set(tx.firebaseData())
+        .then(() => {
+          app.componentDidMount();
+          return waitForCall(txAdded);
+        })
+        .then(() => txRef.remove())
+        .then(() => waitForCall(txRemoved))
+        .then(() => {
+          assert.deepEqual(wrapper.state(), { transactions: {} });
+          cleanUp(prefix);
+        })
+        .catch((error) => {
+          cleanUp(prefix);
+          assert(false, `Promise rejected: ${error}`);
+        });
+
+      return assert.isFulfilled(p);
+    });
+
+    it('set up listener on transaction change', function () {
+      const prefix = stubGetRef();
+
+      const tx = new Transaction({
+        dateMs: 12345,
+        amountMinor: new Decimal('100000'),
+        memo: 'hello',
+      });
+      const txRef = App.budgetRef().child('transactions').push();
+      const key = txRef.key;
+
+      const expectedState = {
+        transactions: {
+          [key]: {
+            id: key,
+            account: '',
+            dateMs: 12345,
+            payee: '',
+            category: '',
+            memo: 'goodbye',
+            amountMinor: new Decimal('-1500'),
+          },
+        },
+      };
+
+      const txAdded = sandbox.stub(App, 'testOnlyTransactionAddedComplete');
+      const txChanged = sandbox.stub(App, 'testOnlyTransactionChangedComplete');
+
+      const wrapper = shallow(<App />);
+      const app = wrapper.instance();
+
+      const p = txRef.set(tx.firebaseData())
+        .then(() => {
+          app.componentDidMount();
+          return waitForCall(txAdded);
+        })
+        .then(() => {
+          const updates = {
+            memo: 'goodbye',
+            amountMinor: -1500,
+          };
+          return txRef.update(updates);
+        })
+        .then(() => waitForCall(txChanged))
+        .then(() => {
+          assert.deepEqual(wrapper.state(), expectedState);
+          cleanUp(prefix);
+        })
+        .catch((error) => {
+          cleanUp(prefix);
+          assert(false, `Promise rejected: ${error}`);
+        });
+
+      return assert.isFulfilled(p);
+    });
+  });  // #componentDidMount
 
   describe('#addTransaction', function () {
     it('should add a new transaction to state', function () {
