@@ -9,14 +9,6 @@ const TEST_PAYEE_ID = 'test-payee-id';
 
 export default class Transaction {
   static fromFirebaseData(key, data) {
-    let inflow = 0.0;
-    let outflow = 0.0;
-    if (data.amountMinor < 0) {
-      outflow = Math.abs(data.amountMinor) / 100;
-    } else {
-      inflow = data.amountMinor / 100;
-    }
-
     return new Transaction({
       id: key,
       // TODO(#10): Implement accounts.
@@ -27,8 +19,7 @@ export default class Transaction {
       // TODO(#9): Implement categories.
       category: '',
       memo: data.memo,
-      outflow,
-      inflow,
+      amountMinor: new Decimal(data.amountMinor),
     });
   }
 

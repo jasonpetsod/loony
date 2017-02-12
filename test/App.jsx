@@ -43,7 +43,7 @@ describe('<App />', function () {
 
       const tx = new Transaction({
         dateMs: 12345,
-        outflow: 1000,
+        amountMinor: new Decimal('100000'),
         memo: 'hello',
       });
       const ref = App.budgetRef().child('transactions');
@@ -59,8 +59,7 @@ describe('<App />', function () {
             payee: '',
             category: '',
             memo: 'hello',
-            outflow: 1000,
-            inflow: 0,
+            amountMinor: new Decimal('100000'),
           },
         },
       };
