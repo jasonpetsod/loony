@@ -34,7 +34,7 @@ describe('<TransactionTable />', function () {
         account: 'Checking',
         payee: 'Werk',
         category: 'Income for January',
-        inflow: new Decimal('100.00'),
+        amountMinor: new Decimal('10000'),
       }),
       b: newTx({
         id: 'b',
@@ -42,7 +42,7 @@ describe('<TransactionTable />', function () {
         account: 'Cash',
         payee: 'Raku',
         category: 'Restaurants',
-        outflow: new Decimal('27.31'),
+        amountMinor: new Decimal('-2731'),
       }),
     };
     const wrapper = createWrapper(transactions);
