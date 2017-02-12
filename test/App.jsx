@@ -18,23 +18,21 @@ firebase.initializeApp(firebaseConfig);
 
 describe('<App />', function () {
   let sandbox;
+  let testPrefix = null;
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
+    testPrefix = `test/App/${uuid.v4()}`;
   });
 
   afterEach(function () {
     sandbox.restore();
+    firebase.database().ref(testPrefix).remove();
   });
 
-  const stubGetRef = () => {
-    const prefix = `AppTest/${uuid.v4()}`;
+  const stubGetRef = (prefix) => {
+    assert.isNotNull(prefix);
     const getRef = path => firebase.database().ref(`${prefix}/${path}`);
     sandbox.stub(App, 'getRef', getRef);
-    return prefix;
-  };
-
-  const cleanUp = (path) => {
-    firebase.database().ref(path).remove();
   };
 
   // Wait for a condition to be true, polling every 250 ms. No deadline; Mocha
@@ -54,7 +52,7 @@ describe('<App />', function () {
     // TODO: Implement pending tests in this fixture.
 
     it('Firebase tx add should add it to state', function () {
-      const prefix = stubGetRef();
+      stubGetRef(testPrefix);
 
       const tx1 = newTx({
         dateMs: 12345,
@@ -105,10 +103,8 @@ describe('<App />', function () {
         .then(() => waitFor(() => spy.calledTwice))
         .then(() => {
           assert.deepEqual(wrapper.state(), expectedState);
-          cleanUp(prefix);
         })
         .catch((error) => {
-          cleanUp(prefix);
           assert(false, `Promise rejected: ${error}`);
         });
 
@@ -118,7 +114,7 @@ describe('<App />', function () {
     it('Firebase tx add should add a TransactionRow');
 
     it('Firebase tx remove should remove it from state', function () {
-      const prefix = stubGetRef();
+      stubGetRef(testPrefix);
 
       const tx1 = newTx({
         dateMs: 12345,
@@ -163,10 +159,8 @@ describe('<App />', function () {
         .then(() => waitFor(() => txRemoved.called))
         .then(() => {
           assert.deepEqual(wrapper.state(), expectedState);
-          cleanUp(prefix);
         })
         .catch((error) => {
-          cleanUp(prefix);
           assert(false, `Promise rejected: ${error}`);
         });
 
@@ -176,7 +170,7 @@ describe('<App />', function () {
     it('Firebase tx remove should remove a TransactionRow');
 
     it('Firebase tx change should change the tx in state', function () {
-      const prefix = stubGetRef();
+      stubGetRef(testPrefix);
 
       const tx1 = newTx({
         dateMs: 12345,
@@ -236,10 +230,8 @@ describe('<App />', function () {
         .then(() => waitFor(() => txChanged.called))
         .then(() => {
           assert.deepEqual(wrapper.state(), expectedState);
-          cleanUp(prefix);
         })
         .catch((error) => {
-          cleanUp(prefix);
           assert(false, `Promise rejected: ${error}`);
         });
 
@@ -251,7 +243,7 @@ describe('<App />', function () {
 
   describe('#addTransaction', function () {
     it('should add a new transaction to state', function () {
-      const prefix = stubGetRef();
+      stubGetRef(testPrefix);
 
       const spy = sandbox.stub(App, 'testOnlyTransactionAddedComplete');
 
@@ -287,10 +279,8 @@ describe('<App />', function () {
         })
         .then(() => {
           assert.deepEqual(wrapper.state(), expectedState);
-          cleanUp(prefix);
         })
         .catch((error) => {
-          cleanUp(prefix);
           assert(false, `addTransaction failed: ${error}`);
         });
 
