@@ -49,8 +49,6 @@ describe('<App />', function () {
   });
 
   describe('transactions/ listeners', function () {
-    // TODO: Implement pending tests in this fixture.
-
     it('Firebase tx add should add it to state', function () {
       stubGetRef(testPrefix);
 
@@ -111,7 +109,65 @@ describe('<App />', function () {
       return assert.isFulfilled(p);
     });
 
-    it('Firebase tx add should add a TransactionRow');
+    it('Firebase tx add should add a TransactionRow', function () {
+      stubGetRef(testPrefix);
+
+      const tx1 = newTx({
+        dateMs: 12345,
+        amountMinor: new Decimal('100000'),
+        memo: 'hello',
+      });
+      const txRef1 = App.budgetRef().child('transactions').push();
+      tx1.id = txRef1.key;
+
+      const tx2 = newTx({
+        dateMs: 45678,
+        amountMinor: new Decimal('-2030'),
+        memo: 'i am hungry',
+      });
+      const txRef2 = App.budgetRef().child('transactions').push();
+      tx1.id = txRef1.key;
+
+      const expected = [
+        {
+          id: txRef1.key,
+          account: '',
+          dateMs: 12345,
+          payee: '',
+          category: '',
+          memo: 'hello',
+          amountMinor: new Decimal('100000'),
+        },
+        {
+          id: txRef2.key,
+          account: '',
+          dateMs: 45678,
+          payee: '',
+          category: '',
+          memo: 'i am hungry',
+          amountMinor: new Decimal('-2030'),
+        },
+      ];
+
+      const spy = sandbox.stub(App, 'testOnlyTransactionAddedComplete');
+
+      const wrapper = mount(<App />);
+
+      const p =
+        Promise.all([
+          txRef1.set(tx1.firebaseData()), txRef2.set(tx2.firebaseData())])
+        .then(() => waitFor(() => spy.calledTwice))
+        .then(() => {
+          const transactions =
+            wrapper.find(TransactionRow).map(n => n.prop('transaction'));
+          assert.sameDeepMembers(transactions, expected);
+        })
+        .catch((error) => {
+          assert(false, `Promise rejected: ${error}`);
+        });
+
+      return assert.isFulfilled(p);
+    });
 
     it('Firebase tx remove should remove it from state', function () {
       stubGetRef(testPrefix);
@@ -167,7 +223,59 @@ describe('<App />', function () {
       return assert.isFulfilled(p);
     });
 
-    it('Firebase tx remove should remove a TransactionRow');
+    it('Firebase tx remove should remove a TransactionRow', function () {
+      stubGetRef(testPrefix);
+
+      const tx1 = newTx({
+        dateMs: 12345,
+        amountMinor: new Decimal('100000'),
+        memo: 'hello',
+      });
+      const txRef1 = App.budgetRef().child('transactions').push();
+      tx1.id = txRef1.key;
+
+      const tx2 = newTx({
+        dateMs: 45678,
+        amountMinor: new Decimal('-2030'),
+        memo: 'i am hungry',
+      });
+      const txRef2 = App.budgetRef().child('transactions').push();
+      tx1.id = txRef1.key;
+
+      const expected = [
+        {
+          id: txRef1.key,
+          account: '',
+          dateMs: 12345,
+          payee: '',
+          category: '',
+          memo: 'hello',
+          amountMinor: new Decimal('100000'),
+        },
+      ];
+
+      const txAdded = sandbox.stub(App, 'testOnlyTransactionAddedComplete');
+      const txRemoved = sandbox.stub(App, 'testOnlyTransactionRemovedComplete');
+
+      const wrapper = mount(<App />);
+
+      const p =
+        Promise.all([
+          txRef1.set(tx1.firebaseData()), txRef2.set(tx2.firebaseData())])
+        .then(() => waitFor(() => txAdded.calledTwice))
+        .then(() => txRef2.remove())
+        .then(() => waitFor(() => txRemoved.called))
+        .then(() => {
+          const transactions =
+            wrapper.find(TransactionRow).map(n => n.prop('transaction'));
+          assert.sameDeepMembers(transactions, expected);
+        })
+        .catch((error) => {
+          assert(false, `Promise rejected: ${error}`);
+        });
+
+      return assert.isFulfilled(p);
+    });
 
     it('Firebase tx change should change the tx in state', function () {
       stubGetRef(testPrefix);
@@ -238,7 +346,74 @@ describe('<App />', function () {
       return assert.isFulfilled(p);
     });
 
-    it('Firebase tx change should change the TransactionRow');
+    it('Firebase tx change should change the TransactionRow', function () {
+      stubGetRef(testPrefix);
+
+      const tx1 = newTx({
+        dateMs: 12345,
+        amountMinor: new Decimal('100000'),
+        memo: 'hello',
+      });
+      const txRef1 = App.budgetRef().child('transactions').push();
+      tx1.id = txRef1.key;
+
+      const tx2 = newTx({
+        dateMs: 45678,
+        amountMinor: new Decimal('-2030'),
+        memo: 'i am hungry',
+      });
+      const txRef2 = App.budgetRef().child('transactions').push();
+      tx1.id = txRef1.key;
+
+      const expected = [
+        {
+          id: txRef1.key,
+          account: '',
+          dateMs: 12345,
+          payee: '',
+          category: '',
+          memo: 'goodbye',
+          amountMinor: new Decimal('-1500'),
+        },
+        {
+          id: txRef2.key,
+          account: '',
+          dateMs: 45678,
+          payee: '',
+          category: '',
+          memo: 'i am hungry',
+          amountMinor: new Decimal('-2030'),
+        },
+      ];
+
+      const txAdded = sandbox.stub(App, 'testOnlyTransactionAddedComplete');
+      const txChanged = sandbox.stub(App, 'testOnlyTransactionChangedComplete');
+
+      const wrapper = mount(<App />);
+
+      const p =
+        Promise.all([
+          txRef1.set(tx1.firebaseData()), txRef2.set(tx2.firebaseData())])
+        .then(() => waitFor(() => txAdded.calledTwice))
+        .then(() => {
+          const updates = {
+            memo: 'goodbye',
+            amountMinor: -1500,
+          };
+          return txRef1.update(updates);
+        })
+        .then(() => waitFor(() => txChanged.called))
+        .then(() => {
+          const transactions =
+            wrapper.find(TransactionRow).map(n => n.prop('transaction'));
+          assert.sameDeepMembers(transactions, expected);
+        })
+        .catch((error) => {
+          assert(false, `Promise rejected: ${error}`);
+        });
+
+      return assert.isFulfilled(p);
+    });
   });  // transactions/ listeners
 
   describe('#addTransaction', function () {
