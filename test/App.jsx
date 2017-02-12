@@ -37,18 +37,23 @@ describe('<App />', function () {
     firebase.database().ref(path).remove();
   };
 
-  describe('#componentDidMount', function () {
-    const waitForCall = spy => new Promise((resolve) => {
-      const check = () => {
-        if (spy.called) {
-          resolve();
-        }
-        window.setTimeout(check, 50);
-      };
-      check();
-    });
+  // Wait for a sinon.Spy to be called, polling every 50 ms. No deadline;
+  // Mocha will timeout the test after 2000 ms by default. (Each test's
+  // timeout is configurable using this.timeout in a test context.)
+  const waitForCall = spy => new Promise((resolve) => {
+    const check = () => {
+      if (spy.called) {
+        resolve();
+      }
+      window.setTimeout(check, 250);
+    };
+    check();
+  });
 
-    it('fetches transactions from Firebase', function () {
+  describe('transactions/ listeners', function () {
+    // TODO: Implement pending tests in this fixture.
+
+    it('Firebase tx add should add it to state', function () {
       const prefix = stubGetRef();
 
       const tx = new Transaction({
@@ -96,7 +101,10 @@ describe('<App />', function () {
       return assert.isFulfilled(p);
     });
 
-    it('set up listener on transaction removal', function () {
+    it('Multiple Firebase tx add should add multiple tx to state');
+    it('Firebase tx add should add a TransactionRow');
+
+    it('Firebase tx remove should remove it from state', function () {
       const prefix = stubGetRef();
 
       const tx = new Transaction({
@@ -112,7 +120,8 @@ describe('<App />', function () {
       const wrapper = shallow(<App />);
       const app = wrapper.instance();
 
-      const p = txRef.set(tx.firebaseData())
+      const p =
+        txRef.set(tx.firebaseData())
         .then(() => {
           app.componentDidMount();
           return waitForCall(txAdded);
@@ -131,7 +140,10 @@ describe('<App />', function () {
       return assert.isFulfilled(p);
     });
 
-    it('set up listener on transaction change', function () {
+    it('Multiple Firebase tx remove should remove multiple tx from state');
+    it('Firebase tx remove should remove a TransactionRow');
+
+    it('Firebase tx change should change the tx in state', function () {
       const prefix = stubGetRef();
 
       const tx = new Transaction({
@@ -186,73 +198,51 @@ describe('<App />', function () {
 
       return assert.isFulfilled(p);
     });
-  });  // #componentDidMount
+
+    it('Multiple Firebase tx change should change multiple tx in state');
+    it('Firebase tx change should change the TransactionRow');
+  });  // transactions/ listeners
 
   describe('#addTransaction', function () {
     it('should add a new transaction to state', function () {
       const prefix = stubGetRef();
 
+      const spy = sandbox.stub(App, 'testOnlyTransactionAddedComplete');
+
       const wrapper = shallow(<App />);
       const app = wrapper.instance();
+      app.componentDidMount();
 
       const tx = new Transaction({
-        dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
-        account: 'Chase Sapphire Reserve',
-        payee: 'Ippudo',
-        category: 'Restaurants',
-        memo: '',
-        outflow: new Decimal('27.31'),
-        inflow: new Decimal('0'),
+        dateMs: 12345,
+        amountMinor: new Decimal('999'),
+        memo: 'hello',
       });
 
-      const p = app.addTransaction(tx)
-        .then(() => {
-          const expectedState = {
+      let expectedState;
+      const p =
+        app.addTransaction(tx)
+        .then((ref) => {
+          tx.id = ref.key;
+          expectedState = {
             transactions: {
-              [tx.id]: tx,
+              [ref.key]: tx,
             },
           };
+          return waitForCall(spy);
+        })
+        .then(() => {
           assert.deepEqual(wrapper.state(), expectedState);
           cleanUp(prefix);
         })
         .catch((error) => {
-          assert(false, `addTransaction failed: ${error}`);
           cleanUp(prefix);
+          assert(false, `addTransaction failed: ${error}`);
         });
 
       return assert.isFulfilled(p);
     });
-
-    it('should add a new TransactionRow', function () {
-      const prefix = stubGetRef();
-
-      const wrapper = mount(<App />);
-      const app = wrapper.instance();
-
-      const newTransaction = new Transaction({
-        dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
-        account: 'Chase Sapphire Reserve',
-        payee: 'Ippudo',
-        category: 'Restaurants',
-        outflow: new Decimal('27.31'),
-      });
-
-      const p = app.addTransaction(newTransaction)
-        .then(() => {
-          const rows = wrapper.find(TransactionRow);
-          assert.lengthOf(rows, 1);
-          const transaction = rows.at(0).prop('transaction');
-          assert.deepEqual(transaction, newTransaction);
-          cleanUp(prefix);
-        })
-        .catch((error) => {
-          assert(false, `addTransaction failed: ${error}`);
-          cleanUp(prefix);
-        });
-
-      return assert.isFulfilled(p);
-    });
-  });
+  });  // #addTransaction
 
   describe('#editTransaction', function () {
     it('should edit the transaction in state', function () {

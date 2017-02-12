@@ -64,35 +64,19 @@ export default class App extends React.Component {
     });
   }
 
+  /* eslint-disable class-methods-use-this */
   addTransaction(transaction) {
     // TODO: Disallow transactions with incomplete data.
-
-    const ref = App.budgetRef().child('transactions');
-    const key = ref.push().key;
-    const updates = {
-      [key]: transaction.firebaseData(),
-    };
-
-    const success = () => {
-      transaction.id = key;  // eslint-disable-line no-param-reassign
-      // TODO: Remove once listeners on .../transactions are set up.
-      this.setState(prevState => ({
-        transactions: {
-          ...prevState.transactions,
-          [key]: transaction,
-        },
-      }));
-    };
-
-    const failed = (error) => {
-      throw new LoonyInternalError(
-        `Write failed: ${error}; key=${key}, transaction=${transaction}`);
-    };
-
-    return ref.update(updates)
-      .then(success)
-      .catch(failed);
+    const ref = App.budgetRef().child('transactions').push();
+    return ref.set(transaction.firebaseData())
+      // Return the ref to the caller in the promise.
+      .then(() => new Promise(resolve => resolve(ref)))
+      .catch((error) => {
+        throw new LoonyInternalError(
+          `Write failed: ${error}; ref=${ref.toString()}, tx=${transaction}`);
+      });
   }
+  /* eslint-enable class-methods-use-this */
 
   editTransaction(id, transaction) {
     // TODO: Disallow transactions with incomplete data.
