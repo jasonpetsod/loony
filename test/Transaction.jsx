@@ -48,4 +48,37 @@ describe('Transaction', function () {
       assert.equal(tx.inflow(), 0);
     });
   });  // inflow
+
+  describe('firebaseData', function () {
+    it('returns', function () {
+      const tx = new Transaction({
+        dateMs: 12345,
+        memo: 'hello',
+        amountMinor: new Decimal('-30000'),
+      });
+
+      const expected = {
+        accountId: 'test-account-id',
+        transferSrcAccountId: null,
+        transferDstAccountId: null,
+        dateMs: 12345,
+        payeeId: 'test-payee-id',
+        amountMinor: -30000,
+        chargedCurrency: null,
+        chargedCurrencyAmountMinor: null,
+        memo: 'hello',
+        cleared: false,
+        reconciled: false,
+        categories: {
+          'test-category-id': {
+            amountMinor: -30000,
+            chargedCurrencyAmountMinor: null,
+            incomeAvailableNextMonth: false,
+            debtorId: null,
+          },
+        },
+      };
+      assert.deepEqual(tx.firebaseData(), expected);
+    });
+  });  // firebaseData
 });

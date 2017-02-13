@@ -3,6 +3,10 @@ import moment from 'moment';
 
 import LoonyInternalError from './LoonyInternalError';
 
+const TEST_ACCOUNT_ID = 'test-account-id';
+const TEST_CATEGORY_ID = 'test-category-id';
+const TEST_PAYEE_ID = 'test-payee-id';
+
 export default class Transaction {
   constructor({ id = null, account = '', dateMs = 0, payee = '', category = '',
                 memo = '', amountMinor = new Decimal('0') }) {
@@ -39,5 +43,34 @@ export default class Transaction {
       return this.amountMinor.absoluteValue().dividedBy(100);
     }
     return new Decimal('0');
+  }
+
+  firebaseData() {
+    return {
+      // TODO: Support user-provided accounts.
+      accountId: TEST_ACCOUNT_ID,
+      // TODO: Support transfer transactions.
+      transferSrcAccountId: null,
+      transferDstAccountId: null,
+      dateMs: this.dateMs,
+      payeeId: TEST_PAYEE_ID,
+      amountMinor: this.amountMinor.toNumber(),
+      // TODO: Implement charged currency.
+      chargedCurrency: null,
+      chargedCurrencyAmountMinor: null,
+      memo: this.memo,
+      cleared: false,
+      reconciled: false,
+      categories: {
+        [TEST_CATEGORY_ID]: {
+          amountMinor: this.amountMinor.toNumber(),
+          chargedCurrencyAmountMinor: null,
+          // TODO: Implement rule 4.
+          incomeAvailableNextMonth: false,
+          // TODO: Implement debtors.
+          debtorId: null,
+        },
+      },
+    };
   }
 }
