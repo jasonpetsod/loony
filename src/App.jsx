@@ -15,22 +15,42 @@ export default class App extends React.Component {
     return firebase.database().ref(path);
   }
 
+  static budgetRef() {
+    return App.getRef(`/users/${TEST_USER_ID}/budgets/${TEST_BUDGET_ID}`);
+  }
+
   constructor(props) {
     super(props);
     this.state = {
-      transactions: props.transactions,
+      transactions: {},
     };
 
     this.addTransaction = this.addTransaction.bind(this);
     this.editTransaction = this.editTransaction.bind(this);
   }
 
+  componentDidMount() {
+    // TODO: Paginate.
+    return App.budgetRef().child('transactions').once('value')
+      .then((snapshot) => {
+        const transactions = {};
+        snapshot.forEach((child) => {
+          transactions[child.key] = Transaction.fromFirebaseData(
+            child.key, child.val());
+        });
+        this.setState({ transactions });
+      })
+      .catch((error) => {
+        throw new LoonyInternalError(`Couldn't fetch transactions: ${error}`);
+      });
+
+    // TODO: Attach listeners.
+  }
+
   addTransaction(transaction) {
     // TODO: Disallow transactions with incomplete data.
 
-    const path = (
-        `/users/${TEST_USER_ID}/budgets/${TEST_BUDGET_ID}/transactions`);
-    const ref = App.getRef(path);
+    const ref = App.budgetRef().child('transactions');
     const key = ref.push().key;
     const updates = {
       [key]: transaction.firebaseData(),
@@ -38,6 +58,7 @@ export default class App extends React.Component {
 
     const success = () => {
       transaction.id = key;  // eslint-disable-line no-param-reassign
+      // TODO: Remove once listeners on .../transactions are set up.
       this.setState(prevState => ({
         transactions: {
           ...prevState.transactions,
@@ -89,6 +110,4 @@ export default class App extends React.Component {
 }
 
 App.propTypes = {
-  transactions: React.PropTypes.objectOf(
-    React.PropTypes.instanceOf(Transaction)).isRequired,
 };
