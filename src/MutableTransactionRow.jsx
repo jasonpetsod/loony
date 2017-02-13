@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js-light';
 import moment from 'moment';
 import React from 'react';
 
@@ -24,16 +25,26 @@ export default class MutableTransactionRow extends React.Component {
   }
 
   static parseAmountMinor(inflowStr, outflowStr) {
-    const inflow = parseFloat(inflowStr);
-    if (inflowStr !== '' && isNaN(inflow)) {
-      throw new errors.ParseError(`inflow is not a number: ${inflowStr}`);
-    }
-    const outflow = parseFloat(outflowStr);
-    if (outflowStr !== '' && isNaN(outflow)) {
-      throw new errors.ParseError(`outflow is not a number: ${outflowStr}`);
+    let inflow = new Decimal('0');
+    let outflow = new Decimal('0');
+
+    if (inflowStr !== '') {
+      try {
+        inflow = new Decimal(inflowStr);
+      } catch (e) {
+        throw new errors.ParseError(`inflow is not a number: ${inflowStr}`);
+      }
     }
 
-    if (!isNaN(outflow) && !isNaN(inflow) && outflow !== 0 && inflow !== 0) {
+    if (outflowStr !== '') {
+      try {
+        outflow = new Decimal(outflowStr);
+      } catch (e) {
+        throw new errors.ParseError(`outflow is not a number: ${outflowStr}`);
+      }
+    }
+
+    if (!outflow.isZero() && !inflow.isZero()) {
       throw new errors.ParseError(
         `Both outflow=${outflow} and inflow=${inflow} can't be given`);
     }
@@ -46,15 +57,13 @@ export default class MutableTransactionRow extends React.Component {
     }
 
     if (inflow > 0) {
-      // TODO: Stop using floats for money.
       // TODO: Support currencies with different minor units.
-      return inflow * 100;
+      return inflow.times(100);
     } else if (outflow > 0) {
-      // TODO: Stop using floats for money.
       // TODO: Support currencies with different minor units.
-      return -1 * outflow * 100;
+      return outflow.neg().times(100);
     }
-    return 0;
+    return new Decimal('0');
   }
 
   constructor(props) {
