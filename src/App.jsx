@@ -19,6 +19,12 @@ export default class App extends React.Component {
     return App.getRef(`/users/${TEST_USER_ID}/budgets/${TEST_BUDGET_ID}`);
   }
 
+  // Callbacks that can be stubbed out in tests to signal when the component
+  // finishes rendering changes to transactions.
+  static testOnlyTransactionAddedComplete() {}
+  static testOnlyTransactionChangedComplete() {}
+  static testOnlyTransactionRemovedComplete() {}
+
   constructor(props) {
     super(props);
     this.state = {
@@ -30,52 +36,47 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    // TODO: Paginate.
-    return App.budgetRef().child('transactions').once('value')
-      .then((snapshot) => {
-        const transactions = {};
-        snapshot.forEach((child) => {
-          transactions[child.key] = Transaction.fromFirebaseData(
-            child.key, child.val());
-        });
-        this.setState({ transactions });
-      })
-      .catch((error) => {
-        throw new LoonyInternalError(`Couldn't fetch transactions: ${error}`);
-      });
-
-    // TODO: Attach listeners.
-  }
-
-  addTransaction(transaction) {
-    // TODO: Disallow transactions with incomplete data.
-
-    const ref = App.budgetRef().child('transactions');
-    const key = ref.push().key;
-    const updates = {
-      [key]: transaction.firebaseData(),
-    };
-
-    const success = () => {
-      transaction.id = key;  // eslint-disable-line no-param-reassign
-      // TODO: Remove once listeners on .../transactions are set up.
+    const setTransaction = (data, callback) => {
       this.setState(prevState => ({
         transactions: {
           ...prevState.transactions,
-          [key]: transaction,
+          [data.key]: Transaction.fromFirebaseData(data.key, data.val()),
         },
-      }));
+      }),
+      callback);
     };
 
-    const failed = (error) => {
-      throw new LoonyInternalError(
-        `Write failed: ${error}; key=${key}, transaction=${transaction}`);
-    };
+    App.budgetRef().child('transactions').on('child_added', (data) => {
+      setTransaction(data, App.testOnlyTransactionAddedComplete);
+    });
 
-    return ref.update(updates)
-      .then(success)
-      .catch(failed);
+    App.budgetRef().child('transactions').on('child_changed', (data) => {
+      setTransaction(data, App.testOnlyTransactionChangedComplete);
+    });
+
+    App.budgetRef().child('transactions').on('child_removed', (data) => {
+      this.setState((prevState) => {
+        const transactions = { ...prevState.transactions };
+        delete transactions[data.key];
+        return { transactions };
+      },
+      App.testOnlyTransactionRemovedComplete);
+    });
   }
+
+  /* eslint-disable class-methods-use-this */
+  addTransaction(transaction) {
+    // TODO: Disallow transactions with incomplete data.
+    const ref = App.budgetRef().child('transactions').push();
+    return ref.set(transaction.firebaseData())
+      // Return the ref to the caller in the promise.
+      .then(() => new Promise(resolve => resolve(ref)))
+      .catch((error) => {
+        throw new LoonyInternalError(
+          `Write failed: ${error}; ref=${ref.toString()}, tx=${transaction}`);
+      });
+  }
+  /* eslint-enable class-methods-use-this */
 
   editTransaction(id, transaction) {
     // TODO: Disallow transactions with incomplete data.
