@@ -28,8 +28,7 @@ describe('<TransactionRow />', function () {
         payee: 'Mu Ramen',
         category: 'Restaurants',
         memo: 'yay noodles',
-        outflow: 23,
-        inflow: 19.89,
+        amountMinor: -2300,
       });
       const wrapper = createWrapper(transaction);
 
@@ -44,7 +43,7 @@ describe('<TransactionRow />', function () {
         'Restaurants',
         'yay noodles',
         '$23.00',
-        '$19.89',
+        '$0.00',
       ];
       assert.deepEqual(cells, expectedCells);
     });
@@ -58,7 +57,6 @@ describe('<TransactionRow />', function () {
         category: 'Restaurants',
         memo: 'yay noodles',
         outflow: 23,
-        inflow: 19.89,
       });
       const wrapper = createWrapper(transaction);
 
@@ -75,7 +73,6 @@ describe('<TransactionRow />', function () {
         category: 'Restaurants',
         memo: 'yay noodles',
         outflow: 23,
-        inflow: 19.89,
       });
       const wrapper = createWrapper(transaction);
 

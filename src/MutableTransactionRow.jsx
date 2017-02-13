@@ -2,6 +2,7 @@ import moment from 'moment';
 import React from 'react';
 
 import Transaction from './Transaction';
+import errors from './errors';
 
 export default class MutableTransactionRow extends React.Component {
   // Test seam.
@@ -22,6 +23,40 @@ export default class MutableTransactionRow extends React.Component {
     };
   }
 
+  static parseAmountMinor(inflowStr, outflowStr) {
+    const inflow = parseFloat(inflowStr);
+    if (inflowStr !== '' && isNaN(inflow)) {
+      throw new errors.ParseError(`inflow is not a number: ${inflowStr}`);
+    }
+    const outflow = parseFloat(outflowStr);
+    if (outflowStr !== '' && isNaN(outflow)) {
+      throw new errors.ParseError(`outflow is not a number: ${outflowStr}`);
+    }
+
+    if (!isNaN(outflow) && !isNaN(inflow) && outflow !== 0 && inflow !== 0) {
+      throw new errors.ParseError(
+        `Both outflow=${outflow} and inflow=${inflow} can't be given`);
+    }
+
+    if (outflow < 0) {
+      throw new errors.ParseError(`outflow can't be negative: ${outflow}`);
+    }
+    if (inflow < 0) {
+      throw new errors.ParseError(`inflow can't be negative: ${outflow}`);
+    }
+
+    if (inflow > 0) {
+      // TODO: Stop using floats for money.
+      // TODO: Support currencies with different minor units.
+      return inflow * 100;
+    } else if (outflow > 0) {
+      // TODO: Stop using floats for money.
+      // TODO: Support currencies with different minor units.
+      return -1 * outflow * 100;
+    }
+    return 0;
+  }
+
   constructor(props) {
     super(props);
 
@@ -35,8 +70,8 @@ export default class MutableTransactionRow extends React.Component {
         payee: this.props.initialTransaction.payee,
         category: this.props.initialTransaction.category,
         memo: this.props.initialTransaction.memo,
-        outflow: this.props.initialTransaction.outflow,
-        inflow: this.props.initialTransaction.inflow,
+        outflow: this.props.initialTransaction.outflow(),
+        inflow: this.props.initialTransaction.inflow(),
       };
     }
 
@@ -58,9 +93,8 @@ export default class MutableTransactionRow extends React.Component {
       payee: this.state.payee,
       category: this.state.category,
       memo: this.state.memo,
-      // TODO: Stop using floats to represent money.
-      outflow: parseFloat(this.state.outflow),
-      inflow: parseFloat(this.state.inflow),
+      amountMinor: MutableTransactionRow.parseAmountMinor(
+        this.state.inflow, this.state.outflow),
     });
 
     this.props.submitHandler(tx);
