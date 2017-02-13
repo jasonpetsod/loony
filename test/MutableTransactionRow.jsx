@@ -4,8 +4,8 @@ import { mount } from 'enzyme';
 import React from 'react';
 import sinon from 'sinon';
 
+import { newTx } from './transactionTestLib';
 import MutableTransactionRow from '../src/MutableTransactionRow';
-import Transaction from '../src/Transaction';
 import errors from '../src/errors';
 
 describe('<MutableTransactionRow />', function () {
@@ -65,7 +65,7 @@ describe('<MutableTransactionRow />', function () {
     });
 
     it('with initialTransaction', function () {
-      const initialTransaction = new Transaction({
+      const initialTransaction = newTx({
         id: 'a',
         dateMs: 1483228800000,  // 2017-01-01 00:00:00 UTC
         account: 'Cash',
@@ -196,7 +196,7 @@ describe('<MutableTransactionRow />', function () {
     });
 
     it('with initialTransaction', function () {
-      const initialTransaction = new Transaction({
+      const initialTransaction = newTx({
         id: 'a',
         dateMs: 1483228800000,  // 2017-01-01 00:00:00 UTC
         account: 'Cash',

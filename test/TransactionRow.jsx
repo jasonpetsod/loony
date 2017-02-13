@@ -3,8 +3,8 @@ import Decimal from 'decimal.js-light';
 import { mount } from 'enzyme';
 import React from 'react';
 
+import { newTx } from './transactionTestLib';
 import EditTransactionRow from '../src/EditTransactionRow';
-import Transaction from '../src/Transaction';
 import TransactionRow from '../src/TransactionRow';
 
 describe('<TransactionRow />', function () {
@@ -22,7 +22,7 @@ describe('<TransactionRow />', function () {
 
   describe('renders', function () {
     it('view mode by default', function () {
-      const transaction = new Transaction({
+      const transaction = newTx({
         id: 'a',
         dateMs: 1483228800000,  // 2017-01-01 00:00:00 UTC
         account: 'Cash',
@@ -50,7 +50,7 @@ describe('<TransactionRow />', function () {
     });
 
     it('editor on click', function () {
-      const transaction = new Transaction({
+      const transaction = newTx({
         id: 'a',
         dateMs: 1483228800000,  // 2017-01-01 00:00:00 UTC
         account: 'Cash',
@@ -66,7 +66,7 @@ describe('<TransactionRow />', function () {
     });
 
     it('editor returns to view on submission', function () {
-      const transaction = new Transaction({
+      const transaction = newTx({
         id: 'a',
         dateMs: 1483228800000,  // 2017-01-01 00:00:00 UTC
         account: 'Cash',

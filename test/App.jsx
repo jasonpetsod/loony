@@ -7,9 +7,9 @@ import React from 'react';
 import sinon from 'sinon';
 import uuid from 'uuid';
 
+import { newTx } from './transactionTestLib';
 import App from '../src/App';
 import LoonyInternalError from '../src/LoonyInternalError';
-import Transaction from '../src/Transaction';
 import TransactionRow from '../src/TransactionRow';
 import firebaseConfig from '../src/firebaseConfig';
 
@@ -56,7 +56,7 @@ describe('<App />', function () {
     it('Firebase tx add should add it to state', function () {
       const prefix = stubGetRef();
 
-      const tx = new Transaction({
+      const tx = newTx({
         dateMs: 12345,
         amountMinor: new Decimal('100000'),
         memo: 'hello',
@@ -107,7 +107,7 @@ describe('<App />', function () {
     it('Firebase tx remove should remove it from state', function () {
       const prefix = stubGetRef();
 
-      const tx = new Transaction({
+      const tx = newTx({
         dateMs: 12345,
         amountMinor: new Decimal('100000'),
         memo: 'hello',
@@ -146,7 +146,7 @@ describe('<App />', function () {
     it('Firebase tx change should change the tx in state', function () {
       const prefix = stubGetRef();
 
-      const tx = new Transaction({
+      const tx = newTx({
         dateMs: 12345,
         amountMinor: new Decimal('100000'),
         memo: 'hello',
@@ -213,7 +213,7 @@ describe('<App />', function () {
       const app = wrapper.instance();
       app.componentDidMount();
 
-      const tx = new Transaction({
+      const tx = newTx({
         dateMs: 12345,
         amountMinor: new Decimal('999'),
         memo: 'hello',
@@ -226,7 +226,15 @@ describe('<App />', function () {
           tx.id = ref.key;
           expectedState = {
             transactions: {
-              [ref.key]: tx,
+              [ref.key]: {
+                id: ref.key,
+                account: '',
+                dateMs: 12345,
+                payee: '',
+                category: '',
+                memo: 'hello',
+                amountMinor: new Decimal('999'),
+              },
             },
           };
           return waitForCall(spy);
@@ -247,7 +255,7 @@ describe('<App />', function () {
   describe('#editTransaction', function () {
     it('should edit the transaction in state', function () {
       const transactions = {
-        a: new Transaction({
+        a: newTx({
           id: 'a',
           dateMs: 1483246800000,  // 2017-01-01 00:00 UTC-05:00
           account: 'Checking',
@@ -260,7 +268,7 @@ describe('<App />', function () {
       wrapper.setState({ transactions });
       const app = wrapper.instance();
 
-      const newTransaction = new Transaction({
+      const newTransaction = newTx({
         id: 'a',
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
         account: 'Chase Sapphire Reserve',
@@ -281,7 +289,7 @@ describe('<App />', function () {
       wrapper.setState({ transactions });
       const app = wrapper.instance();
 
-      const newTransaction = new Transaction({
+      const newTransaction = newTx({
         id: 'a',
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
         account: 'Chase Sapphire Reserve',
@@ -301,7 +309,7 @@ describe('<App />', function () {
       wrapper.setState({ transactions });
       const app = wrapper.instance();
 
-      const newTransaction = new Transaction({
+      const newTransaction = newTx({
         id: 'a',
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
         account: 'Chase Sapphire Reserve',
@@ -317,7 +325,7 @@ describe('<App />', function () {
 
     it('should edit the existing TransactionRow', function () {
       const transactions = {
-        a: new Transaction({
+        a: newTx({
           id: 'a',
           dateMs: 1483246800000,  // 2017-01-01 00:00 UTC-05:00
           account: 'Checking',
@@ -330,7 +338,7 @@ describe('<App />', function () {
       wrapper.setState({ transactions });
       const app = wrapper.instance();
 
-      const newTransaction = new Transaction({
+      const newTransaction = newTx({
         id: 'a',
         dateMs: 1483938000000,  // 2017-01-09 00:00 UTC-05:00
         account: 'Chase Sapphire Reserve',
