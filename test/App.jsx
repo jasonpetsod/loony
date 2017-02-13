@@ -4,6 +4,8 @@ import Decimal from 'decimal.js-light';
 import { mount, shallow } from 'enzyme';
 import firebase from 'firebase';
 import React from 'react';
+import sinon from 'sinon';
+import uuid from 'uuid';
 
 import App from '../src/App';
 import LoonyInternalError from '../src/LoonyInternalError';
@@ -12,13 +14,33 @@ import TransactionRow from '../src/TransactionRow';
 import firebaseConfig from '../src/firebaseConfig';
 
 chai.use(chaiAsPromised);
-
-// TODO: Make these tests hermetic and clean up after themselves.
 firebase.initializeApp(firebaseConfig);
 
 describe('<App />', function () {
+  let sandbox;
+  beforeEach(function () {
+    sandbox = sinon.sandbox.create();
+  });
+
+  afterEach(function () {
+    sandbox.restore();
+  });
+
+  const stubGetRef = () => {
+    const prefix = `AppTest/${uuid.v4()}`;
+    const getRef = path => firebase.database().ref(`${prefix}/${path}`);
+    sandbox.stub(App, 'getRef', getRef);
+    return prefix;
+  };
+
+  const cleanUp = (path) => {
+    firebase.database().ref(path).remove();
+  };
+
   describe('#addTransaction', function () {
     it('should add a new transaction to state', function () {
+      const prefix = stubGetRef();
+
       const transactions = {};
       const wrapper = shallow(<App transactions={transactions} />);
       const app = wrapper.instance();
@@ -41,15 +63,19 @@ describe('<App />', function () {
             },
           };
           assert.deepEqual(wrapper.state(), expectedState);
+          cleanUp(prefix);
         })
         .catch((error) => {
           assert(false, `addTransaction failed: ${error}`);
+          cleanUp(prefix);
         });
 
       return assert.isFulfilled(p);
     });
 
     it('should add a new TransactionRow', function () {
+      const prefix = stubGetRef();
+
       const transactions = {};
       const wrapper = mount(<App transactions={transactions} />);
       const app = wrapper.instance();
@@ -68,9 +94,11 @@ describe('<App />', function () {
           assert.lengthOf(rows, 1);
           const transaction = rows.at(0).prop('transaction');
           assert.deepEqual(transaction, newTransaction);
+          cleanUp(prefix);
         })
         .catch((error) => {
           assert(false, `addTransaction failed: ${error}`);
+          cleanUp(prefix);
         });
 
       return assert.isFulfilled(p);
